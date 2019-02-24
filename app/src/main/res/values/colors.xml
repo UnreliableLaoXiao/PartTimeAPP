@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffffff</color>
+    <color name="violet">#d4237a</color>
+    <color name="white_alp">#33000000</color>
+    <color name="swiperefresh_color1">#FFEE00</color>
+    <color name="swiperefresh_color2">#66EE00</color>
+    <color name="swiperefresh_color3">#668800</color>
+    <color name="swiperefresh_color4">#448800</color>
+    <color name="white_gray">#e7d7d7</color>
+    <color name="linear">#696464</color>
+    <color name="content">#555555</color>
+    <color name="transparent">#00000000</color>
+</resources>

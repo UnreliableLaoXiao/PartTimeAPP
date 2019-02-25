@@ -1,2 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.schoolpartime.login" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.schoolpartime.login"
+    tools:ignore="ExtraText"
+    >
+
+    <application>
+        <activity android:name=".view_one.LoginActivity" />
+        <activity android:name=".view_one.ForgetPswActivity" />
+        <activity android:name=".view_one.RegisterActivity" />
+    </application>
+</manifest>

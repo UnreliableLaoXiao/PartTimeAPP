@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/login_bt_type_enabled_1" android:state_enabled="true"/>
+    <item android:drawable="@drawable/login_bt_type_enabled_0" android:state_enabled="false"/>
+    <item android:drawable="@drawable/login_bt_type_pressed_1" android:state_pressed="true"/>
+    <item android:drawable="@drawable/login_bt_type_pressed_0" android:state_pressed="false"/>
+</selector>

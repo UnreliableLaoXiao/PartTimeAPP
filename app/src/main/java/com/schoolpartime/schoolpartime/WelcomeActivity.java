@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.updateapp.util.FileUtil;
+import com.schoolpartime.login.view_one.LoginActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.contant.SpStr;
 import com.schoolpartime.schoolpartime.util.SpUtils;
@@ -74,6 +75,8 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
                 handler.sendEmptyMessageDelayed(msg.what - 1, 1000);
             } else if (msg.what == 0 && flag) {
                 flag = false;
+                LoginActivity.inToActivity(WelcomeActivity.this);
+                finish();
 //                MainActivity.inToActivity(WelcomeActivity.this);
             }
         }
@@ -104,6 +107,8 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
         enterButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View v) {
+                        LoginActivity.inToActivity(WelcomeActivity.this);
+                        finish();
 //                        MainActivity.inToActivity(WelcomeActivity.this);
                     }
                 }

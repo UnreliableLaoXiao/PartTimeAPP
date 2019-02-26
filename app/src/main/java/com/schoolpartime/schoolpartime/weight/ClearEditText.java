@@ -1,4 +1,4 @@
-package com.schoolpartime.login.weight;
+package com.schoolpartime.schoolpartime.weight;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -18,8 +18,8 @@ import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 
-import com.schoolpartime.login.R;
-import com.schoolpartime.login.util.Dp2Utils;
+import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.util.Dp2Utils;
 
 
 /**

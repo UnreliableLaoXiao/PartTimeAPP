@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
        />
     
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.schoolpartime.imageloader.weight.HeiCircleImageView
         android:layout_width="60dp"
         android:src="@drawable/people"
         android:layout_height="60dp"
@@ -37,7 +37,7 @@
             android:id="@+id/tl_lg_username"
             android:layout_height="wrap_content">
 
-            <com.schoolpartime.login.weight.ClearEditText
+            <com.schoolpartime.schoolpartime.weight.ClearEditText
                 android:layout_width="match_parent"
                 android:hint="账号"
                 android:inputType="text"
@@ -53,7 +53,7 @@
             android:id="@+id/tl_lg_psw"
             android:layout_height="wrap_content">
 
-            <com.schoolpartime.login.weight.ClearEditText
+            <com.schoolpartime.schoolpartime.weight.ClearEditText
                 android:layout_width="match_parent"
                 android:hint="密码"
                 android:maxLength="10"

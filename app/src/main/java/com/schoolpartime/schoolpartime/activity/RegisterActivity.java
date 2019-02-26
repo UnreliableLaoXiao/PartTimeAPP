@@ -1,12 +1,12 @@
-package com.schoolpartime.login.view_one;
+package com.schoolpartime.schoolpartime.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
-import com.schoolpartime.login.R;
+import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.SuperActivity;
 
 
 /**
@@ -14,7 +14,7 @@ import com.schoolpartime.login.R;
  * 注册账号
  */
 
-public class RegisterActivity extends Activity implements View.OnClickListener {
+public class RegisterActivity extends SuperActivity implements View.OnClickListener {
 
 //    TextView login;
 

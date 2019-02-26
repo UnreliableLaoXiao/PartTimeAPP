@@ -1,4 +1,4 @@
-package com.schoolpartime.login.view_one;
+package com.schoolpartime.schoolpartime.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.schoolpartime.login.R;
-
+import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.SuperActivity;
 
 
 /**
@@ -15,7 +15,7 @@ import com.schoolpartime.login.R;
  * 忘记密码
  */
 
-public class ForgetPswActivity extends Activity implements View.OnClickListener {
+public class ForgetPswActivity extends SuperActivity implements View.OnClickListener {
 
     TextView login;
 

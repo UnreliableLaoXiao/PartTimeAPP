@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.schoolpartime.login.weight.ClearEditText
+            <com.schoolpartime.schoolpartime.weight.ClearEditText
                 android:layout_width="match_parent"
                 android:hint="账号"
                 android:inputType="text"
@@ -42,7 +42,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
 
-            <com.schoolpartime.login.weight.ClearEditText
+            <com.schoolpartime.schoolpartime.weight.ClearEditText
                 android:layout_width="match_parent"
                 android:hint="验证密码"
                 android:maxLength="4"
@@ -57,7 +57,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
 
-            <com.schoolpartime.login.weight.ClearEditText
+            <com.schoolpartime.schoolpartime.weight.ClearEditText
                 android:layout_width="match_parent"
                 android:hint="新密码"
                 android:maxLength="4"

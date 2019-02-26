@@ -1,1 +1,1 @@
-include ':app', ':qrcode', ':login', ':chat', ':updateapp', ':heihttp', ':imageloader', ':heisocket'
+include ':app', ':qrcode', ':chat', ':updateapp', ':heihttp', ':imageloader', ':heisocket'

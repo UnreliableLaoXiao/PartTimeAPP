@@ -33,5 +33,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     implementation project(':updateapp')
     implementation project(':heihttp')
-    implementation project(':login')
+    implementation 'com.android.support:design:27.1.0'
+    implementation project(':heisocket')
+    implementation project(':imageloader')
 }

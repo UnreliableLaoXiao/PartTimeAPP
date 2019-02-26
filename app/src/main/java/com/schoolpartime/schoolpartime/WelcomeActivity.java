@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.updateapp.util.FileUtil;
-import com.schoolpartime.login.view_one.LoginActivity;
+import com.schoolpartime.schoolpartime.activity.LoginActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.contant.SpStr;
 import com.schoolpartime.schoolpartime.util.SpUtils;

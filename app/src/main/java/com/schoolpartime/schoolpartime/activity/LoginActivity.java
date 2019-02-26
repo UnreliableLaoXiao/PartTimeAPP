@@ -1,4 +1,4 @@
-package com.schoolpartime.login.view_one;
+package com.schoolpartime.schoolpartime.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.schoolpartime.login.R;
-import com.schoolpartime.login.weight.ClearEditText;
+import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.weight.ClearEditText;
 
 
 /**
@@ -19,7 +20,7 @@ import com.schoolpartime.login.weight.ClearEditText;
  * 用于兼职的登录界面
  */
 
-public class LoginActivity extends Activity implements TextWatcher, View.OnClickListener {
+public class LoginActivity extends SuperActivity implements TextWatcher, View.OnClickListener {
 
     ClearEditText et_lg_username;
     ClearEditText et_lg_psw;

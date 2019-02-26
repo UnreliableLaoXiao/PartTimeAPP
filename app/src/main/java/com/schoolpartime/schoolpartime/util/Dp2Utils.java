@@ -1,4 +1,4 @@
-package com.schoolpartime.login.util;
+package com.schoolpartime.schoolpartime.util;
 
 import android.content.Context;
 

@@ -1,5 +1,7 @@
 package com.schoolpartime.schoolpartime;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.widget.Toast;
  * 2、提供退出方法
  */
 
+@SuppressLint("Registered")
 public class SuperActivity extends AppCompatActivity {
 
     /**
@@ -67,6 +70,11 @@ public class SuperActivity extends AppCompatActivity {
         } else {
             exit();
         }
+    }
+
+    public void inToActivity(Activity activity){
+        Intent intent = new Intent(activity , this.getClass());
+        activity.startActivity(intent);
     }
 
 }

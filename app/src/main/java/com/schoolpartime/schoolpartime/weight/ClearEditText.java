@@ -203,7 +203,7 @@ public class ClearEditText extends AppCompatEditText {
     /**
      * 开始晃动动画
      */
-    public void startShakeAnimation(){
+    private void startShakeAnimation(){
         if(getAnimation() == null){
             this.setAnimation(shakeAnimation(4));
         }

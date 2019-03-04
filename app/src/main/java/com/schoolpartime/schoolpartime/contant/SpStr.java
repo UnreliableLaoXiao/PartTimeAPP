@@ -7,7 +7,7 @@ package com.schoolpartime.schoolpartime.contant;
 
 public class SpStr {
 
-    public static String ONCE_START = "oncestart";
-    public static String IS_LOGIN = "isLogin";
+
+
 
 }

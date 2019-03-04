@@ -1,12 +1,15 @@
 package com.schoolpartime.schoolpartime.activity;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.view.View;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.databinding.ActivityRegisterBinding;
+import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
+import com.schoolpartime.schoolpartime.listener.TextChangedListener;
+
+import java.util.Objects;
 
 
 /**
@@ -14,33 +17,33 @@ import com.schoolpartime.schoolpartime.SuperActivity;
  * 注册账号
  */
 
-public class RegisterActivity extends SuperActivity implements View.OnClickListener {
+public class RegisterActivity extends SuperActivity {
 
-//    TextView login;
+    private ActivityRegisterBinding binding;
+    TextChangedListener textChangedListener =  new TextChangedListener(){
+        @Override
+        public void afterTextChange() {
+            if(Objects.requireNonNull(binding.username.getText()).toString().length() > 0 && Objects.requireNonNull(binding.psw.getText()).toString().length() >0 &&
+                    Objects.requireNonNull(binding.pswConfirm.getText()).toString().length() > 0 && Objects.requireNonNull(binding.pswVerify.getText()).toString().length() >0){
+                binding.submit.setEnabled(true);
+            }else{
+                binding.submit.setEnabled(false);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_register);
         initView();
     }
 
     private void initView() {
-//        login = findViewById(R.id.tv_fg_login);
-//        login.setOnClickListener(this);
-    }
-
-    public static void inToActivity(Activity activity){
-        Intent intent = new Intent(activity , RegisterActivity.class);
-        activity.startActivity(intent);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.tv_rg_login) {
-            LoginActivity.inToActivity(this);
-            finish();
-        }
+        binding.setHandler(new IntentOnClickListener());
+        binding.username.addTextChangedListener(textChangedListener);
+        binding.psw.addTextChangedListener(textChangedListener);
+        binding.pswConfirm.addTextChangedListener(textChangedListener);
+        binding.pswVerify.addTextChangedListener(textChangedListener);
     }
 }

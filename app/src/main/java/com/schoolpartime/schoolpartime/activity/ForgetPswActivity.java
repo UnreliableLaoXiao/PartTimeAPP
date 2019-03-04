@@ -1,13 +1,15 @@
 package com.schoolpartime.schoolpartime.activity;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.databinding.ActivityForgetBinding;
+import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
+import com.schoolpartime.schoolpartime.listener.TextChangedListener;
+
+import java.util.Objects;
 
 
 /**
@@ -15,34 +17,32 @@ import com.schoolpartime.schoolpartime.SuperActivity;
  * 忘记密码
  */
 
-public class ForgetPswActivity extends SuperActivity implements View.OnClickListener {
+public class ForgetPswActivity extends SuperActivity {
 
-    TextView login;
+    private ActivityForgetBinding binding;
+    TextChangedListener textChangedListener =  new TextChangedListener(){
+        @Override
+        public void afterTextChange() {
+            if(Objects.requireNonNull(binding.username.getText()).toString().length() > 0 && Objects.requireNonNull(binding.pswVerify.getText()).toString().length() >0
+                    && Objects.requireNonNull(binding.pswNew.getText()).toString().length() >0 ){
+                binding.submit.setEnabled(true);
+            }else{
+                binding.submit.setEnabled(false);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forget);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_forget);
         initView();
     }
 
     private void initView() {
-        login = findViewById(R.id.tv_fg_login);
-        login.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.tv_fg_login) {
-            LoginActivity.inToActivity(this);
-            finish();
-
-        }
-    }
-
-    public static void inToActivity(Activity activity){
-        Intent intent = new Intent(activity , ForgetPswActivity.class);
-        activity.startActivity(intent);
+        binding.setHandler(new IntentOnClickListener());
+        binding.username.addTextChangedListener(textChangedListener);
+        binding.pswVerify.addTextChangedListener(textChangedListener);
+        binding.pswNew.addTextChangedListener(textChangedListener);
     }
 }

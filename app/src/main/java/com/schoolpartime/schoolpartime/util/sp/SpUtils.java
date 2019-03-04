@@ -1,5 +1,6 @@
-package com.schoolpartime.schoolpartime.util;
+package com.schoolpartime.schoolpartime.util.sp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,12 +28,13 @@ public class SpUtils {
         return msharedPreferences.getString(key,null);
     }
 
-    public static boolean getSharedPreferencesForBoolean(Activity activity,String key){
+    static boolean getSharedPreferencesForBoolean(Activity activity, String key){
         msharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(activity);
         return msharedPreferences.getBoolean(key,false);
     }
 
+    @SuppressLint("ApplySharedPref")
     public static void setSharedPreferences(Context activity, String key, int value){
         msharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(activity);
@@ -41,6 +43,7 @@ public class SpUtils {
         editor.commit();
     }
 
+    @SuppressLint("ApplySharedPref")
     public static void setSharedPreferences(Context activity, String key, String value){
         msharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(activity);
@@ -49,7 +52,8 @@ public class SpUtils {
         editor.commit();
     }
 
-    public static void setSharedPreferences(Context activity, String key, Boolean value){
+    @SuppressLint("ApplySharedPref")
+    static void setSharedPreferences(Context activity, String key, Boolean value){
         msharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(activity);
         editor = msharedPreferences.edit();

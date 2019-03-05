@@ -96,7 +96,7 @@
             android:layout_alignParentBottom="true"
             android:textSize="16sp"
             android:text="@string/returnlogin"
-            android:onClick="@{handler.onClick}"
+            android:onClick="@{handler::onClick}"
             android:id="@+id/tv_fg_login"
             android:layout_height="wrap_content" />
 

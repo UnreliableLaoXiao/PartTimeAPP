@@ -2,13 +2,19 @@ package com.schoolpartime.schoolpartime;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.schoolpartime.schoolpartime.dialog.DialogUtil;
 
 /**
  * Created by machenike on 2018/10/12.
@@ -29,6 +35,8 @@ public class SuperActivity extends AppCompatActivity {
      * 接收器
      */
     private MyReceiver receiver;
+
+    Dialog dialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,18 @@ public class SuperActivity extends AppCompatActivity {
         }
     }
 
+    public void show(String mes){
+        if( dialog == null ){
+            dialog = DialogUtil.loadingDialog(this,mes);
+        }
+        dialog.show();
+    }
+
+    public void dismiss(){
+        if( dialog!= null)
+            dialog.dismiss();
+    }
+
     public void exit() {
         Intent intent = new Intent();
         intent.setAction(SuperActivity.SYSTEM_EXIT);
@@ -70,6 +90,11 @@ public class SuperActivity extends AppCompatActivity {
         } else {
             exit();
         }
+    }
+
+    public void showResult(RelativeLayout layout, String mes) {
+        Snackbar.make(layout, mes, Snackbar.LENGTH_LONG)
+                .setDuration(Snackbar.LENGTH_LONG).show();
     }
 
     public void inToActivity(Activity activity){

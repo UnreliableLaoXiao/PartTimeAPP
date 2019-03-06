@@ -36,11 +36,21 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':qrcode')
     implementation project(':chat')
-    implementation 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    //implementation 'com.jakewharton:butterknife:8.5.1'
+    //annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     implementation project(':updateapp')
     implementation project(':heihttp')
     implementation 'com.android.support:design:28.0.0'
     implementation project(':heisocket')
     implementation project(':imageloader')
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    //rxjava and rxandroid
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex:rxjava:1.2.1'
+
+
+
 }

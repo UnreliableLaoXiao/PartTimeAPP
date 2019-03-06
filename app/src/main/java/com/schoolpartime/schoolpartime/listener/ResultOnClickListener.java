@@ -1,24 +1,18 @@
 package com.schoolpartime.schoolpartime.listener;
 
-import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 
 import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.entity.User;
+import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+
+import rx.Observable;
+import rx.Subscriber;
 
 
 public class ResultOnClickListener {
 
     private ResultCallback callback;
-
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            callback.success("Hello");
-        }
-    };
 
     public ResultOnClickListener(ResultCallback callback) {
         this.callback = callback;
@@ -28,9 +22,22 @@ public class ResultOnClickListener {
         switch (view.getId()){
             case R.id.submit_login:
             {
-                callback.start();
-                handler.sendEmptyMessageDelayed(1,3000);
+                callback.start().subscribe(new Subscriber<ResultModel<User>>() {
+                            @Override
+                            public void onCompleted() { }
 
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                                callback.failed();
+                            }
+
+                            @Override
+                            public void onNext(ResultModel<User> resultModel) {
+                                User user = resultModel.data;
+                                callback.success(user);
+                            }
+                        });
             }
             break;
         }
@@ -38,7 +45,7 @@ public class ResultOnClickListener {
 
     public interface ResultCallback<T> {
 
-        void start();
+        Observable<ResultModel<T>> start();
 
         void failed();
 

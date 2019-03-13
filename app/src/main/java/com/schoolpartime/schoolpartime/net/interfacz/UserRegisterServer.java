@@ -1,6 +1,5 @@
 package com.schoolpartime.schoolpartime.net.interfacz;
 
-import com.schoolpartime.schoolpartime.entity.User;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 
 import java.util.Map;
@@ -14,7 +13,9 @@ public interface UserRegisterServer {
 
 
     @FormUrlEncoded
-    @POST("/login")
-    Observable<ResultModel<User>> registerUser(@FieldMap Map<String, String> map);
+    @POST("/register")
+    Observable<ResultModel> registerUser(@FieldMap Map<String, String> map);
+
+
 
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#dfede5e5"
+        android:id="@+id/rly"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:background="#FFF5F5F7"
+            android:id="@+id/main_toobar"
+            android:fitsSystemWindows="true"
+            android:layout_height="40dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="40dp"
+            android:id="@+id/fl_show"
+            android:layout_height="match_parent" />
+
+
+        <RadioGroup
+            android:background="#FFF5F5F7"
+            android:id="@+id/main_gp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/main_rb_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/main_radio_type_home"
+                android:gravity="center"
+                android:text="@string/mainpage"
+                android:checked="true"
+                android:textSize="12sp"
+                android:textColor="#1296db" />
+
+            <RadioButton
+                android:id="@+id/main_rb_find"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:drawableTop="@drawable/main_radio_type_find"
+                android:text="@string/search"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/main_rb_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:drawableTop="@drawable/main_radio_type_message"
+                android:text="@string/my"
+                android:textSize="12sp" />
+
+        </RadioGroup>
+    </RelativeLayout>
+</layout>

@@ -1,16 +1,16 @@
 package com.schoolpartime.schoolpartime;
 
 import android.annotation.SuppressLint;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.example.updateapp.util.FileUtil;
-import com.schoolpartime.schoolpartime.activity.LoginActivity;
+import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeBinding;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeOnceBinding;
@@ -35,7 +35,7 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         SpCommonUtils.setIsLogin(this);
-        if (SpCommonUtils.isOnceStart(this)) {
+        if (!SpCommonUtils.getOnceStart(this)) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);
             if(FileUtil.verifyStoragePermissions(this)){
                 initViewsOnce(); //初始化组件
@@ -58,7 +58,7 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
                 handler.sendEmptyMessageDelayed(msg.what - 1, 1000);
             } else if (msg.what == 0 && flag) {
                 flag = false;
-                (new LoginActivity()).inToActivity(WelcomeActivity.this);
+                (new MainActivity()).inToActivity(WelcomeActivity.this);
                 finish();
             }
         }
@@ -80,7 +80,7 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
         List<View> list_views = Views.GetWelcomeViews(this, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new LoginActivity()).inToActivity(WelcomeActivity.this);
+                (new MainActivity()).inToActivity(WelcomeActivity.this);
                 flag = false;
                 finish();
             }

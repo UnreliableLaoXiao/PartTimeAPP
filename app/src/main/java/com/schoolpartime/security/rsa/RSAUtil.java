@@ -1,6 +1,7 @@
 package com.schoolpartime.security.rsa;
 
-import java.security.Key;
+import com.schoolpartime.schoolpartime.util.Base64;
+
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -8,15 +9,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.crypto.Cipher;
 
 
@@ -88,7 +83,7 @@ public class RSAUtil {
      * @return 加密后的字节数组 byte[]
      */
     public static byte[] publicEncrytype(byte[] content, PublicKey publicKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         byte[] bytes = cipher.doFinal(content);
         return bytes;
@@ -101,7 +96,7 @@ public class RSAUtil {
      * @return 解密后的字节数组 byte[]
      */
     public static byte[] privateDecrypt(byte[] content, PrivateKey privateKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] bytes = cipher.doFinal(content);
         return bytes;

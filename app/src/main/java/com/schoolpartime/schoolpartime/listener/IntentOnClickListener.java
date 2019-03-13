@@ -7,7 +7,9 @@ import android.view.View;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.activity.ForgetPswActivity;
+import com.schoolpartime.schoolpartime.activity.LoginActivity;
 import com.schoolpartime.schoolpartime.activity.RegisterActivity;
+import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.Objects;
 
@@ -36,6 +38,18 @@ public class IntentOnClickListener {
             case R.id.tv_rg_login:
             {
                 Objects.requireNonNull(getActivityFromView(view)).finish();
+            }
+            break;
+
+            case R.id.go_login:
+            {
+                if (!SpCommonUtils.getIsLogin(getActivityFromView(view))){
+                    (new LoginActivity()).inToActivity(getActivityFromView(view));
+                }else {
+                    /**
+                     * 职位选择
+                     */
+                }
             }
             break;
         }

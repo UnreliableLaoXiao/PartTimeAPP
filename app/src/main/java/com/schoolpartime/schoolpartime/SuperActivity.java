@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.Message;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ import com.schoolpartime.schoolpartime.dialog.DialogUtil;
 @SuppressLint("Registered")
 public class SuperActivity extends AppCompatActivity {
 
+    public static final String TAG = "DEBUG";
+
     /**
      * 广播action
      */
@@ -37,6 +41,15 @@ public class SuperActivity extends AppCompatActivity {
     private MyReceiver receiver;
 
     Dialog dialog = null;
+
+    @SuppressLint("HandlerLeak")
+    public Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+                    finish();
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

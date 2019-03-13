@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="handler"
+            type="com.schoolpartime.schoolpartime.listener.IntentOnClickListener"/>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:addStatesFromChildren="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:focusable="true"
+                android:id="@+id/fg_main_scroll"
+                android:focusableInTouchMode="true"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:orientation="vertical">
+
+                    <com.jude.rollviewpager.RollPagerView
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:id="@+id/rollviewpager"
+                        />
+
+                    <TextView
+                        android:id="@+id/show_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:text="欢 迎 加 入 我 们 !"
+                        android:gravity="center"
+                        android:background="@drawable/index"
+                        android:focusableInTouchMode="true"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:background="#FFFFFF"
+                        android:layout_height="140dp">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:src="@drawable/page1"
+                            android:layout_marginLeft="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="120dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:src="@drawable/page2"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_height="60dp" />
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:src="@drawable/page3"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_height="60dp" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_margin="5dp"
+                            app:cardCornerRadius="4dp"
+                            android:background="#FFFFFF"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="vertical"
+                                android:layout_margin="10dp"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="订阅职位"
+                                    android:textSize="18sp"
+                                    android:gravity="center_vertical"
+                                    android:layout_height="40dp" />
+
+                                <View
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_width="match_parent"
+                                    android:background="#dfede5e5" />
+
+                                <Button
+                                    android:layout_width="110dp"
+                                    android:text="立即登录"
+                                    android:layout_marginTop="3dp"
+                                    android:id="@+id/go_login"
+                                    android:onClick="@{handler::onClick}"
+                                    android:textColor="#ee00aa"
+                                    android:layout_gravity="center"
+                                    android:layout_height="50dp" />
+
+                                <TextView
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_width="wrap_content"
+                                    android:textSize="14sp"
+                                    android:layout_marginTop="3dp"
+                                    android:id="@+id/go_show"
+                                    android:layout_gravity="center"
+                                    android:text="登陆后即可查看订阅的职位"
+                                    android:layout_height="wrap_content" />
+
+
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcy_show"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </RelativeLayout>
+</layout>

@@ -1,15 +1,14 @@
 package com.schoolpartime.security.aes;
 
+import com.schoolpartime.schoolpartime.util.Base64;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;  
 import javax.crypto.spec.SecretKeySpec;
 
 
@@ -21,7 +20,7 @@ public class AESUtil  {
     public static String getStrKeyAES() throws NoSuchAlgorithmException, UnsupportedEncodingException {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         SecureRandom secureRandom = new SecureRandom(String.valueOf(System.currentTimeMillis()).getBytes("utf-8"));
-        keyGen.init(256, secureRandom);   // 这里可以是 128、192、256、越大越安全
+        keyGen.init(128, secureRandom);   // 这里可以是 128、192、256、越大越安全
         SecretKey secretKey = keyGen.generateKey();
         return Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }

@@ -7,15 +7,15 @@ public class User {
 
     private String password;
 
-    private int verify_psw;
+    private int verifypsw;
 
     private int type;
 
-    public User(int id, String username, String password, int verify_psw, int type) {
+    public User(int id, String username, String password, int verifypsw, int type) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.verify_psw = verify_psw;
+        this.verifypsw = verifypsw;
         this.type = type;
     }
 
@@ -43,12 +43,12 @@ public class User {
         this.password = password;
     }
 
-    public int getVerify_psw() {
-        return verify_psw;
+    public int getverifypsw() {
+        return verifypsw;
     }
 
-    public void setVerify_psw(int verify_psw) {
-        this.verify_psw = verify_psw;
+    public void setverifypsw(int verifypsw) {
+        this.verifypsw = verifypsw;
     }
 
     public int getType() {

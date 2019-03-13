@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;

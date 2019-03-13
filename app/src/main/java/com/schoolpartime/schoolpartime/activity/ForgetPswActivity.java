@@ -1,15 +1,13 @@
 package com.schoolpartime.schoolpartime.activity;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityForgetBinding;
 import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
-import com.schoolpartime.schoolpartime.listener.TextChangedListener;
-
-import java.util.Objects;
+import com.schoolpartime.schoolpartime.presenter.ForgetPre;
 
 
 /**
@@ -20,29 +18,14 @@ import java.util.Objects;
 public class ForgetPswActivity extends SuperActivity {
 
     private ActivityForgetBinding binding;
-    TextChangedListener textChangedListener =  new TextChangedListener(){
-        @Override
-        public void afterTextChange() {
-            if(Objects.requireNonNull(binding.username.getText()).toString().length() > 0 && Objects.requireNonNull(binding.pswVerify.getText()).toString().length() >0
-                    && Objects.requireNonNull(binding.pswNew.getText()).toString().length() >0 ){
-                binding.submit.setEnabled(true);
-            }else{
-                binding.submit.setEnabled(false);
-            }
-        }
-    };
+    private ForgetPre pre = new ForgetPre();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_forget);
-        initView();
-    }
-
-    private void initView() {
+        pre.attach(binding,this);
         binding.setHandler(new IntentOnClickListener());
-        binding.username.addTextChangedListener(textChangedListener);
-        binding.pswVerify.addTextChangedListener(textChangedListener);
-        binding.pswNew.addTextChangedListener(textChangedListener);
     }
 }

@@ -34,6 +34,12 @@ public class SpUtils {
         return msharedPreferences.getBoolean(key,false);
     }
 
+    static long getSharedPreferencesForLong(Activity activity, String key){
+        msharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(activity);
+        return msharedPreferences.getLong(key,0l);
+    }
+
     @SuppressLint("ApplySharedPref")
     public static void setSharedPreferences(Context activity, String key, int value){
         msharedPreferences = PreferenceManager
@@ -58,6 +64,15 @@ public class SpUtils {
                 .getDefaultSharedPreferences(activity);
         editor = msharedPreferences.edit();
         editor.putBoolean(key,value);
+        editor.commit();
+    }
+
+    @SuppressLint("ApplySharedPref")
+    static void setSharedPreferences(Context activity, String key, long value){
+        msharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(activity);
+        editor = msharedPreferences.edit();
+        editor.putLong(key,value);
         editor.commit();
     }
 

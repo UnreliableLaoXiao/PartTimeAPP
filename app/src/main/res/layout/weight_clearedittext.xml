@@ -10,7 +10,7 @@
         android:id="@+id/tll"
         android:layout_height="wrap_content">
 
-        <com.schoolpartime.schoolpartime.weight.ClearEditText
+        <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
             android:layout_width="match_parent"
             android:inputType="text"
             android:id="@+id/clt"

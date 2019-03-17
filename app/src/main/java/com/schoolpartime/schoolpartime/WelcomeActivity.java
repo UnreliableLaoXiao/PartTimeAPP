@@ -15,7 +15,7 @@ import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeBinding;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeOnceBinding;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
-import com.schoolpartime.schoolpartime.weight.data.Views;
+import com.schoolpartime.schoolpartime.weiget.data.Views;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        SpCommonUtils.setIsLogin(this);
+        SpCommonUtils.setIsLogin(this,false);
         if (!SpCommonUtils.getOnceStart(this)) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);
             if(FileUtil.verifyStoragePermissions(this)){

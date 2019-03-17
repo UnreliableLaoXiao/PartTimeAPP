@@ -18,4 +18,6 @@
     <string name="search">搜索</string>
     <string name="mainpage">主页</string>
     <string name="why">\?</string>
+    <string name="search_str">请输入兼职关键字</string>
+    <string name="imboss">我是商家</string>
 </resources>

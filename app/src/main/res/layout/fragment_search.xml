@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/index">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="荆州" />
+
+            <LinearLayout
+                android:id="@+id/btn_search"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="70dp"
+                android:background="@drawable/title_search_bg_main"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/toolbar_search" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:text="@string/search_str"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_sp_15" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:background="#FFFFFF"
+            android:layout_height="40dp">
+
+            <com.schoolpartime.schoolpartime.weiget.niceSpinner.NiceSpinner
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/search_city"
+                android:gravity="center" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="35dp"
+                android:background="#dfede5e5"
+                android:layout_gravity="center_vertical" />
+
+            <com.schoolpartime.schoolpartime.weiget.niceSpinner.NiceSpinner
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/search_worktype"
+                android:gravity="center" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="35dp"
+                android:background="#dfede5e5"
+                android:layout_gravity="center_vertical" />
+
+            <com.schoolpartime.schoolpartime.weiget.niceSpinner.NiceSpinner
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/search_more"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="10dp" />
+
+    </LinearLayout>
+</layout>

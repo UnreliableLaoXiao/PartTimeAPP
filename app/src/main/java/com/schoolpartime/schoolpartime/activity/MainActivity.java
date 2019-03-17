@@ -10,15 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
+import com.schoolpartime.schoolpartime.fragment.SearchFragment;
+import com.schoolpartime.schoolpartime.fragment.UserFragment;
 import com.schoolpartime.schoolpartime.presenter.MainPre;
 import com.schoolpartime.schoolpartime.presenter.Presenter;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
@@ -32,25 +32,24 @@ import java.util.ArrayList;
  */
 public class MainActivity extends SuperActivity {
 
-    private ActivityMianBinding binding;
     private Presenter pre = new MainPre();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_mian);
-        SpCommonUtils.setOnceStart(this);
+        ActivityMianBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_mian);
+        SpCommonUtils.setOnceStart(this,true);
         pre.attach(binding,this);
     }
 
     public static ArrayList<Fragment> getFragmentList(){
         ArrayList<Fragment> mFragmentList = new ArrayList<>();
         Fragment mainFragment = new MainFragment();
-//        Fragment searchFragment = new SearchFragment();
-//        Fragment userFragment = new UserFragment();
+        Fragment searchFragment = new SearchFragment();
+        Fragment userFragment = new UserFragment();
         mFragmentList.add(mainFragment);
-//        mFragmentList.add(searchFragment);
-//        mFragmentList.add(userFragment);
+        mFragmentList.add(searchFragment);
+        mFragmentList.add(userFragment);
         return mFragmentList;
     }
 

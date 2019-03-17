@@ -2,17 +2,21 @@ package com.schoolpartime.schoolpartime.presenter;
 
 import androidx.databinding.ViewDataBinding;
 import com.google.android.material.snackbar.Snackbar;
+
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.View;
 
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityRegisterBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.filter.RequestHeaderFilter;
 import com.schoolpartime.schoolpartime.listener.TextChangedListener;
 import com.schoolpartime.schoolpartime.net.interfacz.CheckIsExistServer;
 import com.schoolpartime.schoolpartime.net.interfacz.UserRegisterServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.security.aes.AESUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +34,7 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
         public void afterTextChange() {
             notifyUpdate(getVerifyEditTextLength()?3:4);
             notifyUpdate(confirmPsw()?1:2);
-            notifyUpdate(getEditIsFill()?7:8);
+            binding.submitRegister.setEnabled(getEditIsFill());
         }
     };
 
@@ -80,14 +84,6 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
                 binding.tilUsername.setErrorEnabled(false);
                 binding.tilUsername.setError("");
             }
-            case 7:{
-                binding.submitRegister.setEnabled(true);
-            }
-            break;
-            case 8:{
-                binding.submitRegister.setEnabled(false);
-            }
-            break;
             default:
                 break;
         }
@@ -107,6 +103,7 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
     }
 
 
+    @SuppressLint("WrongConstant")
     private void showResult(String mes) {
         Snackbar.make(binding.rly, mes, Snackbar.LENGTH_LONG)
                 .setDuration(Snackbar.LENGTH_LONG).show();
@@ -115,9 +112,18 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus) {
-            Map<String,String> body = new HashMap<>();
-            body.put("username",Objects.requireNonNull(binding.username.getText()).toString());
-            HttpRequest.request(HttpRequest.builder().create(CheckIsExistServer.class).registerUser(body),
+            String strKeyAES = null;
+            try {
+                strKeyAES = AESUtil.getStrKeyAES();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String body = Objects.requireNonNull(binding.username.getText()).toString();
+            HttpRequest.request(HttpRequest.builder().create(CheckIsExistServer.class)
+                            .registerUser(RequestHeaderFilter.getSecurityBody(body,strKeyAES),
+                                    RequestHeaderFilter.getSignature(body),
+                                    RequestHeaderFilter.getAESKeySecurity(strKeyAES),
+                                    System.currentTimeMillis()+""),
                     new RequestResult() {
                         @Override
                         public void success(ResultModel resultModel) {
@@ -132,7 +138,7 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
                         public void fail(Throwable e) {
                             e.printStackTrace();
                         }
-                    },false);
+                    },true);
 
         }else {
             //return code = 6

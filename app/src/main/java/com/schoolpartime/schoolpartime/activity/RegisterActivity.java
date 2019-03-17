@@ -7,6 +7,7 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityRegisterBinding;
 import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
+import com.schoolpartime.schoolpartime.presenter.Presenter;
 import com.schoolpartime.schoolpartime.presenter.RegisterPre;
 
 /**
@@ -17,7 +18,7 @@ import com.schoolpartime.schoolpartime.presenter.RegisterPre;
 public class RegisterActivity extends SuperActivity {
     private ActivityRegisterBinding binding;
 
-    RegisterPre pre = new RegisterPre();
+    Presenter pre = new RegisterPre();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

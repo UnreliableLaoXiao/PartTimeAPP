@@ -1,4 +1,4 @@
-package com.schoolpartime.schoolpartime.weight;
+package com.schoolpartime.schoolpartime.weiget.clearEditText;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

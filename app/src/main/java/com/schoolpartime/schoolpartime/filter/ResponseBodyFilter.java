@@ -3,7 +3,7 @@ package com.schoolpartime.schoolpartime.filter;
 import com.google.gson.Gson;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.xcode.ResponseParam;
-import com.schoolpartime.schoolpartime.util.Base64;
+import com.schoolpartime.security.base64.Base64;
 import com.schoolpartime.security.aes.AESUtil;
 import com.schoolpartime.security.md5.Md5Util;
 

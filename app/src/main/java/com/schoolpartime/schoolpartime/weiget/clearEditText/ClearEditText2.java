@@ -1,4 +1,4 @@
-package com.schoolpartime.schoolpartime.weight;
+package com.schoolpartime.schoolpartime.weiget.clearEditText;
 
 import android.content.Context;
 import android.content.res.TypedArray;

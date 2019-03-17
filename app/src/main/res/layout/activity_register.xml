@@ -36,7 +36,7 @@
                 android:id="@+id/til_username"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/username"
                     android:inputType="text"
@@ -52,7 +52,7 @@
                 android:id="@+id/til_psw"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/psw"
                     android:maxLength="10"
@@ -68,7 +68,7 @@
                 android:id="@+id/til_psw_confirm"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/confirm_psw"
                     android:maxLength="10"
@@ -84,7 +84,7 @@
                 android:id="@+id/til_verify_psw"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/psw_verify"
                     android:maxLength="4"

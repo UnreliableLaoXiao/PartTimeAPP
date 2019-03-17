@@ -5,17 +5,21 @@ import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 
 import java.util.Map;
 
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import rx.Observable;
 
 public interface CheckIsExistServer {
 
-
     @FormUrlEncoded
     @POST("/checkusernameisexist")
-    Observable<ResultModel<User>> registerUser(@FieldMap Map<String, String> map);
+    Observable<ResultModel<User>> registerUser(@Field(value = "data") String model,
+                                               @Header(value = "Authentication") String signature,
+                                               @Header(value = "SecurityKey") String aesKey,
+                                               @Header(value = "TimesTamp") String token);
 
 
 

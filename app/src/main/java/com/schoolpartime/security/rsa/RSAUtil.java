@@ -1,6 +1,6 @@
 package com.schoolpartime.security.rsa;
 
-import com.schoolpartime.schoolpartime.util.Base64;
+import com.schoolpartime.security.base64.Base64;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;

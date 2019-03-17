@@ -1,6 +1,6 @@
 package com.schoolpartime.security.aes;
 
-import com.schoolpartime.schoolpartime.util.Base64;
+import com.schoolpartime.security.base64.Base64;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;

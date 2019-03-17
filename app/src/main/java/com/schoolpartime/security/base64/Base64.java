@@ -1,4 +1,4 @@
-package com.schoolpartime.schoolpartime.util;
+package com.schoolpartime.security.base64;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

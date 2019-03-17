@@ -1,17 +1,17 @@
 package com.schoolpartime.schoolpartime.entity;
 
 public class User {
-    private int id;
+    private long id;
 
     private String username;
 
     private String password;
 
-    private int verifypsw;
+    private String verifypsw;
 
     private int type;
 
-    public User(int id, String username, String password, int verifypsw, int type) {
+    public User(long id, String username, String password, String verifypsw, int type) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -19,11 +19,11 @@ public class User {
         this.type = type;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -43,11 +43,11 @@ public class User {
         this.password = password;
     }
 
-    public int getverifypsw() {
+    public String getverifypsw() {
         return verifypsw;
     }
 
-    public void setverifypsw(int verifypsw) {
+    public void setverifypsw(String verifypsw) {
         this.verifypsw = verifypsw;
     }
 

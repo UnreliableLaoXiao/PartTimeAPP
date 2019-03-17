@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/username"
                     android:inputType="text"
@@ -53,7 +53,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
 
-            <com.schoolpartime.schoolpartime.weight.ClearEditText
+            <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
             android:layout_width="match_parent"
             android:hint="@string/psw_verify"
             android:maxLength="4"
@@ -68,7 +68,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/new_psw"
                     android:maxLength="4"

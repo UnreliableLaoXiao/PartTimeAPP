@@ -9,22 +9,18 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityLoginBinding;
-import com.schoolpartime.schoolpartime.databinding.ActivityRegisterBinding;
 import com.schoolpartime.schoolpartime.entity.User;
-import com.schoolpartime.schoolpartime.entity.baseModel.RequestModel;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.filter.RequestHeaderFilter;
 import com.schoolpartime.schoolpartime.listener.TextChangedListener;
 import com.schoolpartime.schoolpartime.net.interfacz.UserLoginServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.security.aes.AESUtil;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class LoginPre implements Presenter, View.OnClickListener {
@@ -104,7 +100,15 @@ public class LoginPre implements Presenter, View.OnClickListener {
                         activity.dismiss();
                         if (resultModel.code == 200) {
                             User user = (User) resultModel.data;
-                            showResult(user.getUsername());
+                            SpCommonUtils.setIsLogin(activity,true);
+                            SpCommonUtils.setUserId(activity,user.getId());
+                            if (user.getType() == 0){
+                                showResult("欢迎你："+user.getUsername());
+                                (new PrefectInfoActivity()).inToActivity(activity);
+                            }else {
+                                showResult("欢迎回来："+user.getUsername());
+                            }
+                            activity.finish();
                         } else {
                             showResult(resultModel.message);
                         }
@@ -121,8 +125,7 @@ public class LoginPre implements Presenter, View.OnClickListener {
     }
 
     private String getRequestBody() {
-        User user = new User(0,Objects.requireNonNull(binding.etLgUsername.getText()).toString(),Objects.requireNonNull(binding.etLgPsw.getText()).toString(),0,0);
-        RequestModel<User> model = new RequestModel<>("登录请求",user,"json",200);
-        return new Gson().toJson(model);
+        User user = new User(0,Objects.requireNonNull(binding.etLgUsername.getText()).toString(),Objects.requireNonNull(binding.etLgPsw.getText()).toString(),"1234",0);
+        return new Gson().toJson(user);
     }
 }

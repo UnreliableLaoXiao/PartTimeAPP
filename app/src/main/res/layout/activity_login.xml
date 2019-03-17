@@ -44,7 +44,7 @@
                 android:id="@+id/tl_lg_username"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/username"
                     android:inputType="text"
@@ -60,7 +60,7 @@
                 android:id="@+id/tl_lg_psw"
                 android:layout_height="wrap_content">
 
-                <com.schoolpartime.schoolpartime.weight.ClearEditText
+                <com.schoolpartime.schoolpartime.weiget.clearEditText.ClearEditText
                     android:layout_width="match_parent"
                     android:hint="@string/psw"
                     android:maxLength="10"

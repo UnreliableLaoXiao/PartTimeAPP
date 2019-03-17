@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 28
@@ -25,7 +26,18 @@ android {
         enabled = true
 
     }
+
+    greendao {
+        schemaVersion 2//数据库版本号
+        daoPackage 'com.schoolpartime.dao'//设置DaoMaster、DaoSession、Dao包名
+        targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
+//        targetGenDirTest：设置生成单元测试目录
+//        generateTests：设置自动生成单元测试用例
+    }
+
 }
+
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -51,7 +63,10 @@ dependencies {
     implementation 'io.reactivex:rxjava:1.2.1'
     //轮播广告
     implementation 'com.jude:rollviewpager:1.4.6'
+    //recyclerview
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 
+    implementation 'org.greenrobot:greendao:3.2.2'
 
 
 }

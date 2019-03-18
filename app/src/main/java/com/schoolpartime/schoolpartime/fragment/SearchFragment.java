@@ -9,6 +9,7 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.FragmentSearchBinding;
 import com.schoolpartime.schoolpartime.presenter.FrgSearchPre;
+import com.schoolpartime.schoolpartime.presenter.Presenter;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -20,7 +21,7 @@ import androidx.fragment.app.Fragment;
  */
 
 public class SearchFragment extends Fragment {
-   FrgSearchPre pre = new FrgSearchPre();
+   Presenter pre = new FrgSearchPre();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +30,4 @@ public class SearchFragment extends Fragment {
         pre.attach(binding, (SuperActivity) getActivity());
         return binding.getRoot();
     }
-
-
 }

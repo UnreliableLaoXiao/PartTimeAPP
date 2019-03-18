@@ -15,7 +15,6 @@ import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
-import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
 
@@ -50,6 +49,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         transaction.add(R.id.fl_show, mCurrentFragmen, mFragmentTagList[0]);
         transaction.commitAllowingStateLoss();
         binding.mainGp.setOnCheckedChangeListener(this);
+        binding.netBar.setOnClickListener(this);
     }
 
     @Override
@@ -104,9 +104,21 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
 
     @Override
     public void onClick(View v) {
-        if(index == 0) {
-            ((MainFragment)mCurrentFragmen).scroll_Start();
+        switch (v.getId()){
+            case R.id.main_toobar:
+            {
+                if(index == 0) {
+                    ((MainFragment)mCurrentFragmen).scroll_Start();
+                }
+            }
+            break;
+            case R.id.net_bar:
+            {
+                binding.netBar.setVisibility(View.GONE);
+            }
+            break;
         }
+
     }
 
     @Override

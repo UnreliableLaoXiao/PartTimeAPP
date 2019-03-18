@@ -9,6 +9,7 @@ import com.schoolpartime.schoolpartime.SuperActivity;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.RecyclerAdapter;
 import com.schoolpartime.schoolpartime.databinding.FragmentSearchBinding;
 
@@ -19,6 +20,8 @@ public class FrgSearchPre implements Presenter {
 
     private FragmentSearchBinding binding;
     private SuperActivity activity;
+    private int mscrollY;
+    private boolean isScroll = false;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -55,7 +58,7 @@ public class FrgSearchPre implements Presenter {
         binding.mRecyclerView.setAdapter(new RecyclerAdapter(activity, new RecyclerAdapter.MyOnItemClickListener() {
             @Override
             public void onItemClick(View view) {
-//                DetailsInfoActivity.inToActivity(getActivity());
+                (new DetailsInfoActivity()).inToActivity(activity);
             }
 
             @Override

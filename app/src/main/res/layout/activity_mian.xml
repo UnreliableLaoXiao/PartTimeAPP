@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
     </data>
 
     <RelativeLayout
@@ -18,12 +19,24 @@
             android:fitsSystemWindows="true"
             android:layout_height="40dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="50dp"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/layout_netbar"
+            android:id="@+id/net_bar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="40dp"
             android:id="@+id/fl_show"
             android:layout_height="match_parent" />
+
+        </LinearLayout>
 
 
         <RadioGroup

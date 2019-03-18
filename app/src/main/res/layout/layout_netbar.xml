@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:background="#FFDADA"
+    android:clickable="true"
+    android:visibility="visible" >
+
+    <ImageView
+        android:id="@+id/dd"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/warn" />
+
+    <TextView
+        android:id="@+id/net_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dip"
+        android:text="网络不见了,点击设置"
+        android:textColor="@android:color/black"
+        android:layout_toRightOf="@id/dd"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/enter" />
+
+</RelativeLayout>

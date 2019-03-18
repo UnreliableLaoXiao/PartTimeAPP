@@ -11,6 +11,7 @@ import android.view.View;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.LoopAdapter;
 import com.schoolpartime.schoolpartime.adapter.RecyclerAdapter;
 import com.schoolpartime.schoolpartime.databinding.FragmentMainBinding;
@@ -43,6 +44,7 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
                 /**
                  * 进入兼职详情页面
                  */
+                (new DetailsInfoActivity()).inToActivity(activity);
             }
 
             @Override
@@ -50,6 +52,7 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
                 /**
                  * 长按操作兼职列表
                  */
+
             }
         }));
     }

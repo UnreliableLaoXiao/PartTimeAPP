@@ -5,12 +5,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.util.QRCodeUtil;
 
 /**
  * 常用Dialog集合
@@ -39,6 +42,16 @@ public class DialogUtil {
             public void onClick(DialogInterface dialog, int which) { }
         });
         builder.create().show();
+    }
+
+    public static void showQRCode(Context context,String data) {
+        ImageView imageView = new ImageView(context);
+        Bitmap mBitmap = QRCodeUtil.createQRCodeBitmap(data, 480, 480);
+        imageView.setImageBitmap(mBitmap);
+        AlertDialog builder = new AlertDialog.Builder(context)
+                .setView(imageView)
+                .create();
+        builder.show();
     }
 
 }

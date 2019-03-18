@@ -28,6 +28,7 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.UserInfoActivity" />
         <activity android:name=".activity.PrefectInfoActivity" />
+        <activity android:name=".activity.DetailsInfoActivity" />
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityLoginBinding;
+import com.schoolpartime.schoolpartime.event.NetMessage;
 import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
 import com.schoolpartime.schoolpartime.presenter.LoginPre;
 import com.schoolpartime.schoolpartime.presenter.Presenter;

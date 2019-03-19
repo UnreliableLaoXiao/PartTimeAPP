@@ -55,8 +55,9 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
-            case 0: {
-
+            case 0:
+            case 1:{
+                binding.netBar.setVisibility(code);
             }
             break;
         }
@@ -114,7 +115,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
             break;
             case R.id.net_bar:
             {
-                binding.netBar.setVisibility(View.GONE);
+//
             }
             break;
         }

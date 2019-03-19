@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
+import com.schoolpartime.schoolpartime.activity.MyCollectionActivity;
 import com.schoolpartime.schoolpartime.activity.SettingActivity;
 import com.schoolpartime.schoolpartime.activity.UserInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.MySelfListAdapter;
@@ -60,37 +61,24 @@ public class FrgUserPre implements Presenter, View.OnClickListener {
                              (new UserInfoActivity()).inToActivity(activity);
                         }
                         break;
+                         case 1:{
+
+                         }
+                         break;
+                         case 2:{
+                             (new MyCollectionActivity()).inToActivity(activity);
+                         }
+                         break;
+                         case 3:{
+
+                         }
+                         break;
                          case 4:{
                              (new SettingActivity()).inToActivity(activity);
                          }
                          break;
                      }
                  }
-
-//                if(isLogin || position == 3) {
-//                    switch (position){
-//                        case 0:{
-//                            SelfInfoActivity.inToActivity(getActivity());
-//                        }
-//                        break;
-//                        case 1:{
-//                            MyMessagesActivity.inToActivity(getActivity());
-//                        }
-//                        break;
-//                        case 2:{
-//                            MyCollectionActivity.inToActivity(getActivity());
-//                        }
-//                        break;
-//                        case 3:{
-//                            SendRecordActivity.inToActivity(getActivity());
-//                        }
-//                        break;
-
-//                    }
-//                }else{
-//                    LoginActivity.inToActivityForResult(getActivity());
-//                }
-
             }
         });
 

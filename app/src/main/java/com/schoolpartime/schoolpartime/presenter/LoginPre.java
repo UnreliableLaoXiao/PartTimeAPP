@@ -4,10 +4,10 @@ import androidx.databinding.ViewDataBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
+import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityLoginBinding;
@@ -18,15 +18,13 @@ import com.schoolpartime.schoolpartime.listener.TextChangedListener;
 import com.schoolpartime.schoolpartime.net.interfacz.UserLoginServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.security.aes.AESUtil;
 
 import java.util.Objects;
 
 public class LoginPre implements Presenter, View.OnClickListener {
-
-    private String TAG = "LoginPre";
-
     private ActivityLoginBinding binding;
     private SuperActivity activity;
 
@@ -47,12 +45,20 @@ public class LoginPre implements Presenter, View.OnClickListener {
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
+            case 0:{
+                showResult(activity.getResources().getString(R.string.net_disconnect));
+            }
+            break;
             case 1:{
-                binding.submitLogin.setEnabled(true);
+//                网络连接成功
             }
             break;
             case 2:{
                 binding.submitLogin.setEnabled(false);
+            }
+            break;
+            case 3:{
+                binding.submitLogin.setEnabled(true);
             }
             default:
                 break;
@@ -62,7 +68,7 @@ public class LoginPre implements Presenter, View.OnClickListener {
     private TextChangedListener textChangedListener =  new TextChangedListener(){
         @Override
         public void afterTextChange() {
-            notifyUpdate(getEditIsFill()?1:2);
+            notifyUpdate(getEditIsFill()?3:2);
         }
     };
 
@@ -96,8 +102,8 @@ public class LoginPre implements Presenter, View.OnClickListener {
                 new RequestResult() {
                     @Override
                     public void success(ResultModel resultModel) {
-                        Log.d(TAG, "success: ");
                         activity.dismiss();
+                        LogUtil.d("用户登录----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
                             User user = (User) resultModel.data;
                             SpCommonUtils.setIsLogin(activity,true);
@@ -117,7 +123,6 @@ public class LoginPre implements Presenter, View.OnClickListener {
                     @Override
                     public void fail(Throwable e) {
                         e.printStackTrace();
-                        Log.d(TAG, "failed: ",e);
                         activity.dismiss();
                         showResult("请求失败");
                     }

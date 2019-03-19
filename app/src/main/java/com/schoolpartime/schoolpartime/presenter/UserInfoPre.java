@@ -69,13 +69,9 @@ public class UserInfoPre implements Presenter, View.OnClickListener {
 
         switch (code) {
             case 0:
-            {
-
-            }
-            break;
             case 1:
             {
-
+                binding.netBar.setVisibility(code);
             }
             break;
         }

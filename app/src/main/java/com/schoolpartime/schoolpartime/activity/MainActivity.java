@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
+import com.schoolpartime.schoolpartime.event.NetMessage;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
 import com.schoolpartime.schoolpartime.fragment.SearchFragment;
 import com.schoolpartime.schoolpartime.fragment.UserFragment;

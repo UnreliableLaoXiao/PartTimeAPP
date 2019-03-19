@@ -4,9 +4,9 @@ import androidx.databinding.ViewDataBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.View;
 
+import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityRegisterBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
@@ -16,6 +16,7 @@ import com.schoolpartime.schoolpartime.net.interfacz.CheckIsExistServer;
 import com.schoolpartime.schoolpartime.net.interfacz.UserRegisterServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.security.aes.AESUtil;
 
 import java.util.HashMap;
@@ -24,8 +25,6 @@ import java.util.Objects;
 
 public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.OnClickListener {
 
-    private String TAG = "RegisterPre";
-
     private ActivityRegisterBinding binding;
     private SuperActivity activity;
 
@@ -33,7 +32,7 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
         @Override
         public void afterTextChange() {
             notifyUpdate(getVerifyEditTextLength()?3:4);
-            notifyUpdate(confirmPsw()?1:2);
+            notifyUpdate(confirmPsw()?7:2);
             binding.submitRegister.setEnabled(getEditIsFill());
         }
     };
@@ -55,9 +54,12 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
 
     public void notifyUpdate(int code) {
         switch (code) {
+            case 0:{
+                showResult(activity.getResources().getString(R.string.net_disconnect));
+            }
+            break;
             case 1:{
-                binding.tilPswConfirm.setErrorEnabled(false);
-                binding.tilPswConfirm.setError("");
+//                showResult("当前网络已连接");
             }
             break;
             case 2:{
@@ -84,6 +86,12 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
                 binding.tilUsername.setErrorEnabled(false);
                 binding.tilUsername.setError("");
             }
+            break;
+            case 7:{
+                binding.tilPswConfirm.setErrorEnabled(false);
+                binding.tilPswConfirm.setError("");
+            }
+            break;
             default:
                 break;
         }
@@ -127,16 +135,15 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
                     new RequestResult() {
                         @Override
                         public void success(ResultModel resultModel) {
+                            LogUtil.d("账号检测----------ResultModel："+resultModel.toString());
                             int code = resultModel.code;
                             if (code == 400) {
-                                //return code = 5
                                 notifyUpdate(5);
                             }
                         }
 
                         @Override
                         public void fail(Throwable e) {
-                            e.printStackTrace();
                         }
                     },true);
 
@@ -156,14 +163,13 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "start: ");
         activity.show("正在注册..");
         HttpRequest.request(HttpRequest.builder().create(UserRegisterServer.class).registerUser(getRequestBody()),
                 new RequestResult() {
                     @Override
                     public void success(ResultModel resultModel) {
-                        Log.d(TAG, "success: ");
                         activity.dismiss();
+                        LogUtil.d("注册账号----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
                             showResult("注册成功!即将返回登录界面");
                             activity.handler.sendEmptyMessageDelayed(1,2000);
@@ -174,7 +180,6 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
 
                     @Override
                     public void fail(Throwable e) {
-                        Log.d(TAG, "failed: ",e);
                         activity.dismiss();
                         showResult("请求失败");
                     }

@@ -2,9 +2,9 @@ package com.schoolpartime.schoolpartime.presenter;
 
 import androidx.databinding.ViewDataBinding;
 import com.google.android.material.snackbar.Snackbar;
-import android.util.Log;
 import android.view.View;
 
+import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityForgetBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
@@ -12,6 +12,7 @@ import com.schoolpartime.schoolpartime.listener.TextChangedListener;
 import com.schoolpartime.schoolpartime.net.interfacz.ForgetPswServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,15 +20,13 @@ import java.util.Objects;
 
 public class ForgetPre implements Presenter, View.OnClickListener {
 
-    private String TAG = "ForgetPre";
-
     private ActivityForgetBinding binding;
     private SuperActivity activity;
 
     private TextChangedListener textChangedListener =  new TextChangedListener(){
         @Override
         public void afterTextChange() {
-            notifyUpdate(getEditIsFill()?1:2);
+            notifyUpdate(getEditIsFill()?3:2);
         }
     };
 
@@ -54,13 +53,22 @@ public class ForgetPre implements Presenter, View.OnClickListener {
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
+            case 0:{
+                showResult(activity.getResources().getString(R.string.net_disconnect));
+            }
+            break;
             case 1:{
-                binding.submit.setEnabled(true);
+//                showResult("当前网络已连接");
             }
             break;
             case 2:{
                 binding.submit.setEnabled(false);
             }
+            break;
+            case 3:{
+                binding.submit.setEnabled(true);
+            }
+            break;
             default:
                 break;
         }
@@ -78,8 +86,8 @@ public class ForgetPre implements Presenter, View.OnClickListener {
                 new RequestResult() {
                     @Override
                     public void success(ResultModel resultModel) {
-                        Log.d(TAG, "success: ");
                         activity.dismiss();
+                        LogUtil.d("忘记密码----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
                             showResult("修改成功!即将返回登录界面");
                             activity.handler.sendEmptyMessageDelayed(1,2000);
@@ -91,7 +99,6 @@ public class ForgetPre implements Presenter, View.OnClickListener {
                     @Override
                     public void fail(Throwable e) {
                         e.printStackTrace();
-                        Log.d(TAG, "failed: ",e);
                         activity.dismiss();
                         showResult("请求失败");
                     }

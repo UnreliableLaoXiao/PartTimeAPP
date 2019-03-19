@@ -6,8 +6,10 @@ import android.os.Bundle;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityForgetBinding;
+import com.schoolpartime.schoolpartime.event.NetMessage;
 import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
 import com.schoolpartime.schoolpartime.presenter.ForgetPre;
+import com.schoolpartime.schoolpartime.presenter.Presenter;
 
 
 /**
@@ -18,7 +20,7 @@ import com.schoolpartime.schoolpartime.presenter.ForgetPre;
 public class ForgetPswActivity extends SuperActivity {
 
     private ActivityForgetBinding binding;
-    private ForgetPre pre = new ForgetPre();
+    private Presenter pre = new ForgetPre();
 
 
     @Override

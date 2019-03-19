@@ -17,8 +17,6 @@ public class ResponseBodyFilter {
 
 
     public static ResultModel filter(Response response) throws Exception {
-
-
         ResponseParam param = ResponseParam.analysis(response);
         SecretKey secretKey1 = AESUtil.strKey2SecretKey(param.getAesKey());
         String mbody = new String(AESUtil.decryptAES(Base64.getDecoder().decode(param.getBody()), secretKey1), "utf-8");

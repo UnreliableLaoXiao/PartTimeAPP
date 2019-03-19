@@ -13,6 +13,16 @@ public class ResultModel<T> {
         this.code = code;
     }
 
+    @Override
+    public String toString() {
+        return "ResultModel{" +
+                "message='" + message + '\'' +
+                ", data=" + data +
+                ", type='" + type + '\'' +
+                ", code=" + code +
+                '}';
+    }
+
     public ResultModel() {
     }
 }

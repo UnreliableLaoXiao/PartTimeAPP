@@ -30,6 +30,13 @@ public class DetailsInfoPre implements Presenter, View.OnClickListener {
     @Override
     public void notifyUpdate(int code) {
 
+        switch (code) {
+            case 0:
+            case 1:{
+                binding.netBar.setVisibility(code);
+            }
+            break;
+        }
     }
 
     @Override

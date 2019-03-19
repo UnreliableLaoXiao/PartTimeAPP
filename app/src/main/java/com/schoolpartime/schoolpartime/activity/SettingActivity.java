@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivitySettingBinding;
+import com.schoolpartime.schoolpartime.event.NetMessage;
 import com.schoolpartime.schoolpartime.presenter.Presenter;
 import com.schoolpartime.schoolpartime.presenter.SettingPre;
 
@@ -25,6 +26,6 @@ public class SettingActivity extends SuperActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        pre.notifyUpdate(0);
+        pre.notifyUpdate(3);
     }
 }

@@ -5,7 +5,7 @@ import android.util.Log;
 public class LogUtil {
 
     private static boolean mswitch = true;
-    private static String TAG = "HeiBug";
+    private static String TAG = "DeBug";
 
     public static void i(String mes){
         if(mswitch)
@@ -20,6 +20,11 @@ public class LogUtil {
     public static void d(String mes){
         if(mswitch)
             Log.d(TAG,mes);
+    }
+
+    public static void d(String mes,Throwable e){
+        if(mswitch)
+            Log.d(TAG,mes,e);
     }
 
     public static void e(String mes){

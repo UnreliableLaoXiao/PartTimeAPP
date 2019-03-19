@@ -13,6 +13,7 @@ import com.schoolpartime.schoolpartime.activity.LoginActivity;
 import com.schoolpartime.schoolpartime.adapter.MySelfListAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivitySettingBinding;
 import com.schoolpartime.schoolpartime.entity.DataModel;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class SettingPre implements Presenter, View.OnClickListener {
 
     private void init() {
         isLogin = SpCommonUtils.getIsLogin(activity);
+        notifyUpdate(2);
         List<DataModel> list = new ArrayList<>();
         DataModel about = new DataModel("关于我们",R.drawable.about);
         DataModel checkupdate = new DataModel("检查更新",R.drawable.checkupdate);
@@ -66,8 +68,17 @@ public class SettingPre implements Presenter, View.OnClickListener {
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
-            case 0:{
+            case 0:
+            case 1:{
+                binding.netBar.setVisibility(code);
+            }
+            break;
+            case 2:{
                 binding.userChange.setText(isLogin?"退出登录":"登录");
+            }
+            break;
+            case 3:{
+
             }
             break;
         }
@@ -84,9 +95,9 @@ public class SettingPre implements Presenter, View.OnClickListener {
                 if (!isLogin){
                     (new LoginActivity()).inToActivity(activity);
                 }else{
-                    Log.d("登录测试", "退出成功");
+                    LogUtil.d("登录测试-->退出成功");
                     showResult("退出登陆成功");
-                    notifyUpdate(0);
+                    notifyUpdate(2);
                     isLogin = false;
                     SpCommonUtils.setIsLogin(activity,isLogin);
                 }

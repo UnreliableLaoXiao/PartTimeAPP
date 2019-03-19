@@ -41,6 +41,12 @@
 
         </RelativeLayout>
 
+        <include layout="@layout/layout_netbar"
+            android:id="@+id/net_bar"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/netbar_height" />
+
         <androidx.cardview.widget.CardView android:layout_width="match_parent"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             app:cardCornerRadius="4dp"

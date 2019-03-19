@@ -1,8 +1,6 @@
 package com.schoolpartime.schoolpartime.presenter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -14,14 +12,13 @@ import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
-import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityPrefectinfoBinding;
-import com.schoolpartime.schoolpartime.entity.User;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.listener.TextChangedListener;
 import com.schoolpartime.schoolpartime.net.interfacz.PrefectInfoServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
@@ -30,9 +27,6 @@ import java.util.List;
 import androidx.databinding.ViewDataBinding;
 
 public class PrefectInfoPre implements Presenter, View.OnClickListener {
-
-    private static String TAG = "PrefectInfoPre";
-
     ActivityPrefectinfoBinding binding;
     SuperActivity activity;
     UserInfo info = new UserInfo();
@@ -104,7 +98,15 @@ public class PrefectInfoPre implements Presenter, View.OnClickListener {
     @Override
     public void notifyUpdate(int code) {
         switch (code){
+            case 0:{
+                showResult(activity.getResources().getString(R.string.net_disconnect));
+            }
+            break;
             case 1:{
+//                showResult("当前网络已连接");
+            }
+            break;
+            case 2:{
                 back();
             }
             break;
@@ -148,14 +150,12 @@ public class PrefectInfoPre implements Presenter, View.OnClickListener {
                 new RequestResult() {
                     @Override
                     public void success(ResultModel resultModel) {
-                        Log.d(TAG, "success: ");
                         activity.dismiss();
+                        LogUtil.d("完善信息----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
                             UserInfo userInfo = (UserInfo) resultModel.data;
-                            Log.d(TAG, "success: "+userInfo.toString());
                             SchoolPartimeApplication.getmDaoSession().getUserInfoDao().insert(userInfo);
                             List<UserInfo> userInfos = SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll();
-                            Log.d(TAG, "success Size: "+userInfos.size());
                             (new MainActivity()).inToActivity(activity);
                             activity.finish();
                         } else {
@@ -166,7 +166,6 @@ public class PrefectInfoPre implements Presenter, View.OnClickListener {
                     @Override
                     public void fail(Throwable e) {
                         e.printStackTrace();
-                        Log.d(TAG, "failed: ",e);
                         activity.dismiss();
                         showResult("请求失败");
                     }

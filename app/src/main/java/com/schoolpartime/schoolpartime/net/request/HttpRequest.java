@@ -6,6 +6,7 @@ import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.filter.ResponseBodyFilter;
 import com.schoolpartime.schoolpartime.net.request.base.RequestFactory;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import okhttp3.Response;
 import retrofit2.Retrofit;
@@ -45,11 +46,13 @@ public class HttpRequest {
 
                     @Override
                     public void onError(Throwable e) {
+                        LogUtil.d("Request请求失败---------------------------",e);
                         result.fail(e);
                     }
 
                     @Override
                     public void onNext(ResultModel resultModel) {
+                        LogUtil.d("Request请求成功---------------------------" );
                         result.success(resultModel);
                     }
                 });
@@ -77,7 +80,7 @@ public class HttpRequest {
                                 result.success(ResponseBodyFilter.filter(response));
                             } catch (Exception e) {
                                 result.fail(e);
-                                Log.e(TAG, "onNext: 数据转化错误",e );
+                                LogUtil.d("Request数据转化错误",e );
                                 e.printStackTrace();
                             }
                     }

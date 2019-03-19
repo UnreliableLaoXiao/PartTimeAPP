@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 

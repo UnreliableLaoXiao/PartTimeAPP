@@ -8,6 +8,7 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
 import com.schoolpartime.schoolpartime.activity.MyCollectionActivity;
+import com.schoolpartime.schoolpartime.activity.MyMessagesActivity;
 import com.schoolpartime.schoolpartime.activity.SettingActivity;
 import com.schoolpartime.schoolpartime.activity.UserInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.MySelfListAdapter;
@@ -62,7 +63,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener {
                         }
                         break;
                          case 1:{
-
+                             (new MyMessagesActivity()).inToActivity(activity);
                          }
                          break;
                          case 2:{

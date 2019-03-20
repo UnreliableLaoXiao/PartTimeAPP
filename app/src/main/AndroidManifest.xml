@@ -31,6 +31,7 @@
         <activity android:name=".activity.DetailsInfoActivity" />
         <activity android:name=".activity.MyCollectionActivity" />
         <activity android:name=".activity.MyMessagesActivity" />
+        <activity android:name=".activity.SendRecordActivity" />
     </application>
 
 </manifest>

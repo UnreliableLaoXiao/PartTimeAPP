@@ -32,6 +32,9 @@
         <activity android:name=".activity.MyCollectionActivity" />
         <activity android:name=".activity.MyMessagesActivity" />
         <activity android:name=".activity.SendRecordActivity" />
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.CheckUpdateActivity" />
+        <activity android:name=".activity.ProtocolActivity" />
     </application>
 
 </manifest>

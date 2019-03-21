@@ -2,14 +2,17 @@ package com.schoolpartime.schoolpartime.presenter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.activity.AboutActivity;
+import com.schoolpartime.schoolpartime.activity.CheckUpdateActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
+import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
+import com.schoolpartime.schoolpartime.activity.ProtocolActivity;
 import com.schoolpartime.schoolpartime.adapter.MySelfListAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivitySettingBinding;
 import com.schoolpartime.schoolpartime.entity.DataModel;
@@ -50,7 +53,21 @@ public class SettingPre implements Presenter, View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
-
+                    case 0:
+                    {
+                        (new AboutActivity()).inToActivity(activity);
+                    }
+                    break;
+                    case 1:
+                    {
+                        (new CheckUpdateActivity()).inToActivity(activity);
+                    }
+                    break;
+                    case 2:
+                    {
+                        (new ProtocolActivity()).inToActivity(activity);
+                    }
+                    break;
                 }
             }
         });

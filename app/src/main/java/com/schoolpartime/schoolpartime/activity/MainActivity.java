@@ -10,18 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
-import com.schoolpartime.schoolpartime.event.NetMessage;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
 import com.schoolpartime.schoolpartime.fragment.SearchFragment;
 import com.schoolpartime.schoolpartime.fragment.UserFragment;
 import com.schoolpartime.schoolpartime.presenter.MainPre;
 import com.schoolpartime.schoolpartime.presenter.Presenter;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
@@ -41,6 +44,10 @@ public class MainActivity extends SuperActivity {
         ActivityMianBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_mian);
         SpCommonUtils.setOnceStart(this,true);
         pre.attach(binding,this);
+        int badgeCount = 10;//消息数量
+        ShortcutBadger.applyCount(this, badgeCount); //for 1.1.4+这里的方法对于不同的版本，只用一个即可
+
+        LogUtil.d("ShortcutBadger.applyCount");
     }
 
     public static ArrayList<Fragment> getFragmentList(){
@@ -72,6 +79,10 @@ public class MainActivity extends SuperActivity {
                     Scan();
                 }
             }
+            break;
+            case R.id.search:{
+                (new SearchActivity()).inToActivity(this);
+            }
         }
         return true;
     }
@@ -84,7 +95,7 @@ public class MainActivity extends SuperActivity {
     }
 
     private void Scan(){
-//        startActivityForResult(new Intent(this,ScanActivity.class),ScanActivity.REQUEST_CODE);
+        new IntentIntegrator(this).initiateScan();
     }
 
     @Override

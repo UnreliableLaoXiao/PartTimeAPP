@@ -12,7 +12,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="#FFF5F5F7"
+            android:background="@color/likeblue"
             android:layout_height="45dp">
 
             <TextView

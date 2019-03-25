@@ -20,8 +20,6 @@ public class FrgSearchPre implements Presenter {
 
     private FragmentSearchBinding binding;
     private SuperActivity activity;
-    private int mscrollY;
-    private boolean isScroll = false;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {

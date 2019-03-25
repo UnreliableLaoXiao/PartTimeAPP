@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import androidx.viewpager.widget.ViewPager;
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 import android.view.View;
 import android.view.WindowManager;
 
@@ -36,6 +38,7 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         SpCommonUtils.setIsLogin(this,true);
+
         if (!SpCommonUtils.getOnceStart(this)) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);
             if(FileUtil.verifyStoragePermissions(this)){

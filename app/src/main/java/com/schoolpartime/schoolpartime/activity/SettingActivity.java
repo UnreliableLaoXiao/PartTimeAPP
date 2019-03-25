@@ -5,11 +5,11 @@ import android.os.Bundle;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivitySettingBinding;
-import com.schoolpartime.schoolpartime.event.NetMessage;
 import com.schoolpartime.schoolpartime.presenter.Presenter;
 import com.schoolpartime.schoolpartime.presenter.SettingPre;
 
 import androidx.databinding.DataBindingUtil;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 @SuppressLint("Registered")
 public class SettingActivity extends SuperActivity{
@@ -19,6 +19,7 @@ public class SettingActivity extends SuperActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ShortcutBadger.removeCount(this); //for 1.1.4+
         ActivitySettingBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
         pre.attach(binding,this);
     }

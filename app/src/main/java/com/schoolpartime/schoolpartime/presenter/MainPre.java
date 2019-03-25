@@ -6,7 +6,10 @@ import android.graphics.drawable.Drawable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import q.rorbin.badgeview.QBadgeView;
+
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RadioGroup;
 
@@ -36,6 +39,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     }
 
     private void init() {
+
         mFragmentList = MainActivity.getFragmentList();
         setDraws();
         binding.mainToobar.setTitle(mFragmentTagList[0]);
@@ -70,11 +74,13 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         drawable_home.setBounds(0, 0, 60, 60);
         //设置图片在文字的哪个方向
         binding.mainRbHome.setCompoundDrawables(null, drawable_home, null, null);
+
         Drawable drawable_finds = activity.getResources().getDrawable(R.drawable.main_radio_type_find);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
         drawable_finds.setBounds(0, 0, 60, 60);
         //设置图片在文字的哪个方向
         binding.mainRbFind.setCompoundDrawables(null, drawable_finds, null, null);
+
         Drawable drawable_news = activity.getResources().getDrawable(R.drawable.main_radio_type_message);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
         drawable_news.setBounds(0, 0, 60, 60);

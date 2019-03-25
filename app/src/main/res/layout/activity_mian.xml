@@ -14,15 +14,15 @@
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:background="#FFF5F5F7"
+            android:background="@color/likeblue"
             android:id="@+id/main_toobar"
             android:fitsSystemWindows="true"
-            android:layout_height="40dp" />
+            android:layout_height="50dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="50dp"
             android:layout_height="match_parent">
 

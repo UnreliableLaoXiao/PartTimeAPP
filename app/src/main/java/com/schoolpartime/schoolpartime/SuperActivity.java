@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.os.Message;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -105,6 +107,11 @@ public class SuperActivity extends AppCompatActivity {
     }
 
     public void showResult(RelativeLayout layout, String mes) {
+        Snackbar.make(layout, mes, Snackbar.LENGTH_LONG)
+                .setDuration(Snackbar.LENGTH_LONG).show();
+    }
+
+    public void showResult(LinearLayout layout, String mes) {
         Snackbar.make(layout, mes, Snackbar.LENGTH_LONG)
                 .setDuration(Snackbar.LENGTH_LONG).show();
     }

@@ -180,9 +180,10 @@ public class RegisterPre implements View.OnFocusChangeListener,Presenter, View.O
 
                     @Override
                     public void fail(Throwable e) {
+                        LogUtil.d("注册账号---------注册失败-----请求失败");
                         activity.dismiss();
                         showResult("请求失败");
                     }
-                },false);
+                },true);
     }
 }

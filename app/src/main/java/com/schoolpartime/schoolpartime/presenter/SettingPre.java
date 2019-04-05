@@ -11,7 +11,6 @@ import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.AboutActivity;
 import com.schoolpartime.schoolpartime.activity.CheckUpdateActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
-import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
 import com.schoolpartime.schoolpartime.activity.ProtocolActivity;
 import com.schoolpartime.schoolpartime.adapter.MySelfListAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivitySettingBinding;
@@ -39,7 +38,7 @@ public class SettingPre implements Presenter, View.OnClickListener {
     }
 
     private void init() {
-        isLogin = SpCommonUtils.getIsLogin(activity);
+        isLogin = SpCommonUtils.getIsLogin();
         notifyUpdate(2);
         List<DataModel> list = new ArrayList<>();
         DataModel about = new DataModel("关于我们",R.drawable.about);
@@ -114,9 +113,9 @@ public class SettingPre implements Presenter, View.OnClickListener {
                 }else{
                     LogUtil.d("登录测试-->退出成功");
                     showResult("退出登陆成功");
-                    notifyUpdate(2);
                     isLogin = false;
-                    SpCommonUtils.setIsLogin(activity,isLogin);
+                    notifyUpdate(2);
+                    SpCommonUtils.setIsLogin(isLogin);
                 }
 
             }

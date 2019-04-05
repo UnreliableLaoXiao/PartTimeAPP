@@ -6,6 +6,7 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityMymessagesBinding;
 import com.schoolpartime.schoolpartime.presenter.MessagePre;
+import com.schoolpartime.schoolpartime.presenter.Presenter;
 
 import androidx.databinding.DataBindingUtil;
 
@@ -13,7 +14,7 @@ import androidx.databinding.DataBindingUtil;
 @SuppressLint("Registered")
 public class MyMessagesActivity extends SuperActivity {
 
-    MessagePre pre = new MessagePre();
+    Presenter pre = new MessagePre();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

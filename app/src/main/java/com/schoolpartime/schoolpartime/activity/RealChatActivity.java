@@ -5,21 +5,20 @@ import android.os.Bundle;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
-import com.schoolpartime.schoolpartime.databinding.ActivityAboutBinding;
-import com.schoolpartime.schoolpartime.presenter.AboutPre;
+import com.schoolpartime.schoolpartime.databinding.ActivityRealchatBinding;
 import com.schoolpartime.schoolpartime.presenter.Presenter;
+import com.schoolpartime.schoolpartime.presenter.RealChatPre;
+
 import androidx.databinding.DataBindingUtil;
 
 @SuppressLint("Registered")
-public class AboutActivity extends SuperActivity {
+public class RealChatActivity extends SuperActivity {
 
+    private Presenter pre = new RealChatPre();
 
-    Presenter pre = new AboutPre();
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityAboutBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_about);
+        ActivityRealchatBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_realchat);
         pre.attach(binding,this);
     }
 }

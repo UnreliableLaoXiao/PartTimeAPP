@@ -1,10 +1,10 @@
 package com.schoolpartime.schoolpartime.util.sp;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 
 /**
  * Created by Auser on 2018/4/14.
@@ -16,61 +16,61 @@ public class SpUtils {
     private static SharedPreferences msharedPreferences;
     private static SharedPreferences.Editor editor;
 
-    public static int getSharedPreferencesForInt(Activity activity,String key){
+    public static int getSharedPreferencesForInt(String key){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         return msharedPreferences.getInt(key,-1);
     }
 
-    public static String getSharedPreferencesForString(Activity activity,String key){
+    public static String getSharedPreferencesForString(String key){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         return msharedPreferences.getString(key,null);
     }
 
-    static boolean getSharedPreferencesForBoolean(Activity activity, String key){
+    static boolean getSharedPreferencesForBoolean(String key){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         return msharedPreferences.getBoolean(key,false);
     }
 
-    static long getSharedPreferencesForLong(Activity activity, String key){
+    static long getSharedPreferencesForLong(String key){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         return msharedPreferences.getLong(key,0l);
     }
 
     @SuppressLint("ApplySharedPref")
-    public static void setSharedPreferences(Context activity, String key, int value){
+    public static void setSharedPreferences(String key, int value){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         editor = msharedPreferences.edit();
         editor.putInt(key,value);
         editor.commit();
     }
 
     @SuppressLint("ApplySharedPref")
-    public static void setSharedPreferences(Context activity, String key, String value){
+    public static void setSharedPreferences(String key, String value){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         editor = msharedPreferences.edit();
         editor.putString(key,value);
         editor.commit();
     }
 
     @SuppressLint("ApplySharedPref")
-    static void setSharedPreferences(Context activity, String key, Boolean value){
+    static void setSharedPreferences(String key, Boolean value){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         editor = msharedPreferences.edit();
         editor.putBoolean(key,value);
         editor.commit();
     }
 
     @SuppressLint("ApplySharedPref")
-    static void setSharedPreferences(Context activity, String key, long value){
+    static void setSharedPreferences(String key, long value){
         msharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(activity);
+                .getDefaultSharedPreferences(SchoolPartimeApplication.getContext());
         editor = msharedPreferences.edit();
         editor.putLong(key,value);
         editor.commit();

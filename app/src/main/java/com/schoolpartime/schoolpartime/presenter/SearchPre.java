@@ -27,7 +27,7 @@ public class SearchPre implements Presenter, View.OnClickListener {
 
 
     private void init() {
-        isLogin = SpCommonUtils.getIsLogin(activity);
+        isLogin = SpCommonUtils.getIsLogin();
         binding.city.setText("荆州");
         binding.city.setOnClickListener(this);
         binding.cancle.setOnClickListener(this);

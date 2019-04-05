@@ -39,7 +39,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener {
     }
 
     private void init() {
-        isLogin = SpCommonUtils.getIsLogin(activity);
+        isLogin = SpCommonUtils.getIsLogin();
         List<DataModel> list = new ArrayList<>();
         DataModel user_selfinfo = new DataModel("个人信息",R.drawable.myinfo);
         DataModel user_mymessage = new DataModel("我的消息",R.drawable.message_1);
@@ -93,7 +93,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener {
         switch (code) {
             case 0:
             {
-                isLogin = SpCommonUtils.getIsLogin(activity);
+                isLogin = SpCommonUtils.getIsLogin();
                 ChangeWeigetEnable(isLogin);
             }
             break;

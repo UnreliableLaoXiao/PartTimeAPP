@@ -10,14 +10,15 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.schoolpartime.schoolpartime.dialog.DialogUtil;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by machenike on 2018/10/12.
@@ -95,6 +96,7 @@ public class SuperActivity extends AppCompatActivity {
         intent.setAction(SuperActivity.SYSTEM_EXIT);
         sendBroadcast(intent);
     }
+
     long exitTime = 0;
     public void BackExit(){
         if ((System.currentTimeMillis() - exitTime) > 2000) {
@@ -118,6 +120,12 @@ public class SuperActivity extends AppCompatActivity {
 
     public void inToActivity(Activity activity){
         Intent intent = new Intent(activity , this.getClass());
+        activity.startActivity(intent);
+    }
+
+    public void inToActivity(Activity activity,String data){
+        Intent intent = new Intent(activity , this.getClass());
+        intent.putExtra("to",data);
         activity.startActivity(intent);
     }
 

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import androidx.viewpager.widget.ViewPager;
-import me.leolin.shortcutbadger.ShortcutBadger;
 
 import android.view.View;
 import android.view.WindowManager;
@@ -16,7 +15,6 @@ import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeBinding;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeOnceBinding;
-import com.schoolpartime.schoolpartime.event.NetMessage;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.schoolpartime.weiget.data.Views;
 
@@ -36,10 +34,13 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        SpCommonUtils.setIsLogin(this,true);
 
-        if (!SpCommonUtils.getOnceStart(this)) {
+
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        SpCommonUtils.setIsLogin(false);
+
+        if (!SpCommonUtils.getOnceStart()) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);
             if(FileUtil.verifyStoragePermissions(this)){
                 initViewsOnce(); //初始化组件

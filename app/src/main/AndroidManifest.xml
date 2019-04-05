@@ -36,6 +36,18 @@
         <activity android:name=".activity.CheckUpdateActivity" />
         <activity android:name=".activity.ProtocolActivity" />
         <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.RealChatActivity" />
+
+        <receiver
+            android:name=".broadcast_receiver.PushBroadCastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.schoolpartime.chat.BROADCAST"/>
+            </intent-filter>
+
+        </receiver>
+        <service android:name=".chat.ChatMessageService" />
     </application>
 
 </manifest>

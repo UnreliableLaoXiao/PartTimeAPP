@@ -4,12 +4,14 @@ import androidx.databinding.ViewDataBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.View;
 
 import com.google.gson.Gson;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
+import com.schoolpartime.schoolpartime.chat.ChatMessageService;
 import com.schoolpartime.schoolpartime.databinding.ActivityLoginBinding;
 import com.schoolpartime.schoolpartime.entity.User;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
@@ -106,12 +108,16 @@ public class LoginPre implements Presenter, View.OnClickListener {
                         LogUtil.d("用户登录----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
                             User user = (User) resultModel.data;
-                            SpCommonUtils.setIsLogin(activity,true);
-                            SpCommonUtils.setUserId(activity,user.getId());
+                            SpCommonUtils.setUserId(user.getId());
                             if (user.getType() == 0){
                                 showResult("欢迎你："+user.getUsername());
                                 (new PrefectInfoActivity()).inToActivity(activity);
                             }else {
+                                SpCommonUtils.setIsLogin(true);
+                                Intent intent = new Intent();
+                                intent.setClass(activity, ChatMessageService.class);
+                                activity.startService(intent);
+                                LogUtil.d("开启聊天服务");
                                 showResult("欢迎回来："+user.getUsername());
                             }
                             activity.finish();

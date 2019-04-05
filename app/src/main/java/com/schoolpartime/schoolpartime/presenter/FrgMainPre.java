@@ -61,7 +61,7 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
     public void notifyUpdate(int code) {
         switch (code) {
             case 0:{
-                if (SpCommonUtils.getIsLogin(activity)) {
+                if (SpCommonUtils.getIsLogin()) {
                     binding.goLogin.setText("我订阅的职位");
                 } else {
                     binding.goLogin.setText("立即登录");

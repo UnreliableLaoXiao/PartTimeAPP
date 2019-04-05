@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent" android:descendantFocusability= "beforeDescendants"
+android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/item_tv"
+            android:text="adasdsadsa"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            />
+
+        <CheckBox
+            android:id="@+id/cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:focusable="false"
+            android:enabled="false"
+            android:clickable="false"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:focusableInTouchMode="false"
+            />
+
+</RelativeLayout>

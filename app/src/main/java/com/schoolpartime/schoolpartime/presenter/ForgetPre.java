@@ -102,7 +102,7 @@ public class ForgetPre implements Presenter, View.OnClickListener {
                         activity.dismiss();
                         showResult("请求失败");
                     }
-                },false);
+                },true);
     }
 
     private Map<String,String> getRequestBody() {

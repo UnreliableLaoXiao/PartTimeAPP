@@ -8,21 +8,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.schoolpartime.schoolpartime.R;
-import com.schoolpartime.schoolpartime.entity.ChatMessage;
+import com.schoolpartime.schoolpartime.entity.ChatRecord;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import java.util.List;
 
-/**
- * Created by Auser on 2018/3/13.
- * 这个适配器用于个人中心（用户信息界面）的功能列表展示
- */
-
 public class MessageListAdapter extends BaseAdapter {
 
-    private List<ChatMessage> mess;
+    private List<ChatRecord> mess;
     private Context context;
 
-    public MessageListAdapter(Context context,List<ChatMessage> mess) {
+    public MessageListAdapter(Context context,List<ChatRecord> mess) {
         this.context = context;
         this.mess = mess;
     }
@@ -59,10 +55,11 @@ public class MessageListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        holder.mes_image.setImageDrawable(context.getDrawable(mess.get(position).getImg()));
+//        holder.mes_image.setImageDrawable(context.getResources().getDrawable(R.drawable.people));
         holder.mes_content.setText(mess.get(position).getMes());
         holder.mes_name.setText(mess.get(position).getName());
-        holder.mes_date.setText(mess.get(position).getDete());
+        LogUtil.d("date:" + mess.get(position).getDate());
+        holder.mes_date.setText(mess.get(position).getDate());
         return convertView;
     }
 

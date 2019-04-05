@@ -138,7 +138,7 @@ public class PrefectInfoPre implements Presenter, View.OnClickListener {
 
 
     private void back() {
-        SpCommonUtils.setIsLogin(activity,false);
+        SpCommonUtils.setIsLogin(false);
         (new LoginActivity()).inToActivity(activity);
         activity.finish();
     }
@@ -173,7 +173,7 @@ public class PrefectInfoPre implements Presenter, View.OnClickListener {
     }
 
     private String getData() {
-        info.setId(SpCommonUtils.getUserId(activity));
+        info.setId(SpCommonUtils.getUserId());
         info.setUsername(binding.userName.getText().toString());
         info.setAddress(binding.userAddress.getText().toString());
         info.setPhonenumber(binding.userPhone.getText().toString());

@@ -43,7 +43,7 @@ public class IntentOnClickListener {
 
             case R.id.go_login:
             {
-                if (!SpCommonUtils.getIsLogin(getActivityFromView(view))){
+                if (!SpCommonUtils.getIsLogin()){
                     (new LoginActivity()).inToActivity(getActivityFromView(view));
                 }else {
                     /**

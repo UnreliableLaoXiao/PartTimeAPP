@@ -1,6 +1,7 @@
 package com.schoolpartime.schoolpartime;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.schoolpartime.dao.DaoMaster;
@@ -12,9 +13,12 @@ public class SchoolPartimeApplication extends Application {
 
     private static DaoSession mDaoSession;
 
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
         initGreenDao();
     }
 
@@ -29,5 +33,8 @@ public class SchoolPartimeApplication extends Application {
         return mDaoSession;
     }
 
+    public static Context getContext() {
+        return context;
+    }
 
 }

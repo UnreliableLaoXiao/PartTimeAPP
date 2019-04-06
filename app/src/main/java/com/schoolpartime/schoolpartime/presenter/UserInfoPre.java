@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityUserinfoBinding;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,7 @@ public class UserInfoPre implements Presenter, View.OnClickListener {
     Activity activity;
     ActivityUserinfoBinding binding;
     boolean isChange = false;
+    private UserInfo userInfo;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -26,11 +30,16 @@ public class UserInfoPre implements Presenter, View.OnClickListener {
     }
 
     private void init() {
+        userInfo = SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().get(0);
+        LogUtil.d("用户信息显示：userinfo :" + userInfo.toString());
         ArrayList<Integer> arr_age = new ArrayList();
         for (int i = 16; i < 60; i++) {
             arr_age.add(i);
         }
         binding.userAge.attachDataSource(arr_age);
+        int age = userInfo.getUserage() - 16;
+        binding.userAge.setSelectedIndex(age);
+
         binding.userAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -48,6 +57,11 @@ public class UserInfoPre implements Presenter, View.OnClickListener {
         arr_sex.add("女");
 
         binding.userSex.attachDataSource(arr_sex);
+        if ("男".equals(userInfo.getUsersex())) {
+            binding.userSex.setSelectedIndex(0);
+        }else {
+            binding.userSex.setSelectedIndex(1);
+        }
         binding.userSex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -59,6 +73,10 @@ public class UserInfoPre implements Presenter, View.OnClickListener {
 
             }
         });
+
+        binding.userName.setText(userInfo.getUsername());
+        binding.userAddress.setText(userInfo.getAddress());
+        binding.userPhone.setText(userInfo.getPhonenumber());
 
         binding.userBack.setOnClickListener(this);
         binding.userChange.setOnClickListener(this);

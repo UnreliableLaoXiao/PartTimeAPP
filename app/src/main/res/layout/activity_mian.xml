@@ -40,6 +40,8 @@
         </LinearLayout>
 
 
+
+
         <RadioGroup
             android:background="#FFF5F5F7"
             android:id="@+id/main_gp"
@@ -85,5 +87,16 @@
                 android:textSize="12sp" />
 
         </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="10"
+            android:id="@+id/badge"
+            android:background="@drawable/shape_badge"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 </layout>

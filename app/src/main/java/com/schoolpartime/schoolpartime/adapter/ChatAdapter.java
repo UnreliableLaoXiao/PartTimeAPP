@@ -57,7 +57,7 @@ public class ChatAdapter extends BaseAdapter {
 	 * 得到Item的类型，是对方发过来的消息，还是自己发送出去的
 	 */
 	public int isMeSend(int position) {
-		if (lists.get(position).getFrom() != from) {// 收到的消息
+		if (lists.get(position).getMsg_from() != from) {// 收到的消息
 			return IMsgViewType.IMVT_COM_MSG;
 		} else {// 自己发送的消息
 			return IMsgViewType.IMVT_TO_MSG;
@@ -69,7 +69,7 @@ public class ChatAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		HolderView holderView = null;
 		Message entity = lists.get(arg0);
-		boolean isMeSend = entity.getFrom()==from?true:false;
+		boolean isMeSend = entity.getMsg_from()==from?true:false;
 		if (holderView == null) {
 			holderView = new HolderView();
 			if (isMeSend) {
@@ -77,13 +77,13 @@ public class ChatAdapter extends BaseAdapter {
 						null);
 				holderView.tv_chat_me_message = (TextView) arg1
 						.findViewById(R.id.tv_chat_me_message);
-				holderView.tv_chat_me_message.setText(entity.getMes());
+				holderView.tv_chat_me_message.setText(entity.getMsg_mes());
 			} else {
 				arg1 = View.inflate(context, R.layout.chat_dialog_left_item,
 						null);
 				holderView.tv_chat_me_message = (TextView) arg1
 						.findViewById(R.id.tvname);
-				holderView.tv_chat_me_message.setText(entity.getMes());
+				holderView.tv_chat_me_message.setText(entity.getMsg_mes());
 			}
 			arg1.setTag(holderView);
 		} else {

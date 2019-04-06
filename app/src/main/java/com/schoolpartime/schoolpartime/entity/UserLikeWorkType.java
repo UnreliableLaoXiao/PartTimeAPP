@@ -5,51 +5,65 @@ package com.schoolpartime.schoolpartime.entity;
  * 普通用户喜好的兼职类型
  */
 public class UserLikeWorkType {
-    private Integer ulwtId;
-    //用户编号，外键
-    private Integer userId;
-    //兼职类型
-    private Integer wtId;
+    private long userId;
+    //喜欢类型1
+    private int like1;
 
-    public Integer getUlwtId() {
-        return ulwtId;
+    //喜欢类型2
+    private int like2;
+
+    //喜欢类型3
+    private int like3;
+
+    public UserLikeWorkType(long userId, int like1, int like2, int like3) {
+        this.userId = userId;
+        this.like1 = like1;
+        this.like2 = like2;
+        this.like3 = like3;
     }
 
-    public void setUlwtId(Integer ulwtId) {
-        this.ulwtId = ulwtId;
-    }
-
-    public Integer getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public Integer getWtId() {
-        return wtId;
+    public int getLike1() {
+        return like1;
     }
 
-    public void setWtId(Integer wtId) {
-        this.wtId = wtId;
+    public void setLike1(int like1) {
+        this.like1 = like1;
     }
 
-	public UserLikeWorkType(Integer ulwtId, Integer userId, Integer wtId) {
-		super();
-		this.ulwtId = ulwtId;
-		this.userId = userId;
-		this.wtId = wtId;
-	}
+    public int getLike2() {
+        return like2;
+    }
 
-	public UserLikeWorkType() {
-		super();
-	}
+    public void setLike2(int like2) {
+        this.like2 = like2;
+    }
 
-	@Override
-	public String toString() {
-		return "UserLikeWorkType [ulwtId=" + ulwtId + ", userId=" + userId
-				+ ", wtId=" + wtId + "]";
-	}
-    
+    public int getLike3() {
+        return like3;
+    }
+
+    public void setLike3(int like3) {
+        this.like3 = like3;
+    }
+
+    public UserLikeWorkType() {
+    }
+
+    @Override
+    public String toString() {
+        return "UserLikeWorkType{" +
+                "userId=" + userId +
+                ", like1=" + like1 +
+                ", like2=" + like2 +
+                ", like3=" + like3 +
+                '}';
+    }
 }

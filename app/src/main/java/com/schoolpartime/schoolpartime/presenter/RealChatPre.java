@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,24 +14,40 @@ import com.google.gson.Gson;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.adapter.ChatAdapter;
+import com.schoolpartime.schoolpartime.adapter.MessageListAdapter;
 import com.schoolpartime.schoolpartime.chat.ChatMessageService;
 import com.schoolpartime.schoolpartime.chat.MessageBind;
+import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.ActivityRealchatBinding;
+import com.schoolpartime.schoolpartime.entity.ChatRecord;
 import com.schoolpartime.schoolpartime.entity.Message;
+import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.net.interfacz.ChatMessageServer;
+import com.schoolpartime.schoolpartime.net.interfacz.ChatRecordServer;
+import com.schoolpartime.schoolpartime.net.request.HttpRequest;
+import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.LogUtil;
+import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.databinding.ViewDataBinding;
 
-public class RealChatPre implements Presenter, View.OnClickListener {
+public class RealChatPre implements Presenter, View.OnClickListener,WebClient.NotifyMessage {
 
     private SuperActivity activity;
     private ActivityRealchatBinding binding;
     private List<Message> personChats = new ArrayList<>();
     private ChatAdapter chatAdapter;
+    private Gson gson = new Gson();
 
     private MessageBind binder;
+
+    private long from = 0;
+    private long to = 0;
+
+    private WebClient webClient;
 
     private ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -43,10 +60,12 @@ public class RealChatPre implements Presenter, View.OnClickListener {
         }
     };
 
+
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
         this.binding = (ActivityRealchatBinding) binding;
         this.activity = activity;
+        webClient = WebClient.getInstance();
         init();
     }
 
@@ -58,32 +77,45 @@ public class RealChatPre implements Presenter, View.OnClickListener {
 
     private void init() {
 
-        String name = activity.getIntent().getStringExtra("to");
-        binding.chatName.setText(name);
-        /**
-         * 虚拟4条发送方的消息
-         * */
-//        Message message1 = new Message("你好呀", 7, 8, 1);
-//        Message message2 = new Message("我不好！", 8, 7, 1);
-//        Message message3 = new Message("你咋啦？", 7, 8, 1);
-//        Message message4 = new Message("我没事！！！", 8, 7, 1);
-//        Message message5 = new Message("真的？？", 7, 8, 1);
-//        Message message6 = new Message("对", 8, 7, 1);
-//        Message message7 = new Message("好吧，再见", 7, 8, 1);
-//        personChats.add(message1);
-//        personChats.add(message2);
-//        personChats.add(message3);
-//        personChats.add(message4);
-//        personChats.add(message5);
-//        personChats.add(message6);
-//        personChats.add(message7);
-
+        Bundle bundle = activity.getIntent().getExtras();
+        binding.chatName.setText(bundle.getString("name"));
+        from = SpCommonUtils.getUserId();
+        to = bundle.getLong("to");
+        getMessages();
         chatAdapter = new ChatAdapter(activity, personChats);
         binding.lvChatDialog.setAdapter(chatAdapter);
         binding.btnChatMessageSend.setOnClickListener(this);
         Intent intent = new Intent();
         intent.setClass(activity, ChatMessageService.class);
         activity.bindService(intent,connection,activity.BIND_AUTO_CREATE);
+        webClient.addNotity(this);
+        binding.chatBack.setOnClickListener(this);
+    }
+
+    private void getMessages() {
+        HttpRequest.request(HttpRequest.builder().create(ChatMessageServer.class).
+                        getMessages(from,to),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d("请求聊天记录----------ResultModel："+resultModel.toString());
+                        if (resultModel.code == 200) {
+                            personChats.addAll((ArrayList<Message>)resultModel.data);
+                            chatAdapter.notifyDataSetChanged();
+                            notifyUpdate(3);
+                        } else {
+                            showResult(resultModel.message);
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("请求聊天记录列表成功---------",e);
+                        activity.dismiss();
+                        showResult("请求失败");
+                    }
+                },true);
     }
 
     @Override
@@ -93,6 +125,9 @@ public class RealChatPre implements Presenter, View.OnClickListener {
                 binding.lvChatDialog.setSelection(personChats.size());
             }
             break;
+            case 4: {
+                webClient.removeNotity(this);
+            }
         }
 
     }
@@ -107,10 +142,11 @@ public class RealChatPre implements Presenter, View.OnClickListener {
                     return;
                 }
                 Message message = new Message();
-                message.setFrom(7);
-                message.setTo(8);
-                message.setType(1);
-                message.setMes(binding.etChatMessage.getText().toString());
+                message.setMsg_from(from);
+                message.setMsg_to(to);
+                message.setMsg_type(1);
+                message.setMsg_state(0);
+                message.setMsg_mes(binding.etChatMessage.getText().toString());
                 //加入集合
                 personChats.add(message);
                 //清空输入框
@@ -121,6 +157,27 @@ public class RealChatPre implements Presenter, View.OnClickListener {
                 binder.sendMessage(message);
             }
             break;
+            case R.id.chat_back:{
+                activity.finish();
+            }
+            break;
         }
     }
+
+    @Override
+    public void notify(final String mes) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Message message1 = gson.fromJson(mes, Message.class);
+                LogUtil.d("得到消息：" + message1.getMsg_mes());
+                personChats.add(message1);
+                //刷新ListView
+                chatAdapter.notifyDataSetChanged();
+                notifyUpdate(3);
+            }
+        });
+
+    }
+
 }

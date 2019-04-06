@@ -30,6 +30,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener {
     private Activity activity;
     private FragmentUserBinding binding;
     private boolean isLogin;
+    private boolean isBoss = false;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -86,6 +87,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener {
 
 
         binding.tvLogin.setOnClickListener(this);
+        binding.btIntoBoss.setOnClickListener(this);
     }
 
     @Override
@@ -97,18 +99,47 @@ public class FrgUserPre implements Presenter, View.OnClickListener {
                 ChangeWeigetEnable(isLogin);
             }
             break;
+            case 5:
+            {
+
+                if (isBoss) {
+                    binding.boss.setVisibility(View.VISIBLE);
+                } else {
+                    binding.boss.setVisibility(View.GONE);
+                }
+            }
+            break;
+
         }
 
     }
 
     private void ChangeWeigetEnable(boolean flag) {
         binding.tvLogin.setText(flag?"xiaohei":"点击登陆");
-        binding.tvLogin.setEnabled(!flag);
+        binding.tvLogin.setEnabled(flag);
         binding.btIntoBoss.setVisibility(flag?View.VISIBLE:View.GONE);
+        if(isBoss){
+            binding.boss.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
     public void onClick(View v) {
-        (new LoginActivity()).inToActivity(activity);
+        switch (v.getId())
+        {
+            case R.id.tv_login:
+            {
+                (new LoginActivity()).inToActivity(activity);
+            }
+            break;
+            case R.id.bt_into_boss:
+            {
+                isBoss = !isBoss;
+                notifyUpdate(5);
+            }
+            break;
+        }
+
     }
 }

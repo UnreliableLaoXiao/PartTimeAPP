@@ -15,6 +15,7 @@ import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeBinding;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeOnceBinding;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.schoolpartime.weiget.data.Views;
 
@@ -34,12 +35,11 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         SpCommonUtils.setIsLogin(false);
-
+        SpCommonUtils.setUserId(0);
+        SchoolPartimeApplication.getmDaoSession().getUserInfoDao().deleteAll();
+        LogUtil.d("数据初始化--------》成功");
         if (!SpCommonUtils.getOnceStart()) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);
             if(FileUtil.verifyStoragePermissions(this)){

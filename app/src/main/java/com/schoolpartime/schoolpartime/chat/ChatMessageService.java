@@ -14,8 +14,14 @@ public class ChatMessageService extends Service {
     @Override
     public void onCreate() {
         LogUtil.d("初始聊天服务....成功");
-        WebClient.initWebSocket(SchoolPartimeApplication.getContext(),SpCommonUtils.getUserId());
+//        WebClient.initWebSocket(SchoolPartimeApplication.getContext(),SpCommonUtils.getUserId());
         super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        WebClient.initWebSocket(SchoolPartimeApplication.getContext(),SpCommonUtils.getUserId());
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable

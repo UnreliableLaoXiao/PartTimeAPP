@@ -22,4 +22,10 @@ public class MyMessagesActivity extends SuperActivity {
         ActivityMymessagesBinding binding =  DataBindingUtil.setContentView(this,R.layout.activity_mymessages);
         pre.attach(binding,this);
     }
+
+    @Override
+    protected void onDestroy() {
+        pre.notifyUpdate(4);
+        super.onDestroy();
+    }
 }

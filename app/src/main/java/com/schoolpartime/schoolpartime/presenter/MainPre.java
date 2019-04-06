@@ -1,6 +1,8 @@
 package com.schoolpartime.schoolpartime.presenter;
 
 import androidx.databinding.ViewDataBinding;
+
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import androidx.fragment.app.Fragment;
@@ -11,11 +13,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
+import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
+import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
+import com.schoolpartime.schoolpartime.net.request.HttpRequest;
+import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.LogUtil;
+import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
 
@@ -28,6 +39,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     private String[] mFragmentTagList = {"主页", "搜索", "我的"};
     private Fragment mCurrentFragmen = null; // 记录当前显示的Fragment
     private int index = 0;
+    private boolean isFirst = true;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -37,9 +49,9 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     }
 
     private void init() {
-
         mFragmentList = MainActivity.getFragmentList();
         setDraws();
+        binding.badge.setVisibility(View.GONE);
         binding.mainToobar.setTitle(mFragmentTagList[0]);
         activity.setSupportActionBar(binding.mainToobar);
         binding.mainToobar.setOnClickListener(this);
@@ -62,8 +74,54 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                 binding.netBar.setVisibility(code);
             }
             break;
+            case 7:
+            {
+                if (SpCommonUtils.getIsLogin() && isFirst){
+                    getUserInfo();
+                    getChatRecords();
+                    isFirst = false;
+                }
+            }
+            break;
         }
 
+    }
+
+    private void getChatRecords() {
+
+    }
+
+    @SuppressLint("WrongConstant")
+    private void showResult(String mes) {
+        Snackbar.make(binding.rly, mes, Snackbar.LENGTH_LONG)
+                .setDuration(Snackbar.LENGTH_LONG).show();
+    }
+
+
+    private void getUserInfo() {
+        HttpRequest.request(HttpRequest.builder().create(UserInfoServer.class).
+                        getUserInfoServer(SpCommonUtils.getUserId()),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d("得到登录用户信息----------ResultModel："+resultModel.toString());
+                        if (resultModel.code == 200) {
+                            UserInfo userInfo = (UserInfo) resultModel.data;
+                            SchoolPartimeApplication.getmDaoSession().getUserInfoDao().insert(userInfo);
+                            LogUtil.d("数据库加入userinfo信息----------成功："+userInfo.toString());
+                        } else {
+                            showResult(resultModel.message);
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到登录用户信息失败---》请求失败",e);
+                        activity.dismiss();
+                        showResult("请求失败");
+                    }
+                },true);
     }
 
     private void setDraws() {
@@ -161,4 +219,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
             break;
         }
     }
+
+
+
 }

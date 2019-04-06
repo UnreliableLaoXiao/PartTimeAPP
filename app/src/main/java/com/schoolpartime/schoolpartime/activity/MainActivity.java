@@ -108,4 +108,10 @@ public class MainActivity extends SuperActivity {
     public void onBackPressed() {
         BackExit();
     }
+
+    @Override
+    protected void onResume() {
+        pre.notifyUpdate(7);
+        super.onResume();
+    }
 }

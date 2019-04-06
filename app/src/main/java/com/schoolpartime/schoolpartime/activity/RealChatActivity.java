@@ -21,4 +21,10 @@ public class RealChatActivity extends SuperActivity {
         ActivityRealchatBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_realchat);
         pre.attach(binding,this);
     }
+
+    @Override
+    protected void onDestroy() {
+        pre.notifyUpdate(4);
+        super.onDestroy();
+    }
 }

@@ -5,39 +5,39 @@ package com.schoolpartime.schoolpartime.entity;
  * 兼职工作类型
  * */
 public class WorkType {
-    private Integer wtId;
+    private Integer id;
     //兼职类型名称
-    private String wtName;
+    private String name;
 
-    public Integer getWtId() {
-        return wtId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setWtId(Integer wtId) {
-        this.wtId = wtId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getWtName() {
-        return wtName;
+    public String getName() {
+        return name;
     }
 
-    public void setWtName(String wtName) {
-        this.wtName = wtName == null ? null : wtName.trim();
+    public void setName(String name) {
+        this.name = name;
     }
 
-	public WorkType(Integer wtId, String wtName) {
-		super();
-		this.wtId = wtId;
-		this.wtName = wtName;
-	}
+    public WorkType(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-	public WorkType() {
-		super();
-	}
+    public WorkType() {
+    }
 
-	@Override
-	public String toString() {
-		return "WorkType [wtId=" + wtId + ", wtName=" + wtName + "]";
-	}
-    
+    @Override
+    public String toString() {
+        return "WorkType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

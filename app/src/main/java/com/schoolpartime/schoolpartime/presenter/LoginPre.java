@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.view.View;
 
 import com.google.gson.Gson;
+import com.schoolpartime.dao.UserInfoDao;
 import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
 import com.schoolpartime.schoolpartime.chat.ChatMessageService;

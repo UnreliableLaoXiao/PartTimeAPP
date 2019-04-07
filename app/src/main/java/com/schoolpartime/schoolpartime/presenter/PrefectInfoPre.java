@@ -1,6 +1,7 @@
 package com.schoolpartime.schoolpartime.presenter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -18,6 +19,7 @@ import com.schoolpartime.schoolpartime.listener.TextChangedListener;
 import com.schoolpartime.schoolpartime.net.interfacz.PrefectInfoServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.service.ChatMessageService;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
@@ -153,10 +155,12 @@ public class PrefectInfoPre implements Presenter, View.OnClickListener {
                         activity.dismiss();
                         LogUtil.d("完善信息----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
-                            UserInfo userInfo = (UserInfo) resultModel.data;
-                            SchoolPartimeApplication.getmDaoSession().getUserInfoDao().insert(userInfo);
-                            List<UserInfo> userInfos = SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll();
-                            (new MainActivity()).inToActivity(activity);
+                            SpCommonUtils.setUserType(1);
+                            SpCommonUtils.setIsLogin(true);
+                            Intent intent = new Intent();
+                            intent.setClass(activity, ChatMessageService.class);
+                            activity.startService(intent);
+                            LogUtil.d("开启聊天服务");
                             activity.finish();
                         } else {
                             showResult(resultModel.message);

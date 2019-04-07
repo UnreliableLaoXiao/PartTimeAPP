@@ -19,6 +19,9 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
+import com.schoolpartime.schoolpartime.event.LoginStateController;
+import com.schoolpartime.schoolpartime.event.NumberController;
+import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
@@ -30,7 +33,7 @@ import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
 
-public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCheckedChangeListener,WebClient.NotifyMessage,NumberController.NotifyNumber {
 
     private ActivityMianBinding binding;
     private SuperActivity activity;
@@ -40,6 +43,10 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     private Fragment mCurrentFragmen = null; // 记录当前显示的Fragment
     private int index = 0;
     private boolean isFirst = true;
+    private int number= 0 ;
+
+    WebClient webClient;
+    NumberController controller;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -77,17 +84,22 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
             case 7:
             {
                 if (SpCommonUtils.getIsLogin() && isFirst){
+                    webClient = WebClient.getInstance();
+                    controller = NumberController.getInstance();
+                    webClient.addNotity(this);
+                    controller.addNotity(this);
                     getUserInfo();
-                    getChatRecords();
                     isFirst = false;
                 }
             }
             break;
+            case 8:
+            {
+                webClient.removeNotity(this);
+                controller.removeNotity(this);
+            }
+            break;
         }
-
-    }
-
-    private void getChatRecords() {
 
     }
 
@@ -99,25 +111,29 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
 
 
     private void getUserInfo() {
+        activity.show("正在加载,请稍后...");
         HttpRequest.request(HttpRequest.builder().create(UserInfoServer.class).
                         getUserInfoServer(SpCommonUtils.getUserId()),
                 new RequestResult() {
                     @Override
                     public void success(ResultModel resultModel) {
-                        activity.dismiss();
                         LogUtil.d("得到登录用户信息----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
                             UserInfo userInfo = (UserInfo) resultModel.data;
                             SchoolPartimeApplication.getmDaoSession().getUserInfoDao().insert(userInfo);
                             LogUtil.d("数据库加入userinfo信息----------成功："+userInfo.toString());
+                            activity.dismiss();
                         } else {
                             showResult(resultModel.message);
+                            SpCommonUtils.setIsLogin(false);
+                            activity.dismiss();
                         }
                     }
 
                     @Override
                     public void fail(Throwable e) {
                         LogUtil.d("得到登录用户信息失败---》请求失败",e);
+                        SpCommonUtils.setIsLogin(false);
                         activity.dismiss();
                         showResult("请求失败");
                     }
@@ -221,5 +237,18 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     }
 
 
+    @Override
+    public void notify(String mes) {
+
+    }
+
+    @Override
+    public void change(int change) {
+        number +=change;
+        if (number > 0 ){
+            binding.badge.setVisibility(View.VISIBLE);
+            binding.badge.setText(number+"");
+        }
+    }
 
 }

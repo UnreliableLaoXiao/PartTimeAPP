@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             tools:ignore="RelativeOverlap" />
 
-        <com.schoolpartime.imageloader.weight.HeiCircleImageView
+        <com.schoolpartime.schoolpartime.weiget.image.HeiCircleImageView
             android:layout_width="60dp"
             android:src="@drawable/people"
             android:layout_height="60dp"

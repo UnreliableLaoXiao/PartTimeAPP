@@ -4,6 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.schoolpartime.schoolpartime.entity.Message;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import org.java_websocket.client.WebSocketClient;
@@ -19,6 +22,7 @@ public class WebClient extends WebSocketClient{
     public static final String KEY_RECEIVED_DATA = "data";
     private static WebClient mWebClient;
     private Context mContext;
+    private Gson gson = new Gson();
     public static volatile boolean isConnected = false;
     /**
      *  路径为ws+服务器地址+服务器端设置的子路径+参数（这里对应服务器端机器编号为参数）
@@ -43,10 +47,27 @@ public class WebClient extends WebSocketClient{
     @Override
     public void onMessage(String mes) {
         showLog("onMessage->"+mes);
-        for (NotifyMessage notifyMessage:messages){
-            notifyMessage.notify(mes);
+        Message message = gson.fromJson(mes, Message.class);
+        switch (message.getMsg_type()){
+            case 1:
+            {
+                /**
+                 * 此处为聊天message
+                 */
+                for (NotifyMessage notifyMessage:messages){
+                    notifyMessage.notify(mes);
+                }
+                sendMessageBroadcast(mes);
+
+            }
+            break;
+            case 2:
+            {
+
+            }
+            break;
         }
-        sendMessageBroadcast(mes);
+
     }
 
     @Override

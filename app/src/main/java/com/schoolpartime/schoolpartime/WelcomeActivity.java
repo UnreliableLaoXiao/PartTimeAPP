@@ -10,7 +10,6 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.updateapp.util.FileUtil;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeBinding;
@@ -18,6 +17,7 @@ import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeOnceBinding;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.schoolpartime.weiget.data.Views;
+import com.schoolpartime.update.util.FileUtil;
 
 import java.util.List;
 
@@ -38,6 +38,7 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         SpCommonUtils.setIsLogin(false);
         SpCommonUtils.setUserId(0);
+        SpCommonUtils.setUserType(0);
         SchoolPartimeApplication.getmDaoSession().getUserInfoDao().deleteAll();
         LogUtil.d("数据初始化--------》成功");
         if (!SpCommonUtils.getOnceStart()) {

@@ -49,6 +49,7 @@ public class MessagePre implements Presenter, SwipeRefreshLayout.OnRefreshListen
     private void init() {
         getRecord();
         setRefresh();
+        if (webClient != null)
         webClient.addNotity(this);
         binding.mesList.setAdapter(new MessageListAdapter(activity,chatRecords));
         binding.mesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

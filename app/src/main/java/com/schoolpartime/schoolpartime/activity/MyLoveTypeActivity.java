@@ -116,27 +116,27 @@ public class MyLoveTypeActivity extends Activity {
 
     private void init() {
 
-        bar = findViewById(R.id.progress);
-        Button button = findViewById(R.id.mylove_complete);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if(integerList.size() == 0){
-                    Toast.makeText(MyLoveTypeActivity.this, "请选择至少一项！", Toast.LENGTH_SHORT).show();
-                }else if(integerList.size() == 1){
-                    likeWorkType = list_worktype.get(integerList.get(0)).getWtId()+"";
-                    SendMes();
-                }else{
-                    likeWorkType = list_worktype.get(integerList.get(0)).getWtId()+"";
-                    for(int i=1;i<integerList.size();i++){
-                        likeWorkType = likeWorkType + "," + list_worktype.get(integerList.get(i)).getWtId();
-                    }
-                    SendMes();
-                }
-            }
-        });
+//        bar = findViewById(R.id.progress);
+//        Button button = findViewById(R.id.mylove_complete);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//                if(integerList.size() == 0){
+//                    Toast.makeText(MyLoveTypeActivity.this, "请选择至少一项！", Toast.LENGTH_SHORT).show();
+//                }else if(integerList.size() == 1){
+//                    likeWorkType = list_worktype.get(integerList.get(0)).getWtId()+"";
+//                    SendMes();
+//                }else{
+//                    likeWorkType = list_worktype.get(integerList.get(0)).getWtId()+"";
+//                    for(int i=1;i<integerList.size();i++){
+//                        likeWorkType = likeWorkType + "," + list_worktype.get(integerList.get(i)).getWtId();
+//                    }
+//                    SendMes();
+//                }
+//            }
+//        });
     }
 
     public void SendMes(){

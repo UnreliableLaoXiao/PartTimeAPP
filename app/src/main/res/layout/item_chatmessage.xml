@@ -6,14 +6,14 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <com.schoolpartime.imageloader.weight.HeiCircleImageView
+    <com.schoolpartime.schoolpartime.weiget.image.HeiCircleImageView
         android:layout_width="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/people"
         android:layout_marginLeft="20dp"
         android:layout_height="40dp"
-        android:id="@+id/circleImageView" />
+        android:id="@+id/mes_img" />
 
     <LinearLayout
         android:layout_width="match_parent"

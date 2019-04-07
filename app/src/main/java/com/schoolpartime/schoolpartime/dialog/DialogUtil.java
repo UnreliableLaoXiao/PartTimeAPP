@@ -37,10 +37,7 @@ public class DialogUtil {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton("确定",listener);
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) { }
-        });
+        builder.setCancelable(false);
         builder.create().show();
     }
 

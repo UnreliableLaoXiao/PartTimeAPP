@@ -5,6 +5,7 @@ public class SpCommonUtils {
     private static String ONCE_START = "oncestart";
     private static String IS_LOGIN = "isLogin";
     private static String USERID = "userid";
+    private static String USERTYPE = "usertype";
 
     public static boolean getOnceStart(){
         return SpUtils.getSharedPreferencesForBoolean(ONCE_START);
@@ -29,5 +30,9 @@ public class SpCommonUtils {
     public static long getUserId(){
         return SpUtils.getSharedPreferencesForLong(USERID);
     }
+
+    public static int getUserType(){ return SpUtils.getSharedPreferencesForInt(USERTYPE); }
+
+    public static void setUserType(int type){ SpUtils.setSharedPreferences(USERTYPE,type); }
 
 }

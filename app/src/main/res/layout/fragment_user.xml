@@ -62,7 +62,7 @@
            android:layout_alignParentRight="true"
            android:layout_marginTop="20dp"
            android:id="@+id/bt_into_boss"
-           android:visibility="visible"
+           android:visibility="gone"
            android:text="@string/imboss"
            android:background="@drawable/bt_into_boss"
            android:layout_height="30dp" />
@@ -91,6 +91,7 @@
                     android:drawableTop="@drawable/home_1"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
+                    android:id="@+id/boss_send"
                     android:text="@string/addepople"
                     android:layout_height="wrap_content" />
 
@@ -101,6 +102,7 @@
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/requestarr"
+                    android:id="@+id/boss_request"
                     android:layout_height="wrap_content" />
 
                 <TextView
@@ -109,6 +111,7 @@
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/bossinfo"
+                    android:id="@+id/boss_info"
                     android:drawableTop="@drawable/home_1"
                     android:layout_height="wrap_content" />
 

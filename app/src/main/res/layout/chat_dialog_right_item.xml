@@ -17,7 +17,7 @@
         android:minHeight="40dp"
         android:text="的关到小黑屋" />
 
-    <ImageView
+    <com.schoolpartime.schoolpartime.weiget.image.HeiCircleImageView
         android:id="@+id/iv_chat_imagr_right"
         android:layout_width="40dp"
         android:layout_margin="8dp"

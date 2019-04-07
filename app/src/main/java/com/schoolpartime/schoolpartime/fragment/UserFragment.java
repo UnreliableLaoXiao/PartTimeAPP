@@ -1,5 +1,9 @@
 package com.schoolpartime.schoolpartime.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +27,9 @@ import androidx.fragment.app.Fragment;
 
 public class UserFragment extends Fragment{
 
+    public static final String SYSTEM_EXIT = "com.example.boss";
     private Presenter pre = new FrgUserPre();
+    private MyReceiver receiver;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -31,12 +37,32 @@ public class UserFragment extends Fragment{
         FragmentUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
         pre.attach(binding, (SuperActivity) getActivity());
         binding.setHandler(new IntentOnClickListener());
+        //注册广播，用于退出程序
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SYSTEM_EXIT);
+        receiver = new MyReceiver();
+        getActivity().registerReceiver(receiver, filter);
         return binding.getRoot();
+    }
+
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            pre.notifyUpdate(8);
+        }
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         pre.notifyUpdate(0);
+        super.onResume();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        pre.notifyUpdate(6);
+        getActivity().unregisterReceiver(receiver);
+        super.onDestroy();
     }
 }

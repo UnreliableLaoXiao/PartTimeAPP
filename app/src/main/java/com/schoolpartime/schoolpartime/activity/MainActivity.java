@@ -114,4 +114,10 @@ public class MainActivity extends SuperActivity {
         pre.notifyUpdate(7);
         super.onResume();
     }
+
+    @Override
+    protected void onDestroy() {
+        pre.notifyUpdate(8);
+        super.onDestroy();
+    }
 }

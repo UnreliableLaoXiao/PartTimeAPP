@@ -108,11 +108,13 @@ public class SuperActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("WrongConstant")
     public void showResult(RelativeLayout layout, String mes) {
         Snackbar.make(layout, mes, Snackbar.LENGTH_LONG)
                 .setDuration(Snackbar.LENGTH_LONG).show();
     }
 
+    @SuppressLint("WrongConstant")
     public void showResult(LinearLayout layout, String mes) {
         Snackbar.make(layout, mes, Snackbar.LENGTH_LONG)
                 .setDuration(Snackbar.LENGTH_LONG).show();

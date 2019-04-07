@@ -1,5 +1,6 @@
 package com.schoolpartime.schoolpartime;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ public class SchoolPartimeApplication extends Application {
 
     private static DaoSession mDaoSession;
 
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
 
     @Override

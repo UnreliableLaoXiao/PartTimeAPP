@@ -8,12 +8,11 @@ import android.content.Intent;
 import android.view.View;
 
 import com.google.gson.Gson;
-import com.schoolpartime.dao.UserInfoDao;
 import com.schoolpartime.schoolpartime.R;
-import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
-import com.schoolpartime.schoolpartime.chat.ChatMessageService;
+import com.schoolpartime.schoolpartime.service.BossTestService;
+import com.schoolpartime.schoolpartime.service.ChatMessageService;
 import com.schoolpartime.schoolpartime.databinding.ActivityLoginBinding;
 import com.schoolpartime.schoolpartime.entity.User;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
@@ -111,8 +110,8 @@ public class LoginPre implements Presenter, View.OnClickListener {
                         if (resultModel.code == 200) {
                             User user = (User) resultModel.data;
                             SpCommonUtils.setUserId(user.getId());
+                            SpCommonUtils.setUserType(user.getType());
                             if (user.getType() == 0){
-                                showResult("欢迎你："+user.getUsername());
                                 (new PrefectInfoActivity()).inToActivity(activity);
                             }else {
                                 SpCommonUtils.setIsLogin(true);
@@ -120,7 +119,12 @@ public class LoginPre implements Presenter, View.OnClickListener {
                                 intent.setClass(activity, ChatMessageService.class);
                                 activity.startService(intent);
                                 LogUtil.d("开启聊天服务");
-                                showResult("欢迎回来："+user.getUsername());
+                            }
+
+                            if (user.getType() != 3){
+                                Intent intent = new Intent();
+                                intent.setClass(activity, BossTestService.class);
+                                activity.startService(intent);
                             }
                             activity.finish();
                         } else {

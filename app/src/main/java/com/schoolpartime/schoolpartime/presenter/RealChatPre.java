@@ -14,16 +14,13 @@ import com.google.gson.Gson;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.adapter.ChatAdapter;
-import com.schoolpartime.schoolpartime.adapter.MessageListAdapter;
-import com.schoolpartime.schoolpartime.chat.ChatMessageService;
+import com.schoolpartime.schoolpartime.service.ChatMessageService;
 import com.schoolpartime.schoolpartime.chat.MessageBind;
 import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.ActivityRealchatBinding;
-import com.schoolpartime.schoolpartime.entity.ChatRecord;
 import com.schoolpartime.schoolpartime.entity.Message;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.interfacz.ChatMessageServer;
-import com.schoolpartime.schoolpartime.net.interfacz.ChatRecordServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -81,6 +78,7 @@ public class RealChatPre implements Presenter, View.OnClickListener,WebClient.No
         binding.chatName.setText(bundle.getString("name"));
         from = SpCommonUtils.getUserId();
         to = bundle.getLong("to");
+        LogUtil.d("打开与to="+to+"的聊天窗口");
         getMessages();
         chatAdapter = new ChatAdapter(activity, personChats);
         binding.lvChatDialog.setAdapter(chatAdapter);
@@ -132,6 +130,8 @@ public class RealChatPre implements Presenter, View.OnClickListener,WebClient.No
 
     }
 
+    private long lastTimeMillis = 0;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -141,20 +141,28 @@ public class RealChatPre implements Presenter, View.OnClickListener,WebClient.No
                     showResult("发送内容不能为空");
                     return;
                 }
-                Message message = new Message();
-                message.setMsg_from(from);
-                message.setMsg_to(to);
-                message.setMsg_type(1);
-                message.setMsg_state(0);
-                message.setMsg_mes(binding.etChatMessage.getText().toString());
-                //加入集合
-                personChats.add(message);
-                //清空输入框
-                binding.etChatMessage.setText("");
-                //刷新ListView
-                chatAdapter.notifyDataSetChanged();
-                notifyUpdate(3);
-                binder.sendMessage(message);
+                long currentTimeMillis = System.currentTimeMillis();
+                if (currentTimeMillis - lastTimeMillis >= 1000 ){
+                    lastTimeMillis = currentTimeMillis;
+                    Message message = new Message();
+                    message.setMsg_from(from);
+                    message.setMsg_to(to);
+                    message.setMsg_type(1);
+                    message.setMsg_state(0);
+                    message.setMsg_mes(binding.etChatMessage.getText().toString());
+                    binder.sendMessage(message);
+                    //加入集合
+                    personChats.add(message);
+                    //清空输入框
+                    binding.etChatMessage.setText("");
+                    //刷新ListView
+                    chatAdapter.notifyDataSetChanged();
+                    notifyUpdate(3);
+
+                }else {
+                    showResult("发送时间间隔过短，请稍后再发送");
+                }
+
             }
             break;
             case R.id.chat_back:{

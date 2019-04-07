@@ -2,6 +2,8 @@ package com.schoolpartime.schoolpartime.presenter;
 
 import androidx.databinding.ViewDataBinding;
 import com.google.android.material.snackbar.Snackbar;
+
+import android.annotation.SuppressLint;
 import android.view.View;
 
 import com.schoolpartime.schoolpartime.R;
@@ -74,6 +76,7 @@ public class ForgetPre implements Presenter, View.OnClickListener {
         }
     }
 
+    @SuppressLint("WrongConstant")
     private void showResult(String mes) {
         Snackbar.make(binding.rly, mes, Snackbar.LENGTH_LONG)
                 .setDuration(Snackbar.LENGTH_LONG).show();

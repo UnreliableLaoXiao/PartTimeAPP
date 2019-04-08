@@ -5,6 +5,7 @@ import androidx.databinding.ViewDataBinding;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,12 +20,12 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
-import com.schoolpartime.schoolpartime.event.LoginStateController;
 import com.schoolpartime.schoolpartime.event.NumberController;
 import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
+import com.schoolpartime.schoolpartime.net.interfacz.NoReadSumServer;
 import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
@@ -33,7 +34,7 @@ import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
 
-public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCheckedChangeListener,WebClient.NotifyMessage,NumberController.NotifyNumber {
+public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCheckedChangeListener, WebClient.NotifyMessage, NumberController.NotifyNumber {
 
     private ActivityMianBinding binding;
     private SuperActivity activity;
@@ -43,14 +44,14 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     private Fragment mCurrentFragmen = null; // 记录当前显示的Fragment
     private int index = 0;
     private boolean isFirst = true;
-    private int number= 0 ;
+    private int number = 0;
 
     WebClient webClient;
     NumberController controller;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
-        this.binding = (ActivityMianBinding)binding;
+        this.binding = (ActivityMianBinding) binding;
         this.activity = activity;
         init();
     }
@@ -63,11 +64,16 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         activity.setSupportActionBar(binding.mainToobar);
         binding.mainToobar.setOnClickListener(this);
         mCurrentFragmen = mFragmentList.get(0);
-        Log.d("TEST", "Click1: "+mCurrentFragmen);
+
+        Log.d("TEST", "Click1: " + mCurrentFragmen);
         // 初始化首次进入时的Fragment
         mFm = activity.getSupportFragmentManager();
         FragmentTransaction transaction = mFm.beginTransaction();
-        transaction.add(R.id.fl_show, mCurrentFragmen, mFragmentTagList[0]);
+        for (int i = mFragmentList.size()-1;i >= 0;i-- ) {
+            transaction.add(R.id.fl_show, mFragmentList.get(i), mFragmentTagList[i]);
+            transaction.hide(mFragmentList.get(i));
+        }
+        transaction.show(mCurrentFragmen);
         transaction.commitAllowingStateLoss();
         binding.mainGp.setOnCheckedChangeListener(this);
         binding.netBar.setOnClickListener(this);
@@ -77,30 +83,51 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     public void notifyUpdate(int code) {
         switch (code) {
             case 0:
-            case 1:{
+            case 1: {
                 binding.netBar.setVisibility(code);
             }
             break;
-            case 7:
-            {
-                if (SpCommonUtils.getIsLogin() && isFirst){
+            case 7: {
+                if (SpCommonUtils.getIsLogin() && isFirst) {
                     webClient = WebClient.getInstance();
                     controller = NumberController.getInstance();
                     webClient.addNotity(this);
                     controller.addNotity(this);
                     getUserInfo();
+                    getNoreadSum();
                     isFirst = false;
                 }
             }
             break;
-            case 8:
-            {
+            case 8: {
                 webClient.removeNotity(this);
                 controller.removeNotity(this);
             }
             break;
         }
 
+    }
+
+    private void getNoreadSum() {
+        HttpRequest.request(HttpRequest.builder().create(NoReadSumServer.class).
+                        getAllNoread(SpCommonUtils.getUserId()),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        LogUtil.d("得到所有未读消息----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            double sum = (Double) resultModel.data;
+                            int msum = (int) (sum + 0);
+                            controller.NotifyAll(msum);
+                            LogUtil.d("得到所有未读消息----------成功：" + sum);
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到所有未读消息----------失败", e);
+                    }
+                }, true);
     }
 
     @SuppressLint("WrongConstant")
@@ -117,11 +144,11 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                 new RequestResult() {
                     @Override
                     public void success(ResultModel resultModel) {
-                        LogUtil.d("得到登录用户信息----------ResultModel："+resultModel.toString());
+                        LogUtil.d("得到登录用户信息----------ResultModel：" + resultModel.toString());
                         if (resultModel.code == 200) {
                             UserInfo userInfo = (UserInfo) resultModel.data;
                             SchoolPartimeApplication.getmDaoSession().getUserInfoDao().insert(userInfo);
-                            LogUtil.d("数据库加入userinfo信息----------成功："+userInfo.toString());
+                            LogUtil.d("数据库加入userinfo信息----------成功：" + userInfo.toString());
                             activity.dismiss();
                         } else {
                             showResult(resultModel.message);
@@ -132,12 +159,12 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
 
                     @Override
                     public void fail(Throwable e) {
-                        LogUtil.d("得到登录用户信息失败---》请求失败",e);
+                        LogUtil.d("得到登录用户信息失败---》请求失败", e);
                         SpCommonUtils.setIsLogin(false);
                         activity.dismiss();
                         showResult("请求失败");
                     }
-                },true);
+                }, true);
     }
 
     private void setDraws() {
@@ -165,7 +192,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         if (to == null)
             return;
         binding.mainToobar.setTitle(tag);
-        Log.i(MainActivity.class.getCanonicalName(), "switchFragment: ");
+        LogUtil.d("switchFragment: ");
         if (mCurrentFragmen != to) {
             FragmentTransaction transaction = mFm.beginTransaction();
             if (!to.isAdded()) {
@@ -183,16 +210,14 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.main_toobar:
-            {
-                if(index == 0) {
-                    ((MainFragment)mCurrentFragmen).scroll_Start();
+        switch (v.getId()) {
+            case R.id.main_toobar: {
+                if (index == 0) {
+                    ((MainFragment) mCurrentFragmen).scroll_Start();
                 }
             }
             break;
-            case R.id.net_bar:
-            {
+            case R.id.net_bar: {
 //
             }
             break;
@@ -207,9 +232,9 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                 binding.mainRbHome.setTextColor(Color.argb(0xFF, 0x12, 0x96, 0xdb));
                 binding.mainRbFind.setTextColor(Color.BLACK);
                 binding.mainRbMessage.setTextColor(Color.BLACK);
-                Log.d("TEST", "Click: "+mFragmentList.size());
+                Log.d("TEST", "Click: " + mFragmentList.size());
                 if (mFragmentList.size() >= 1)
-                switchFragment(mFragmentList.get(0), mFragmentTagList[0]);
+                    switchFragment(mFragmentList.get(0), mFragmentTagList[0]);
                 index = 0;
             }
             break;
@@ -217,9 +242,9 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                 binding.mainRbFind.setTextColor(Color.argb(0xFF, 0x12, 0x96, 0xdb));
                 binding.mainRbHome.setTextColor(Color.BLACK);
                 binding.mainRbMessage.setTextColor(Color.BLACK);
-                Log.d("TEST", "Click: "+mFragmentList.size());
+                Log.d("TEST", "Click: " + mFragmentList.size());
                 if (mFragmentList.size() >= 2)
-                switchFragment(mFragmentList.get(1), mFragmentTagList[1]);
+                    switchFragment(mFragmentList.get(1), mFragmentTagList[1]);
                 index = 1;
             }
             break;
@@ -227,9 +252,9 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                 binding.mainRbMessage.setTextColor(Color.argb(0xFF, 0x12, 0x96, 0xdb));
                 binding.mainRbFind.setTextColor(Color.BLACK);
                 binding.mainRbHome.setTextColor(Color.BLACK);
-                Log.d("TEST", "Click: "+mFragmentList.size());
+                Log.d("TEST", "Click: " + mFragmentList.size());
                 if (mFragmentList.size() >= 3)
-                switchFragment(mFragmentList.get(2), mFragmentTagList[2]);
+                    switchFragment(mFragmentList.get(2), mFragmentTagList[2]);
                 index = 2;
             }
             break;
@@ -240,14 +265,27 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     @Override
     public void notify(String mes) {
 
+        LogUtil.d("Main收到消息通知");
+        number += 1;
+        LogUtil.d("Main number is " + number);
+        LogUtil.d("Main 设置显示数量");
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                binding.badge.setVisibility(View.VISIBLE);
+                LogUtil.d("Main number is " + number);
+                binding.badge.setText(number + "");
+            }
+        });
+
     }
 
     @Override
     public void change(int change) {
-        number +=change;
-        if (number > 0 ){
+        number += change;
+        if (number > 0) {
             binding.badge.setVisibility(View.VISIBLE);
-            binding.badge.setText(number+"");
+            binding.badge.setText(number + "");
         }
     }
 

@@ -53,15 +53,22 @@ public class MessageListAdapter extends BaseAdapter {
                     .findViewById(R.id.mes_date);
             holder.mes_image = convertView
                     .findViewById(R.id.mes_img);
+            holder.mes_no_read= convertView
+                    .findViewById(R.id.badge);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.mes_image.setNetImg(mess.get(position).getImg(),activity);
-        holder.mes_content.setText(mess.get(position).getMes());
+        holder.mes_content.setText(mess.get(position).getNew_mes());
         holder.mes_name.setText(mess.get(position).getName());
-        LogUtil.d("date:" + mess.get(position).getDate());
-        holder.mes_date.setText(mess.get(position).getDate());
+        holder.mes_date.setText(mess.get(position).getRcd_date());
+        if (mess.get(position).getNo_read() > 0){
+            holder.mes_no_read.setVisibility(View.VISIBLE);
+            holder.mes_no_read.setText(mess.get(position).getNo_read()+"");
+        }else {
+            holder.mes_no_read.setVisibility(View.GONE);
+        }
         return convertView;
     }
 
@@ -70,5 +77,6 @@ public class MessageListAdapter extends BaseAdapter {
         TextView mes_name;
         TextView mes_content;
         TextView mes_date;
+        TextView mes_no_read;
     }
 }

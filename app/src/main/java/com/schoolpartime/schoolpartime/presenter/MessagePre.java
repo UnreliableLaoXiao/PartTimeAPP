@@ -37,6 +37,7 @@ public class MessagePre implements Presenter, SwipeRefreshLayout.OnRefreshListen
     private Gson gson = new Gson();
 
     private WebClient webClient;
+    private MessageListAdapter adapter;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -51,7 +52,8 @@ public class MessagePre implements Presenter, SwipeRefreshLayout.OnRefreshListen
         setRefresh();
         if (webClient != null)
         webClient.addNotity(this);
-        binding.mesList.setAdapter(new MessageListAdapter(activity,chatRecords));
+        adapter = new MessageListAdapter(activity,chatRecords);
+        binding.mesList.setAdapter(adapter);
         binding.mesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,8 +82,9 @@ public class MessagePre implements Presenter, SwipeRefreshLayout.OnRefreshListen
                         activity.dismiss();
                         LogUtil.d("请求聊天记录列表成功----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
-                            chatRecords = (ArrayList<ChatRecord>) resultModel.data;
-                            binding.mesList.setAdapter(new MessageListAdapter(activity,chatRecords));
+                            chatRecords.clear();
+                            chatRecords.addAll((ArrayList<ChatRecord>) resultModel.data);
+                            adapter.notifyDataSetChanged();
                         } else {
                             showResult(resultModel.message);
                         }
@@ -142,8 +145,9 @@ public class MessagePre implements Presenter, SwipeRefreshLayout.OnRefreshListen
             if( (record.getId() == message.getMsg_from() || record.getId() == message.getMsg_to()) &&
                     (record.getOther_id() == message.getMsg_to() || record.getOther_id() == message.getMsg_from()))
             {
-                record.setMes(message.getMsg_mes());
-                record.setDate((new Date()).toString());
+                record.setNew_mes(message.getMsg_mes());
+                record.setRcd_date((new Date()).toString());
+                record.setNo_read(record.getNo_read()+1);
                 LogUtil.d("更新数据：--------------------》");
                 break;
             }
@@ -152,7 +156,7 @@ public class MessagePre implements Presenter, SwipeRefreshLayout.OnRefreshListen
             @Override
             public void run() {
                 //刷新ListView
-                binding.mesList.setAdapter(new MessageListAdapter(activity,chatRecords));
+                adapter.notifyDataSetChanged();
             }
         });
 

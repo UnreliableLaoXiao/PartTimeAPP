@@ -69,7 +69,14 @@
 
     </LinearLayout>
 
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="10"
+        android:id="@+id/badge"
+        android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="right|center_vertical"
+        android:background="@drawable/shape_badge"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

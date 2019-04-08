@@ -41,9 +41,9 @@ public class SettingPre implements Presenter, View.OnClickListener {
         isLogin = SpCommonUtils.getIsLogin();
         notifyUpdate(2);
         List<DataModel> list = new ArrayList<>();
-        DataModel about = new DataModel("关于我们",R.drawable.about);
-        DataModel checkupdate = new DataModel("检查更新",R.drawable.checkupdate);
-        DataModel protocol = new DataModel("用户协议",R.drawable.protocol);
+        DataModel about = new DataModel("关于我们",R.drawable.about,0);
+        DataModel checkupdate = new DataModel("检查更新",R.drawable.checkupdate,0);
+        DataModel protocol = new DataModel("用户协议",R.drawable.protocol,0);
         list.add(about);
         list.add(checkupdate);
         list.add(protocol);

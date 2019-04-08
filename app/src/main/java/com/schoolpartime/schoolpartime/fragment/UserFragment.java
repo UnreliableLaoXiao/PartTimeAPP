@@ -14,6 +14,7 @@ import com.schoolpartime.schoolpartime.databinding.FragmentUserBinding;
 import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
 import com.schoolpartime.schoolpartime.presenter.FrgUserPre;
 import com.schoolpartime.schoolpartime.presenter.Presenter;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -55,8 +56,16 @@ public class UserFragment extends Fragment{
     @Override
     public void onResume() {
         pre.notifyUpdate(0);
+        LogUtil.d("FragUser onResume");
         super.onResume();
 
+    }
+
+    @Override
+    public void onPause() {
+        pre.notifyUpdate(0);
+        LogUtil.d("FragUser onPause");
+        super.onPause();
     }
 
     @Override

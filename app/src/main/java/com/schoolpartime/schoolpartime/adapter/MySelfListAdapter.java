@@ -1,7 +1,6 @@
 package com.schoolpartime.schoolpartime.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.entity.DataModel;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import java.util.List;
 
@@ -54,14 +54,20 @@ public class MySelfListAdapter extends BaseAdapter {
                     .findViewById(R.id.user_name);
             holder.user_image = convertView
                     .findViewById(R.id.user_image);
+            holder.badge = convertView
+                    .findViewById(R.id.badge);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.user_name.setText(list_user.get(position).user_name);
         holder.user_image.setImageResource(list_user.get(position).user_image);
-        if(list_user.get(position).user_name.equals("退出登录")){
-            convertView.setBackgroundColor(Color.parseColor("#FF0000"));
+        if (list_user.get(position).number > 0){
+            LogUtil.d("显示数量------------->");
+            holder.badge.setVisibility(View.VISIBLE);
+            holder.badge.setText(list_user.get(position).number+"");
+        }else {
+            holder.badge.setVisibility(View.GONE);
         }
         return convertView;
     }
@@ -69,5 +75,6 @@ public class MySelfListAdapter extends BaseAdapter {
     private class ViewHolder {
         ImageView user_image;
         TextView user_name;
+        TextView badge;
     }
 }

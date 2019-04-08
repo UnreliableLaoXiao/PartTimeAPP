@@ -40,6 +40,7 @@
                 android:text="10"
                 android:id="@+id/badge"
                 android:visibility="gone"
+                android:gravity="center"
                 android:layout_gravity="right"
                 android:background="@drawable/shape_badge"
                 android:layout_height="wrap_content" />

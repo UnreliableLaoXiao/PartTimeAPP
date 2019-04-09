@@ -131,7 +131,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     }
 
     @SuppressLint("WrongConstant")
-    private void showResult(String mes) {
+    public void showResult(String mes) {
         Snackbar.make(binding.rly, mes, Snackbar.LENGTH_LONG)
                 .setDuration(Snackbar.LENGTH_LONG).show();
     }

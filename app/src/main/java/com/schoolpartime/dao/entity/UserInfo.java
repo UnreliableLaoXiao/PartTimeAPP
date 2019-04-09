@@ -3,7 +3,7 @@ package com.schoolpartime.dao.entity;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 
-@Entity
+@Entity(nameInDb = "t_userinfo")
 public class UserInfo {
     private Long id;
 

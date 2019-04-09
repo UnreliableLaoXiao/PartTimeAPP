@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.schoolpartime.dao.entity.SearchTitle;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeBinding;
@@ -53,6 +54,8 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
             }
         }
     }
+
+
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {

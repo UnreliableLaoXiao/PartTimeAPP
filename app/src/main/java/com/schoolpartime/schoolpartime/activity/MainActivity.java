@@ -6,11 +6,8 @@ import android.content.pm.PackageManager;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.databinding.DataBindingUtil;
 
-import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -19,16 +16,18 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.schoolpartime.dao.entity.SearchTitle;
 import com.schoolpartime.schoolpartime.R;
@@ -39,11 +38,12 @@ import com.schoolpartime.schoolpartime.fragment.MainFragment;
 import com.schoolpartime.schoolpartime.fragment.SearchFragment;
 import com.schoolpartime.schoolpartime.fragment.UserFragment;
 import com.schoolpartime.schoolpartime.presenter.MainPre;
-import com.schoolpartime.schoolpartime.presenter.Presenter;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +58,7 @@ public class MainActivity extends SuperActivity {
     private MainPre pre = new MainPre();
     private SearchView mSearchView;
     ActivityMianBinding binding;
-    List<Map<String,String>> list = new ArrayList<>();
+    List<Map<String, String>> list = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +66,6 @@ public class MainActivity extends SuperActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mian);
         SpCommonUtils.setOnceStart(true);
         pre.attach(binding, this);
-
-
-
-
-
     }
 
     public static ArrayList<Fragment> getFragmentList() {
@@ -102,11 +97,6 @@ public class MainActivity extends SuperActivity {
         mSearchView.setQueryHint("hint");
 
 
-
-
-
-
-
         //搜索框文字变化监听
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -116,34 +106,22 @@ public class MainActivity extends SuperActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-//                Cursor cursor = TextUtils.isEmpty(s) ? null : queryData(s);
-//                // 不要频繁创建适配器，如果适配器已经存在，则只需要更新适配器中的cursor对象即可。
-//                LogUtil.d("Cursor = " + cursor);
-//                if (mSearchView.getSuggestionsAdapter() == null) {
-//                    mSearchView.setSuggestionsAdapter(new SimpleCursorAdapter(MainActivity.this, R.layout.item_normal, cursor,
-//                            ));
-//                } else {
-//                    mSearchView.getSuggestionsAdapter().changeCursor(cursor);
-//                }
-
                 binding.showSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        pre.showResult("你选择的是"+list.get(position).get("title"));
-                        mSearchView.setQuery(list.get(position).get("title"),true);
+                        pre.showResult("你选择的是" + list.get(position).get("title"));
+                        mSearchView.setQuery(list.get(position).get("title"), true);
                     }
                 });
 
-                if (s.length() > 3){
+                if (s.length() >= 2) {
                     LogUtil.d("开始显示");
                     binding.showSearch.setVisibility(View.VISIBLE);
-                    binding.showSearch.setAdapter(new SimpleAdapter(MainActivity.this,queryData(s),
-                            R.layout.item_normal,new String[]{"title"}, new int[]{R.id.text1}));
-                }else {
+                    binding.showSearch.setAdapter(new SimpleAdapter(MainActivity.this, queryData(s),
+                            R.layout.item_normal, new String[]{"title"}, new int[]{R.id.text1}));
+                } else {
                     binding.showSearch.setVisibility(View.GONE);
                 }
-
-
 
 
                 return false;
@@ -153,12 +131,12 @@ public class MainActivity extends SuperActivity {
         return true;
     }
 
-    private List<Map<String,String>> queryData(String s) {
+    private List<Map<String, String>> queryData(String s) {
 //        SELECT _id1 AS _id ,name1 , bir FROM chi"
-        String sql = "select _id as _id , title from t_search_title where title like '%"+s+"%'";
+        String sql = "select _id as _id , title from t_search_title where title like '%" + s + "%'";
         List<SearchTitle> searchTitles = SchoolPartimeApplication.getmDaoSession().getSearchTitleDao().loadAll();
         list.clear();
-        for (SearchTitle searchTitle:searchTitles){
+        for (SearchTitle searchTitle : searchTitles) {
             if (searchTitle.getTitle().contains(s)) {
                 Map<String, String> map = new HashMap<>();
                 map.put("title", searchTitle.getTitle());
@@ -211,6 +189,7 @@ public class MainActivity extends SuperActivity {
 
     @Override
     public void onBackPressed() {
+        mSearchView.onActionViewCollapsed();
         BackExit();
     }
 

@@ -28,8 +28,10 @@ public class MainFragment extends Fragment{
         FragmentMainBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         pre.attach(binding, (SuperActivity) getActivity());
         binding.setHandler(new IntentOnClickListener());
+
         return binding.getRoot();
     }
+
 
     @Override
     public void onResume() {

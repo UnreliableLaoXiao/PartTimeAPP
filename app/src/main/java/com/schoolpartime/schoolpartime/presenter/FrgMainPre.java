@@ -11,6 +11,10 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
@@ -18,6 +22,7 @@ import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.LoopAdapter;
 import com.schoolpartime.schoolpartime.adapter.RecyclerAdapter;
 import com.schoolpartime.schoolpartime.databinding.FragmentMainBinding;
+import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.zaaach.citypicker.CityPicker;
 import com.zaaach.citypicker.adapter.OnPickListener;
@@ -25,19 +30,68 @@ import com.zaaach.citypicker.model.City;
 import com.zaaach.citypicker.model.LocateState;
 import com.zaaach.citypicker.model.LocatedCity;
 
-public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AMapLocationListener {
 
     private FragmentMainBinding binding;
     private SuperActivity activity;
     private int mscrollY;
     private boolean isScroll = false;
 
+    //声明mlocationClient对象
+    public AMapLocationClient mlocationClient;
+    public AMapLocationClientOption mLocationOption = null;
+
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
         this.binding = (FragmentMainBinding) binding;
         this.activity = activity;
         init();
+        getLocaltion();
 
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                aMapLocation.getLatitude();//获取纬度
+                aMapLocation.getLongitude();//获取经度
+                aMapLocation.getAccuracy();//获取精度信息
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date(aMapLocation.getTime());
+                df.format(date);//定位时间
+
+                LogUtil.d("City:" + aMapLocation.getCity());
+
+                binding.citypicker.setText("当前城市:"+aMapLocation.getCity());
+
+
+
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                LogUtil.d("location Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+            }
+        }
+
+    }
+
+    private void getLocaltion() {
+        mlocationClient = new AMapLocationClient(activity);
+        mLocationOption = new AMapLocationClientOption();
+        mlocationClient.setLocationListener(this);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setInterval(2000);
+        mLocationOption.setOnceLocation(true);
+        mLocationOption.setOnceLocationLatest(true);
+        mlocationClient.setLocationOption(mLocationOption);
+        mlocationClient.startLocation();
     }
 
     private void init() {
@@ -143,6 +197,7 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
                 .setOnPickListener(new OnPickListener() {
                     @Override
                     public void onPick(int position, City data) {
+                        if (data != null)
                         binding.citypicker.setText("当前城市:"+data.getName());
                     }
 

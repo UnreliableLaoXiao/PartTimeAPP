@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.RecyclerAdapter;
+import com.schoolpartime.schoolpartime.entity.WorkInfo;
+
+import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ListFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    ArrayList<WorkInfo> workInfos = new ArrayList<>();
+    private RecyclerAdapter adapter;
 
     @Nullable
     @Override
@@ -29,7 +34,7 @@ public class ListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new RecyclerAdapter(getContext(), new RecyclerAdapter.MyOnItemClickListener() {
+        adapter = new RecyclerAdapter(workInfos,getContext(), new RecyclerAdapter.MyOnItemClickListener() {
             @Override
             public void onItemClick(View view) {
                 (new DetailsInfoActivity()).inToActivity(getActivity());
@@ -39,7 +44,8 @@ public class ListFragment extends Fragment {
             public void onItemLongClick(View view) {
 
             }
-        }));//设置adapter
+        });
+        recyclerView.setAdapter(adapter);//设置adapter
     }
 
 

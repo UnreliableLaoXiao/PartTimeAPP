@@ -6,13 +6,13 @@ package com.schoolpartime.schoolpartime.entity;
  */
 public class WorkInfo {
     private Integer id;   //工作信息编号
-    private Integer userid;   //商家编号，外键
-    private Integer wtId;   //兼职类型
+    private Integer bossId;   //商家编号，外键
+    private Integer workTypeId;   //兼职类型
     private String workTitle;   //招聘信息标题
-    private Integer money;   //薪水
+    private String money;   //薪水
     private String createTime;   //发布时间
     private String end_way;   //薪水结算方式
-    private String workText;   //工作职责描述
+    private String workContext;   //工作职责描述
     private String address;   //详细地址
     private String city;   //所在城市(市)
     private String contacts;   //联系人
@@ -26,20 +26,20 @@ public class WorkInfo {
         this.id = id;
     }
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getbossId() {
+        return bossId;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setbossId(Integer bossId) {
+        this.bossId = bossId;
     }
 
-    public Integer getWtId() {
-        return wtId;
+    public Integer getworkTypeId() {
+        return workTypeId;
     }
 
-    public void setWtId(Integer wtId) {
-        this.wtId = wtId;
+    public void setworkTypeId(Integer workTypeId) {
+        this.workTypeId = workTypeId;
     }
 
     public String getWorkTitle() {
@@ -50,11 +50,11 @@ public class WorkInfo {
         this.workTitle = workTitle;
     }
 
-    public Integer getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 
@@ -74,12 +74,12 @@ public class WorkInfo {
         this.end_way = end_way;
     }
 
-    public String getWorkText() {
-        return workText;
+    public String getworkContext() {
+        return workContext;
     }
 
-    public void setWorkText(String workText) {
-        this.workText = workText;
+    public void setworkContext(String workContext) {
+        this.workContext = workContext;
     }
 
     public String getAddress() {
@@ -114,15 +114,15 @@ public class WorkInfo {
         this.contactsWay = contactsWay;
     }
 
-    public WorkInfo(Integer id, Integer userid, Integer wtId, String workTitle, Integer money, String createTime, String end_way, String workText, String address, String city, String contacts, String contactsWay) {
+    public WorkInfo(Integer id, Integer bossId, Integer workTypeId, String workTitle, String money, String createTime, String end_way, String workContext, String address, String city, String contacts, String contactsWay) {
         this.id = id;
-        this.userid = userid;
-        this.wtId = wtId;
+        this.bossId = bossId;
+        this.workTypeId = workTypeId;
         this.workTitle = workTitle;
         this.money = money;
         this.createTime = createTime;
         this.end_way = end_way;
-        this.workText = workText;
+        this.workContext = workContext;
         this.address = address;
         this.city = city;
         this.contacts = contacts;
@@ -136,13 +136,13 @@ public class WorkInfo {
     public String toString() {
         return "WorkInfo{" +
                 "id=" + id +
-                ", userid=" + userid +
-                ", wtId=" + wtId +
+                ", bossId=" + bossId +
+                ", workTypeId=" + workTypeId +
                 ", workTitle='" + workTitle + '\'' +
-                ", money=" + money +
+                ", money='" + money + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", end_way='" + end_way + '\'' +
-                ", workText='" + workText + '\'' +
+                ", workContext='" + workContext + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", contacts='" + contacts + '\'' +

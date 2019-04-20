@@ -7,55 +7,55 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#dfede5e5"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#dfede5e5">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@color/likeblue"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:background="@color/likeblue">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:text="返回"
                 android:id="@+id/user_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_margin="10dp"
-                android:layout_height="wrap_content" />
+                android:text="返回" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="兼职详情"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_height="wrap_content" />
+                android:text="兼职详情" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_height="match_parent">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:src="@drawable/tdcode"
                     android:id="@+id/tdcode"
-                    android:layout_height="20dp" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/tdcode" />
 
                 <ImageView
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="20dp"
-                    android:src="@drawable/collecte"
                     android:id="@+id/collecte"
-                    android:layout_height="20dp" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/collecte" />
 
                 <ImageView
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="20dp"
                     android:id="@+id/message_chat"
-                    android:src="@drawable/messages"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_height="20dp" />
+                    android:src="@drawable/messages" />
 
 
             </LinearLayout>
@@ -64,52 +64,242 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_marginBottom="50dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="45dp"
-            android:layout_height="match_parent">
+            android:layout_marginBottom="50dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <include layout="@layout/layout_netbar"
+                <include
                     android:id="@+id/net_bar"
-                    android:visibility="gone"
+                    layout="@layout/layout_netbar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/netbar_height" />
+                    android:layout_height="@dimen/netbar_height"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/work_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:text="美工"
+                        android:textColor="#000000"
+                        android:textSize="26sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/work_money"
+                            android:text="150元/天" />
+
+                        <View
+                            android:layout_width="1sp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="#000000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/work_end_way"
+                            android:text="日结" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:text="荆州市沙市区" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="6">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="联系人" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="5"
+                            android:text="周二狗" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="6">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="联系电话" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="5"
+                            android:text="15926614282" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="6">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="发布时间" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="5"
+                            android:text="2019年4月19号" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="6">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="工作地点" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="5"
+                            android:text="荆州市沙市区人民路148号" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textSize="20sp"
+                    android:layout_marginTop="1dp"
+                    android:paddingLeft="10dp"
+                    android:background="#FFFFFF"
+                    android:gravity="center_vertical"
+                    android:text="职位描述"
+                    android:layout_height="40dp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="1dp"
+                    android:paddingLeft="10dp"
+                    android:padding="10dp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:background="#FFFFFF"
+                    android:text="会常用的设计排版软件，有较强的审美能力，懂视觉设计。应届毕业生优先。"
+                    android:layout_height="300dp" />
 
             </LinearLayout>
-
 
 
         </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:background="#FFF5F5F7"
-            android:weightSum="3"
-            android:layout_height="50dp">
+            android:weightSum="3">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="微聊"
                 android:id="@+id/weichat"
-                android:textSize="12sp"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:drawableTop="@drawable/chat"
-                android:layout_height="match_parent" />
+                android:gravity="center"
+                android:text="微聊"
+                android:textSize="12sp" />
 
             <Button
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:text="报名参加"
                 android:id="@+id/submit_send"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:background="#99FF0000"
-                android:textColor="#FFFFFF"
-                android:layout_height="match_parent" />
+                android:text="报名参加"
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
     </RelativeLayout>

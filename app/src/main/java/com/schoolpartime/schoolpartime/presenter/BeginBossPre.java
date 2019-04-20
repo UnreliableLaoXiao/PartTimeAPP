@@ -141,7 +141,7 @@ public class BeginBossPre implements Presenter, View.OnClickListener {
                                     DialogUtil.selectDialog(activity, "提示：", "上传成功，等待相关人员审核通过即可使用商家功能。", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-//                                            SpCommonUtils.setUserType(4);
+                                            SpCommonUtils.setUserType(4);
                                             activity.finish();
                                         }
                                     });

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -14,49 +15,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="5dp"
+            android:padding="10dp"
             android:orientation="horizontal"
-            android:weightSum="9">
-
-            <LinearLayout
+            android:weightSum="10">
+            <SearchView
+                android:id="@+id/search_view"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="8"
-                android:background="@drawable/shape_search"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/city"
-                    android:text="荆州" />
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="#eaaeee" />
-
-                <SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:defaultFocusHighlightEnabled="true"
-                    android:iconifiedByDefault="false"
-                    android:queryHint="请输入搜索内容" />
-
-            </LinearLayout>
+                android:layout_weight="9"
+                android:layout_height="match_parent"
+                android:iconifiedByDefault="false"
+                android:inputType="textCapWords"
+                android:imeOptions="actionSearch"
+                android:queryHint="请输入要搜索的内容" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:id="@+id/cancle"
@@ -67,20 +41,21 @@
         <View
             android:layout_width="match_parent"
             android:background="#aaddaa"
-            android:layout_marginTop="10dp"
-            android:layout_height="2dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="历史记录"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:layout_height="30dp" />
+            android:layout_height="1dp" />
 
         <View
             android:layout_width="match_parent"
             android:background="#aaddaa"
             android:layout_height="1dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="历史记录"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:layout_height="30dp" />
+
+
 
         <ListView
             android:id="@+id/listView"

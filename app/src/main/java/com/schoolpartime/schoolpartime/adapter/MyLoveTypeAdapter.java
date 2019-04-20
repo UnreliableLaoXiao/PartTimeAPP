@@ -8,10 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.schoolpartime.dao.entity.WorkType;
 import com.schoolpartime.schoolpartime.R;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Auser on 2018/3/20.
@@ -19,24 +19,27 @@ import java.util.List;
 
 public class MyLoveTypeAdapter extends BaseAdapter {
     private Context context;
-    private List<HashMap<String,Object>> list;
+    private ArrayList<WorkType> workTypes;
+    private int[] likeTypes;
+
     private LayoutInflater layoutInflater;
     private TextView tv;
     private CheckBox cb;
-    public MyLoveTypeAdapter(Context context, List<HashMap<String, Object>> list) {
+    public MyLoveTypeAdapter(Context context, ArrayList<WorkType> workTypes,int[] likeTypes) {
         this.context = context;
-        this.list = list;//list中checkbox状态为false
+        this.workTypes = workTypes;   //全部兼职
+        this.likeTypes = likeTypes;   //已经选择的类型
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return workTypes.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return workTypes.get(position);
     }
 
     @Override
@@ -61,8 +64,12 @@ public class MyLoveTypeAdapter extends BaseAdapter {
             tv = viewCache.tv;
             cb = viewCache.cb;
         }
-        tv.setText(list.get(position).get("name")+"");
-        cb.setChecked((Boolean) list.get(position).get("boolean"));
+        tv.setText(workTypes.get(position).getName());
+        if ( likeTypes[0] == workTypes.get(position).getId() || likeTypes[1] == workTypes.get(position).getId() || likeTypes[2] == workTypes.get(position).getId()) {
+            cb.setChecked(true);
+        }else {
+            cb.setChecked(false);
+        }
         return convertView;
     }
 

@@ -37,7 +37,6 @@ public class UserFragment extends Fragment{
                              Bundle savedInstanceState) {
         FragmentUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
         pre.attach(binding, (SuperActivity) getActivity());
-        binding.setHandler(new IntentOnClickListener());
         //注册广播，用于退出程序
         IntentFilter filter = new IntentFilter();
         filter.addAction(SYSTEM_EXIT);
@@ -73,5 +72,14 @@ public class UserFragment extends Fragment{
         pre.notifyUpdate(6);
         getActivity().unregisterReceiver(receiver);
         super.onDestroy();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            pre.notifyUpdate(0);
+        } else {
+            pre.notifyUpdate(0);
+        }
     }
 }

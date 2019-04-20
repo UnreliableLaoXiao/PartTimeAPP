@@ -35,6 +35,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
     private Activity activity;
     private FragmentUserBinding binding;
     private boolean isLogin;
+    private boolean isFirst = true;
 
     WebClient webClient;
     NumberController controller;
@@ -50,18 +51,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
 
     private void init() {
         isLogin = SpCommonUtils.getIsLogin();
-//        ChangeWeigetEnable(isLogin);
-        list = new ArrayList<>();
-        DataModel user_selfinfo = new DataModel("个人信息", R.drawable.myinfo, 0);
-        DataModel user_mymessage = new DataModel("我的消息", R.drawable.message_1, 0);
-        DataModel user_mycollect = new DataModel("我的收藏", R.drawable.collect, 0);
-        DataModel user_sendrecord = new DataModel("投递记录", R.drawable.record, 0);
-        DataModel user_set = new DataModel("设置", R.drawable.set, 0);
-        list.add(user_selfinfo);
-        list.add(user_mymessage);
-        list.add(user_mycollect);
-        list.add(user_sendrecord);
-        list.add(user_set);
+        initBaseData();
         if (SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().size() > 0)
             binding.tvLogin.setText(isLogin?SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().get(0).getUsername() : "点击登陆");
         adapter = new MySelfListAdapter(list, activity);
@@ -99,14 +89,39 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
         binding.tvLogin.setOnClickListener(this);
         binding.btIntoBoss.setOnClickListener(this);
         binding.bossInfo.setOnClickListener(this);
+        binding.bossSend.setOnClickListener(this);
+        binding.bossRequest.setOnClickListener(this);
+    }
+
+    private void initBaseData() {
+        list = new ArrayList<>();
+        DataModel user_selfinfo = new DataModel("个人信息", R.drawable.myinfo, 0);
+        DataModel user_mymessage = new DataModel("我的消息", R.drawable.message_1, 0);
+        DataModel user_mycollect = new DataModel("我的收藏", R.drawable.collect, 0);
+        DataModel user_sendrecord = new DataModel("投递记录", R.drawable.record, 0);
+        DataModel user_set = new DataModel("设置", R.drawable.set, 0);
+        list.add(user_selfinfo);
+        list.add(user_mymessage);
+        list.add(user_mycollect);
+        list.add(user_sendrecord);
+        list.add(user_set);
     }
 
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
             case 0: {
-                    isLogin = SpCommonUtils.getIsLogin();
+                isLogin = SpCommonUtils.getIsLogin();
+
+                if (isLogin) {
+                    if (SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().size() > 0)
+                        binding.tvLogin.setText(SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().get(0).getUsername());
+                }
+
+                if (isFirst && isLogin) {
                     ChangeWeigetEnable(isLogin);
+                    isFirst = false;
+                }
             }
             break;
             case 8: {
@@ -139,9 +154,8 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
                 webClient.addNotity(this);
             controller.addNotity(this);
         }
-        if (SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().size() > 0)
-            binding.tvLogin.setText(flag?SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().get(0).getUsername() : "点击登陆");
-        binding.tvLogin.setEnabled(flag);
+
+        binding.tvLogin.setEnabled(!flag);
         binding.btIntoBoss.setVisibility(flag ? View.VISIBLE : View.GONE);
         if (SpCommonUtils.getUserType() == 3 && flag) {
             binding.boss.setVisibility(View.VISIBLE);
@@ -171,6 +185,14 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
             break;
             case R.id.boss_info: {
                 (new BossInfoActivity()).inToActivity(activity);
+            }
+            break;
+            case R.id.boss_send: {
+
+            }
+            break;
+            case R.id.boss_request: {
+
             }
             break;
         }

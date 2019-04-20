@@ -1,29 +1,35 @@
 package com.schoolpartime.schoolpartime.presenter;
 
 import android.animation.ValueAnimator;
+
 import androidx.databinding.ViewDataBinding;
+
 import android.graphics.Color;
+
 import androidx.core.widget.NestedScrollView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Handler;
 import android.view.View;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.google.gson.Gson;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
-import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
-import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.LoopAdapter;
-import com.schoolpartime.schoolpartime.adapter.RecyclerAdapter;
+import com.schoolpartime.schoolpartime.adapter.WorkListAdapter;
 import com.schoolpartime.schoolpartime.databinding.FragmentMainBinding;
+import com.schoolpartime.schoolpartime.entity.WorkInfo;
+import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.net.interfacz.LikeWorkInfoServer;
+import com.schoolpartime.schoolpartime.net.interfacz.MainWorkInfoServer;
+import com.schoolpartime.schoolpartime.net.request.HttpRequest;
+import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
+import com.schoolpartime.schoolpartime.weiget.myListView.XrefershListviewListener;
 import com.zaaach.citypicker.CityPicker;
 import com.zaaach.citypicker.adapter.OnPickListener;
 import com.zaaach.citypicker.model.City;
@@ -31,18 +37,24 @@ import com.zaaach.citypicker.model.LocateState;
 import com.zaaach.citypicker.model.LocatedCity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AMapLocationListener {
+public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeListener,  View.OnClickListener, AMapLocationListener ,
+        XrefershListviewListener {
 
     private FragmentMainBinding binding;
     private SuperActivity activity;
     private int mscrollY;
     private boolean isScroll = false;
 
+    ArrayList<WorkInfo> workInfos = new ArrayList<>();
+
     //声明mlocationClient对象
     public AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
+    private WorkListAdapter adapter;
+    Gson gson = new Gson();
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -68,8 +80,7 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
 
                 LogUtil.d("City:" + aMapLocation.getCity());
 
-                binding.citypicker.setText("当前城市:"+aMapLocation.getCity());
-
+                binding.citypicker.setText("当前城市:" + aMapLocation.getCity());
 
 
             } else {
@@ -95,45 +106,57 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
     }
 
     private void init() {
-        setRefresh();
         openRollPageView();
         binding.fgMainScroll.setOnScrollChangeListener(this);
-        binding.rcyShow.setNestedScrollingEnabled(false);
-        binding.rcyShow.setLayoutManager(new LinearLayoutManager(activity));
         binding.citypicker.setOnClickListener(this);
-        binding.rcyShow.setAdapter(new RecyclerAdapter(activity, new RecyclerAdapter.MyOnItemClickListener() {   //设置adapter
-            @Override
-            public void onItemClick(View view) {
-                /**
-                 * 进入兼职详情页面
-                 */
-                (new DetailsInfoActivity()).inToActivity(activity);
-            }
+        initData(0);
 
-            @Override
-            public void onItemLongClick(View view) {
-                /**
-                 * 长按操作兼职列表
-                 */
+        //设置adapter
+        /**
+         * 进入兼职详情页面
+         */
+        adapter = new WorkListAdapter(workInfos,activity);
 
-            }
-        }));
+        binding.rcyShow.setAdapter(adapter);
+        binding.rcyShow.setXrefershListviewListener(this);
+    }
+
+    private void initData(long id) {
+        HttpRequest.request(HttpRequest.builder().create(LikeWorkInfoServer.class).getLikeWorkInfoNormal(id),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d("得到兼职信息----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            workInfos.clear();
+                            workInfos.addAll((ArrayList<WorkInfo>) resultModel.data);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到兼职信息----------失败");
+                    }
+                }, true);
     }
 
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
-            case 0:{
+            case 0: {
                 if (SpCommonUtils.getIsLogin()) {
                     binding.goLogin.setText("我订阅的职位");
+                    initData(SpCommonUtils.getUserId());
                 } else {
                     binding.goLogin.setText("立即登录");
                 }
             }
             break;
-            case 1:{
+            case 1: {
                 if (isScroll)
-                scroll_Start();
+                    scroll_Start();
             }
             default:
                 break;
@@ -141,24 +164,18 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
     }
 
     private void scroll_Start() {
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(mscrollY,0);
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(mscrollY, 0);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value = (int) animation.getAnimatedValue();
-                binding.fgMainScroll.scrollTo(0,value);
+                binding.fgMainScroll.scrollTo(0, value);
             }
         });
         valueAnimator.setDuration(1000);
         valueAnimator.start();
     }
 
-    private void setRefresh() {
-        binding.swipeLayout.setOnRefreshListener(this);
-        //设置样式刷新显示的位置
-        binding.swipeLayout.setProgressViewOffset(true, -10, 50);
-        binding.swipeLayout.setColorSchemeResources(R.color.swiperefresh_color1, R.color.swiperefresh_color2, R.color.swiperefresh_color3, R.color.swiperefresh_color4);
-    }
 
     private void openRollPageView() {
         binding.rollviewpager.setAdapter(new LoopAdapter(binding.rollviewpager));
@@ -169,20 +186,12 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
     @Override
     public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         mscrollY = scrollY;
-        if(scrollY > 800){
+        if (scrollY > 800) {
             isScroll = true;
         }
-        if (scrollY < 20){
+        if (scrollY < 20) {
             isScroll = false;
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        /**
-         * 逻辑
-         */
-        binding.swipeLayout.setRefreshing(false);
     }
 
     @Override
@@ -191,14 +200,12 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
         CityPicker.getInstance()
                 .setFragmentManager(activity.getSupportFragmentManager())  //此方法必须调用
                 .enableAnimation(true)  //启用动画效果
-//                .setAnimationStyle(anim)  //自定义动画
                 .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101"))  //APP自身已定位的城市，默认为null（定位失败）
-//                .setHotCities(hotCities)  //指定热门城市
                 .setOnPickListener(new OnPickListener() {
                     @Override
                     public void onPick(int position, City data) {
                         if (data != null)
-                        binding.citypicker.setText("当前城市:"+data.getName());
+                            binding.citypicker.setText("当前城市:" + data.getName() + "市");
                     }
 
                     @Override
@@ -215,5 +222,27 @@ public class FrgMainPre implements Presenter,NestedScrollView.OnScrollChangeList
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                binding.rcyShow.computeScroll();
+            }
+        }, 3000);
+    }
+
+    @Override
+    public void onLoadMore() {
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                binding.rcyShow.computeScroll();
+            }
+        }, 3000);
     }
 }

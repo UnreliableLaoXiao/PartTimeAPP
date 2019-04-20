@@ -74,6 +74,7 @@
         <activity android:name=".activity.RealChatActivity" />
         <activity android:name=".activity.BeginBossActivity" />
         <activity android:name=".activity.BossInfoActivity" />
+        <activity android:name=".activity.MyLoveTypeActivity" />
 
         <receiver
             android:name=".broadcast_receiver.PushBroadCastReceiver"

@@ -7,6 +7,9 @@ import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.RecyclerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityCollectionBinding;
+import com.schoolpartime.schoolpartime.entity.WorkInfo;
+
+import java.util.ArrayList;
 
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ public class MyCollectionPre implements Presenter, View.OnClickListener {
 
     ActivityCollectionBinding binding;
     SuperActivity activity;
+    ArrayList<WorkInfo> workInfos = new ArrayList<>();
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -26,7 +30,7 @@ public class MyCollectionPre implements Presenter, View.OnClickListener {
 
     private void init() {
         binding.mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        binding.mRecyclerView.setAdapter(new RecyclerAdapter(activity, new RecyclerAdapter.MyOnItemClickListener() {
+        RecyclerAdapter adapter = new RecyclerAdapter(workInfos,activity, new RecyclerAdapter.MyOnItemClickListener() {
             @Override
             public void onItemClick(View view) {
                 (new DetailsInfoActivity()).inToActivity(activity);
@@ -36,7 +40,8 @@ public class MyCollectionPre implements Presenter, View.OnClickListener {
             public void onItemLongClick(View view) {
 
             }
-        }));//设置adapter
+        });
+        binding.mRecyclerView.setAdapter(adapter);//设置adapter
 
         binding.userBack.setOnClickListener(this);
         binding.userChange.setOnClickListener(this);

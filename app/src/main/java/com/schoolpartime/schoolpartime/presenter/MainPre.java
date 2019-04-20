@@ -1,8 +1,11 @@
 package com.schoolpartime.schoolpartime.presenter;
 
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.ViewDataBinding;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
@@ -15,11 +18,14 @@ import android.view.View;
 import android.widget.RadioGroup;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.schoolpartime.dao.entity.UserInfo;
+import com.schoolpartime.dao.entity.WorkType;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
+import com.schoolpartime.schoolpartime.activity.SearchActivity;
 import com.schoolpartime.schoolpartime.event.NumberController;
 import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
@@ -27,6 +33,7 @@ import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
 import com.schoolpartime.schoolpartime.net.interfacz.NoReadSumServer;
 import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
+import com.schoolpartime.schoolpartime.net.interfacz.WorkTypeServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -56,15 +63,14 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         init();
     }
 
+    @SuppressLint("ResourceAsColor")
     private void init() {
         mFragmentList = MainActivity.getFragmentList();
         setDraws();
+        getWorkType();
         binding.badge.setVisibility(View.GONE);
-        binding.mainToobar.setTitle(mFragmentTagList[0]);
-        activity.setSupportActionBar(binding.mainToobar);
-        binding.mainToobar.setOnClickListener(this);
         mCurrentFragmen = mFragmentList.get(0);
-
+        binding.myToolBarTitle.setText(mFragmentTagList[0]);
         Log.d("TEST", "Click1: " + mCurrentFragmen);
         // 初始化首次进入时的Fragment
         mFm = activity.getSupportFragmentManager();
@@ -77,6 +83,33 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         transaction.commitAllowingStateLoss();
         binding.mainGp.setOnCheckedChangeListener(this);
         binding.netBar.setOnClickListener(this);
+        binding.myToolBar.setOnClickListener(this);
+        binding.myToolBarSearch.setOnClickListener(this);
+        binding.myToolBarScan.setOnClickListener(this);
+
+    }
+
+    private void getWorkType() {
+        HttpRequest.request(HttpRequest.builder().create(WorkTypeServer.class).
+                        getWorkTypes(),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        LogUtil.d("得到所有兼职类型----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            ArrayList<WorkType> workTypes = (ArrayList<WorkType>) resultModel.data;
+
+                            SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().deleteAll();
+                            SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().insertInTx(workTypes);
+                            LogUtil.d("添加所有兼职类型---------成功");
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到所有兼职类型----------失败", e);
+                    }
+                }, true);
     }
 
     @Override
@@ -191,7 +224,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     private void switchFragment(Fragment to, String tag) {
         if (to == null)
             return;
-        binding.mainToobar.setTitle(tag);
+        binding.myToolBarTitle.setText(tag);
         LogUtil.d("switchFragment: ");
         if (mCurrentFragmen != to) {
             FragmentTransaction transaction = mFm.beginTransaction();
@@ -211,7 +244,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.main_toobar: {
+            case R.id.my_tool_bar: {
                 if (index == 0) {
                     ((MainFragment) mCurrentFragmen).scroll_Start();
                 }
@@ -221,8 +254,25 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
 //
             }
             break;
+            case R.id.my_tool_bar_scan: {
+                int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA);
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
+                } else {
+                    Scan();
+                }
+            }
+            break;
+            case R.id.my_tool_bar_search: {
+                (new SearchActivity()).inToActivity(activity);
+            }
+            break;
         }
 
+    }
+
+    public void Scan() {
+        new IntentIntegrator(activity).initiateScan();
     }
 
     @Override

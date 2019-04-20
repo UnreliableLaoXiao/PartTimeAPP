@@ -8,6 +8,7 @@ import android.view.View;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.activity.ForgetPswActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
+import com.schoolpartime.schoolpartime.activity.MyLoveTypeActivity;
 import com.schoolpartime.schoolpartime.activity.RegisterActivity;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
@@ -49,6 +50,7 @@ public class IntentOnClickListener {
                     /**
                      * 职位选择
                      */
+                    (new MyLoveTypeActivity()).inToActivity(getActivityFromView(view));
                 }
             }
             break;

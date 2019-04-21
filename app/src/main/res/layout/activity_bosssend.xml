@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="#dfede5e5"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/likeblue"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="@string/back"
+                android:id="@+id/user_back"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="我发布的"
+                android:layout_centerInParent="true"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:src="@drawable/add"
+                android:id="@+id/add_work"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_height="30dp" />
+
+        </RelativeLayout>
+
+       <com.schoolpartime.schoolpartime.weiget.myListView.XrefershListview
+           android:layout_width="match_parent"
+           android:id="@+id/my_send"
+           android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</layout>

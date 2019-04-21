@@ -67,4 +67,6 @@ dependencies {
     //高德地图定位
     implementation 'com.amap.api:location:latest.integration'
     implementation 'com.amap.api:map2d:latest.integration'
+    //三级联动
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
 }

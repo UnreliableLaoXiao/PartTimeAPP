@@ -1,5 +1,6 @@
 package com.schoolpartime.schoolpartime.presenter;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,7 @@ import com.schoolpartime.schoolpartime.weiget.myListView.XrefershListviewListene
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrgSearchPre implements Presenter ,XrefershListviewListener {
+public class FrgSearchPre implements Presenter ,XrefershListviewListener, AdapterView.OnItemClickListener {
 
     private FragmentSearchBinding binding;
     private SuperActivity activity;
@@ -112,6 +113,8 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener {
 
             }
         });
+
+        binding.mRecyclerView.setOnItemClickListener(this);
     }
 
     private void initData(final int times) {
@@ -163,5 +166,12 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener {
     @Override
     public void onLoadMore() {
         initData(requestTimes);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("workinfo",workInfos.get(position));
+        (new DetailsInfoActivity()).inToActivity(activity,bundle);
     }
 }

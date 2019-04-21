@@ -75,6 +75,8 @@
         <activity android:name=".activity.BeginBossActivity" />
         <activity android:name=".activity.BossInfoActivity" />
         <activity android:name=".activity.MyLoveTypeActivity" />
+        <activity android:name=".activity.BossSendActivity" />
+        <activity android:name=".activity.NewWorkActivity" />
 
         <receiver
             android:name=".broadcast_receiver.PushBroadCastReceiver"

@@ -8,23 +8,24 @@ import android.graphics.Color;
 
 import androidx.core.widget.NestedScrollView;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.google.gson.Gson;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.LoopAdapter;
 import com.schoolpartime.schoolpartime.adapter.WorkListAdapter;
 import com.schoolpartime.schoolpartime.databinding.FragmentMainBinding;
 import com.schoolpartime.schoolpartime.entity.WorkInfo;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.interfacz.LikeWorkInfoServer;
-import com.schoolpartime.schoolpartime.net.interfacz.MainWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeListener,  View.OnClickListener, AMapLocationListener ,
-        XrefershListviewListener {
+        XrefershListviewListener, AdapterView.OnItemClickListener {
 
     private FragmentMainBinding binding;
     private SuperActivity activity;
@@ -54,7 +55,6 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
     public AMapLocationClient mlocationClient;
     public AMapLocationClientOption mLocationOption = null;
     private WorkListAdapter adapter;
-    Gson gson = new Gson();
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -112,10 +112,9 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
         initData(0);
 
         //设置adapter
-        /**
-         * 进入兼职详情页面
-         */
         adapter = new WorkListAdapter(workInfos,activity);
+
+        binding.rcyShow.setOnItemClickListener(this);
 
         binding.rcyShow.setAdapter(adapter);
         binding.rcyShow.setXrefershListviewListener(this);
@@ -244,5 +243,13 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
                 binding.rcyShow.computeScroll();
             }
         }, 3000);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("workinfo",workInfos.get(position));
+        (new DetailsInfoActivity()).inToActivity(activity,bundle);
+
     }
 }

@@ -10,6 +10,7 @@ import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.BeginBossActivity;
 import com.schoolpartime.schoolpartime.activity.BossInfoActivity;
+import com.schoolpartime.schoolpartime.activity.BossSendActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
 import com.schoolpartime.schoolpartime.activity.MyCollectionActivity;
 import com.schoolpartime.schoolpartime.activity.MyMessagesActivity;
@@ -188,7 +189,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
             }
             break;
             case R.id.boss_send: {
-
+                (new BossSendActivity()).inToActivity(activity);
             }
             break;
             case R.id.boss_request: {

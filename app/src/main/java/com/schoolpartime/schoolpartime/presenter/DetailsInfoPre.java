@@ -5,6 +5,7 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.databinding.ActivityDetailsBinding;
 import com.schoolpartime.schoolpartime.dialog.DialogUtil;
+import com.schoolpartime.schoolpartime.entity.WorkInfo;
 
 import androidx.databinding.ViewDataBinding;
 
@@ -22,6 +23,25 @@ public class DetailsInfoPre implements Presenter, View.OnClickListener {
     }
 
     private void init() {
+        WorkInfo workInfo = activity.getIntent().getParcelableExtra("workinfo");
+
+        binding.workTitle.setText(workInfo.getWorkTitle());
+        binding.workMoney.setText(workInfo.getMoney());
+        binding.workEndWay.setText(workInfo.getEnd_way());
+        binding.workCity.setText(workInfo.getCity());
+        binding.workContants.setText(workInfo.getContacts());
+        binding.workPhone.setText(workInfo.getContactsWay());
+        binding.workCreateTime.setText(workInfo.getCreateTime());
+        binding.workAddress.setText(workInfo.getAddress());
+        binding.workContext.setText(workInfo.getWorkContext());
+
+        if (workInfo.getWorkStatu() == 1) {
+            binding.tdcode.setEnabled(false);
+            binding.collecte.setEnabled(false);
+            binding.submitSend.setText("已下架，无法报名");
+            binding.submitSend.setEnabled(false);
+        }
+
         binding.collecte.setOnClickListener(this);
         binding.tdcode.setOnClickListener(this);
         binding.userBack.setOnClickListener(this);

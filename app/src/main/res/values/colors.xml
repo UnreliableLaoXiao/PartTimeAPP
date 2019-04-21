@@ -17,4 +17,6 @@
     <color name="green">#880099ff</color>
     <color name="text">#880099ff</color>
     <color name="likeblue">#7fe3ec</color>
+    <color name="mgreen">#8800FF00</color>
+    <color name="mred">#88FF0000</color>
 </resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="XXXX职位"
+        android:textSize="18sp"
+        android:id="@+id/work_name"
+        android:gravity="center"
+        android:layout_height="40dp" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_height="30dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="荆州"
+            android:id="@+id/work_city"
+            android:layout_marginLeft="5dp"
+            android:textSize="15sp"
+            android:layout_height="match_parent" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:text="200元/天"
+            android:layout_weight="1"
+            android:textColor="#FF0000"
+            android:textSize="17sp"
+            android:id="@+id/work_salary"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:text="月结"
+            android:id="@+id/work_end_type"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_height="match_parent" />
+        
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="详细地址"
+            android:layout_marginTop="70dp"
+            android:id="@+id/work_address"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:layout_height="40dp" />
+        
+        <TextView
+            android:layout_width="50dp"
+            android:id="@+id/work_statu"
+            android:text="@string/work_statu_no"
+            android:background="@color/mred"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_height="100dp" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

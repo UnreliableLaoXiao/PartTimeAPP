@@ -277,7 +277,4 @@ public class XrefershListview extends ListView implements AbsListView.OnScrollLi
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
     }
 
-
-
-
 }

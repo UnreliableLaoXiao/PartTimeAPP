@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.schoolpartime.dao.entity.City;
 import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.dao.entity.WorkType;
 import com.schoolpartime.schoolpartime.R;
@@ -31,6 +32,7 @@ import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
+import com.schoolpartime.schoolpartime.net.interfacz.CitysServer;
 import com.schoolpartime.schoolpartime.net.interfacz.NoReadSumServer;
 import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.WorkTypeServer;
@@ -67,7 +69,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     private void init() {
         mFragmentList = MainActivity.getFragmentList();
         setDraws();
-        getWorkType();
+
         binding.badge.setVisibility(View.GONE);
         mCurrentFragmen = mFragmentList.get(0);
         binding.myToolBarTitle.setText(mFragmentTagList[0]);
@@ -89,28 +91,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
 
     }
 
-    private void getWorkType() {
-        HttpRequest.request(HttpRequest.builder().create(WorkTypeServer.class).
-                        getWorkTypes(),
-                new RequestResult() {
-                    @Override
-                    public void success(ResultModel resultModel) {
-                        LogUtil.d("得到所有兼职类型----------ResultModel：" + resultModel.toString());
-                        if (resultModel.code == 200) {
-                            ArrayList<WorkType> workTypes = (ArrayList<WorkType>) resultModel.data;
 
-                            SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().deleteAll();
-                            SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().insertInTx(workTypes);
-                            LogUtil.d("添加所有兼职类型---------成功");
-                        }
-                    }
-
-                    @Override
-                    public void fail(Throwable e) {
-                        LogUtil.d("得到所有兼职类型----------失败", e);
-                    }
-                }, true);
-    }
 
     @Override
     public void notifyUpdate(int code) {

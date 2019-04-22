@@ -1,18 +1,17 @@
 package com.schoolpartime.schoolpartime.presenter;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.schoolpartime.schoolpartime.R;
+import com.schoolpartime.dao.entity.City;
+import com.schoolpartime.dao.entity.WorkType;
+import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 
 import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
-import com.schoolpartime.schoolpartime.adapter.RecyclerAdapter;
 import com.schoolpartime.schoolpartime.adapter.WorkListAdapter;
 import com.schoolpartime.schoolpartime.databinding.FragmentSearchBinding;
 import com.schoolpartime.schoolpartime.entity.WorkInfo;
@@ -46,24 +45,21 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener, Adapte
         // 给下拉列表添加适配器
         List<String> list_city = new ArrayList<>();
         List<String> list_type = new ArrayList<>();
-        List<String> list_other = new ArrayList<>();
 
-        list_city.add("不限");
-        for (int i = 0; i < activity.getResources().getStringArray(R.array.city).length; i++) {
-            list_city.add(activity.getResources().getStringArray(R.array.city)[i]);
+        ArrayList<WorkType> workTypes = (ArrayList<WorkType>) SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().loadAll();
+        ArrayList<City> cities = (ArrayList<City>) SchoolPartimeApplication.getmDaoSession().getCityDao().loadAll();
+
+        list_city.add("城市");
+        for (int i = 0; i < cities.size(); i++) {
+            list_city.add(cities.get(i).getCityName());
         }
-        list_type.add("不限");
-        for (int i = 0; i < activity.getResources().getStringArray(R.array.type).length; i++) {
-            list_type.add(activity.getResources().getStringArray(R.array.type)[i]);
-        }
-        list_other.add("不限");
-        for (int i = 0; i < activity.getResources().getStringArray(R.array.other).length; i++) {
-            list_other.add(activity.getResources().getStringArray(R.array.other)[i]);
+        list_type.add("类型");
+        for (int i = 0; i < workTypes.size(); i++) {
+            list_type.add(workTypes.get(i).getName());
         }
 
         binding.searchCity.attachDataSource(list_city);
         binding.searchWorktype.attachDataSource(list_type);
-        binding.searchMore.attachDataSource(list_other);
 
         initData(requestTimes);
 
@@ -101,19 +97,6 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener, Adapte
 
             }
         });
-
-        binding.searchMore.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         binding.mRecyclerView.setOnItemClickListener(this);
     }
 

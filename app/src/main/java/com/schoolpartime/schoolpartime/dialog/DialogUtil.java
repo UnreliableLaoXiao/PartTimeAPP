@@ -41,6 +41,20 @@ public class DialogUtil {
         builder.create().show();
     }
 
+    public static void select2Dialog(Context context, String title, String message, DialogInterface.OnClickListener listener){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("确定",listener);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.create().show();
+    }
+
     public static void showQRCode(Context context,String data) {
         ImageView imageView = new ImageView(context);
         Bitmap mBitmap = QRCodeUtil.createQRCodeBitmap(data, 480, 480);

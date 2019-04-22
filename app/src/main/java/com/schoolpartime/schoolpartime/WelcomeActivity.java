@@ -10,16 +10,23 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.schoolpartime.dao.entity.SearchTitle;
+import com.schoolpartime.dao.entity.City;
+import com.schoolpartime.dao.entity.WorkType;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.adapter.ViewPagerAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeBinding;
 import com.schoolpartime.schoolpartime.databinding.ActivityWelcomeOnceBinding;
+import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.net.interfacz.CitysServer;
+import com.schoolpartime.schoolpartime.net.interfacz.WorkTypeServer;
+import com.schoolpartime.schoolpartime.net.request.HttpRequest;
+import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.schoolpartime.weiget.data.Views;
 import com.schoolpartime.update.util.FileUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,6 +60,54 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
                 initViews();
             }
         }
+
+        getWorkType();
+        getCitys();
+
+    }
+
+    private void getCitys() {
+        HttpRequest.request(HttpRequest.builder().create(CitysServer.class).getCitys(),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        LogUtil.d("得到所有城市----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            ArrayList<City> workTypes = (ArrayList<City>) resultModel.data;
+                            SchoolPartimeApplication.getmDaoSession().getCityDao().deleteAll();
+                            SchoolPartimeApplication.getmDaoSession().getCityDao().insertInTx(workTypes);
+                            LogUtil.d("添加所有城市---------成功");
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到所有城市----------失败", e);
+                    }
+                }, true);
+    }
+
+    private void getWorkType() {
+        HttpRequest.request(HttpRequest.builder().create(WorkTypeServer.class).
+                        getWorkTypes(),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        LogUtil.d("得到所有兼职类型----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            ArrayList<WorkType> workTypes = (ArrayList<WorkType>) resultModel.data;
+
+                            SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().deleteAll();
+                            SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().insertInTx(workTypes);
+                            LogUtil.d("添加所有兼职类型---------成功");
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到所有兼职类型----------失败", e);
+                    }
+                }, true);
     }
 
 

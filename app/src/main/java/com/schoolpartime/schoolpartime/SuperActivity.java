@@ -125,10 +125,23 @@ public class SuperActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
+    public void inToActivityForResult(Activity activity,int request){
+        Intent intent = new Intent(activity , this.getClass());
+        activity.startActivityForResult(intent,request);
+    }
+
     public void inToActivity(Activity activity,Bundle data){
         Intent intent = new Intent(activity , this.getClass());
         intent.putExtras(data);
         activity.startActivity(intent);
     }
+
+    public void inToActivityForResult(Activity activity,Bundle data,int request){
+        Intent intent = new Intent(activity , this.getClass());
+        intent.putExtras(data);
+        activity.startActivityForResult(intent,request);
+    }
+
+
 
 }

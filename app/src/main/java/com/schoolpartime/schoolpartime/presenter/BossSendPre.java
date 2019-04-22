@@ -1,5 +1,7 @@
 package com.schoolpartime.schoolpartime.presenter;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,10 +12,13 @@ import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.activity.NewWorkActivity;
 import com.schoolpartime.schoolpartime.adapter.WorkListWithStatuAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityBosssendBinding;
+import com.schoolpartime.schoolpartime.dialog.DialogUtil;
 import com.schoolpartime.schoolpartime.entity.WorkInfo;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.interfacz.MainWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.MySendWorkInfoServer;
+import com.schoolpartime.schoolpartime.net.interfacz.SendNewWorkInfoServer;
+import com.schoolpartime.schoolpartime.net.interfacz.SoldOutWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -85,6 +90,17 @@ public class BossSendPre implements Presenter, View.OnClickListener, XrefershLis
 
     }
 
+    public void notifyUpdate(WorkInfo workInfo) {
+        workInfos.add(workInfo);
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -93,11 +109,10 @@ public class BossSendPre implements Presenter, View.OnClickListener, XrefershLis
             }
             break;
             case R.id.add_work: {
-                (new NewWorkActivity()).inToActivity(activity);
+                (new NewWorkActivity()).inToActivityForResult(activity,1);
             }
             break;
         }
-
     }
 
     @Override
@@ -113,12 +128,53 @@ public class BossSendPre implements Presenter, View.OnClickListener, XrefershLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("workinfo",workInfos.get(position));
+        bundle.putParcelable("workinfo",workInfos.get(position-1));
         (new DetailsInfoActivity()).inToActivity(activity,bundle);
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return false;
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+        if (workInfos.get(position-1).getWorkStatu() == 0){
+            DialogUtil.select2Dialog(activity, "提示：", "确定将此兼职下架？", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    soldOutWorkInfo(position-1);
+                }
+            });
+        }
+        return true;
+    }
+
+
+
+    private void soldOutWorkInfo(final int position) {
+
+        activity.show("正在发布...");
+        HttpRequest.request(HttpRequest.builder().create(SoldOutWorkInfoServer.class).soldOutWorkInfo(workInfos.get(position).getId()),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d(" 下架兼职信息----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            activity.showResult(binding.lly,"下架成功!");
+                            workInfos.get(position).setWorkStatu(1);
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        } else {
+                            activity.showResult(binding.lly,"下架失败!");
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        activity.dismiss();
+                        activity.showResult(binding.lly,"下架失败!");
+                    }
+                }, true);
     }
 }

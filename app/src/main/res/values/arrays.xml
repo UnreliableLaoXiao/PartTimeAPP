@@ -1,33 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string-array name="city">
-        <item>荆州市</item>
-        <item>余姚市</item>
-        <item>荆州市</item>
-        <item>荆州市</item>
-        <item>荆州市</item>
-        <item>荆州市</item>
-        <item>余姚市</item>
-        <item>荆州市</item>
-        <item>荆州市</item>
-        <item>荆州市</item>
+    <string-array name="end_way">
+        <item>日结</item>
+        <item>周结</item>
+        <item>月结</item>
     </string-array>
 
-    <string-array name="type">
-        <item>学生兼职</item>
-        <item>传单派发</item>
-        <item>礼仪|模特</item>
-        <item>服务员</item>
-        <item>促销|导购</item>
-        <item>钟点工</item>
-        <item>家教</item>
-        <item>艺术老师</item>
-    </string-array>
-
-    <string-array name="other">
-        <item>男</item>
-        <item>女</item>
+    <string-array name="money_per">
+        <item>/日</item>
+        <item>/周</item>
+        <item>/月</item>
     </string-array>
 
 </resources>

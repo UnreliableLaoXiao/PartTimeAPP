@@ -176,7 +176,7 @@ public class WorkInfo implements Parcelable {
     @Override
     public String toString() {
         return "WorkInfo{" +
-                "id=" + id +
+                "  id=" + id +
                 ", bossId=" + bossId +
                 ", workTypeId=" + workTypeId +
                 ", workTitle='" + workTitle + '\'' +

@@ -88,10 +88,11 @@
 
         </receiver>
 
-        <service android:name="com.amap.api.location.APSService"></service>
+
         <service android:name=".service.ChatMessageService" />
         <service android:name=".service.BossTestService" />
 
+        <service android:name="com.amap.api.location.APSService"></service>
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="62b4cd3ee8fe1ba95b5c748c8fafb75b"/>

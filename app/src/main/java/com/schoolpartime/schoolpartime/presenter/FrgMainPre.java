@@ -248,7 +248,7 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("workinfo",workInfos.get(position));
+        bundle.putParcelable("workinfo",workInfos.get(position-1));
         (new DetailsInfoActivity()).inToActivity(activity,bundle);
 
     }

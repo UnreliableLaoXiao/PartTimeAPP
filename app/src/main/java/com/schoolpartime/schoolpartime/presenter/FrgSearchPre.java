@@ -17,6 +17,8 @@ import com.schoolpartime.schoolpartime.databinding.FragmentSearchBinding;
 import com.schoolpartime.schoolpartime.entity.WorkInfo;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.interfacz.MainWorkInfoServer;
+import com.schoolpartime.schoolpartime.net.interfacz.OtherSearchServer;
+import com.schoolpartime.schoolpartime.net.interfacz.TitleSearchServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -33,6 +35,13 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener, Adapte
     ArrayList<WorkInfo> workInfos = new ArrayList<>();
     private volatile int requestTimes = 0;
 
+    private int select_type = 0;
+    private String select_city = "";
+    private ArrayList<WorkType> workTypes;
+    private ArrayList<City> cities;
+    private List<String> list_city;
+    private List<String> list_type;
+
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
         this.binding = (FragmentSearchBinding) binding;
@@ -43,11 +52,11 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener, Adapte
     private void init() {
 
         // 给下拉列表添加适配器
-        List<String> list_city = new ArrayList<>();
-        List<String> list_type = new ArrayList<>();
+        list_city = new ArrayList<>();
+        list_type = new ArrayList<>();
 
-        ArrayList<WorkType> workTypes = (ArrayList<WorkType>) SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().loadAll();
-        ArrayList<City> cities = (ArrayList<City>) SchoolPartimeApplication.getmDaoSession().getCityDao().loadAll();
+        workTypes = (ArrayList<WorkType>) SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().loadAll();
+        cities = (ArrayList<City>) SchoolPartimeApplication.getmDaoSession().getCityDao().loadAll();
 
         list_city.add("城市");
         for (int i = 0; i < cities.size(); i++) {
@@ -73,23 +82,35 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener, Adapte
         binding.mRecyclerView.setXrefershListviewListener(this);
 
 
-
         binding.searchCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                if (position > 0) {
+                    select_city = cities.get(position-1).getCityName();
+                    LogUtil.d("选择城市为："+cities.get(position-1).getCityName());
+                }else {
+                    select_city = "";
+                    LogUtil.d("未选择城市为：");
+                }
+                searchByOther(select_type,select_city);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
         binding.searchWorktype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                if (position > 0){
+                    select_type = workTypes.get(position-1).getId();
+                    LogUtil.d("选择类型为："+workTypes.get(position-1).getName());
+                }else {
+                    select_type = 0;
+                    LogUtil.d("未选择类型为：");
+                }
+                searchByOther(select_type,select_city);
             }
 
             @Override
@@ -98,6 +119,36 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener, Adapte
             }
         });
         binding.mRecyclerView.setOnItemClickListener(this);
+    }
+
+    private void searchByOther(int select_type, String select_city) {
+        LogUtil.d("选择条件为："+select_type + "----------" + select_city);
+        activity.show("正在加载...");
+        HttpRequest.request(HttpRequest.builder().create(OtherSearchServer.class).getSearchWorkInfo(select_city,select_type),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d(" 搜索兼职信息----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            LogUtil.d("查找成功!");
+                            workInfos.clear();
+                            workInfos.addAll((ArrayList<WorkInfo>)resultModel.data);
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        activity.dismiss();
+                        LogUtil.d("查找失败!");
+                    }
+                }, true);
     }
 
     private void initData(final int times) {

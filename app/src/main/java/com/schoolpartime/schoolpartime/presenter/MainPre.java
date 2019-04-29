@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.schoolpartime.dao.entity.City;
+import com.schoolpartime.dao.entity.UserCollect;
 import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.dao.entity.WorkType;
 import com.schoolpartime.schoolpartime.R;
@@ -33,6 +34,7 @@ import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
 import com.schoolpartime.schoolpartime.net.interfacz.CitysServer;
+import com.schoolpartime.schoolpartime.net.interfacz.GetCollectWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.NoReadSumServer;
 import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.WorkTypeServer;
@@ -109,6 +111,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                     controller.addNotity(this);
                     getUserInfo();
                     getNoreadSum();
+                    getUserCollect();
                     isFirst = false;
                 }
             }
@@ -120,6 +123,28 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
             break;
         }
 
+    }
+
+    private void getUserCollect() {
+        HttpRequest.request(HttpRequest.builder().create(GetCollectWorkInfoServer.class).
+                        getCollectWork(SpCommonUtils.getUserId()),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        LogUtil.d("得到收藏的兼职----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            SchoolPartimeApplication.getmDaoSession().getUserCollectDao().deleteAll();
+                            ArrayList<UserCollect> userCollects = (ArrayList<UserCollect>) resultModel.data;
+                            SchoolPartimeApplication.getmDaoSession().getUserCollectDao().insertInTx(userCollects);
+                            LogUtil.d("收藏兼职同步成功");
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到收藏的兼职----------失败", e);
+                    }
+                }, true);
     }
 
     private void getNoreadSum() {

@@ -78,7 +78,8 @@ public class WebClient extends WebSocketClient{
         new Thread(){
             @Override
             public void run() {
-                while (!isConnected){
+                int index = 0 ;
+                while (!isConnected && index++ <3){
                     try {
                         Thread.sleep(2000);
                         showLog("重新连接->");

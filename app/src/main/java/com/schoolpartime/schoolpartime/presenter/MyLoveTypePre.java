@@ -1,5 +1,6 @@
 package com.schoolpartime.schoolpartime.presenter;
 
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -8,7 +9,13 @@ import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.adapter.MyLoveTypeAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityMyLoveTypeBinding;
+import com.schoolpartime.schoolpartime.dialog.DialogUtil;
+import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.net.interfacz.SetLikeTypeServer;
+import com.schoolpartime.schoolpartime.net.request.HttpRequest;
+import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
+import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
 
@@ -118,6 +125,36 @@ public class MyLoveTypePre implements Presenter, View.OnClickListener {
     }
 
     private void getILikeType() {
+        activity.show("正在修改");
+        HttpRequest.request(HttpRequest.builder().create(SetLikeTypeServer.class).
+                        setLikeType(SpCommonUtils.getUserId(),likeTypes[0],likeTypes[1],likeTypes[2]),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d("修改喜好----------ResultModel："+resultModel.toString());
+                        if (resultModel.code == 200) {
+                            activity.showResult(binding.rly,"修改成功！");
+                            DialogUtil.select2Dialog(activity, "提示：", "修改成功？", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+
+
+                                }
+                            });
+                        } else {
+                            activity.showResult(binding.rly,"修改失败！");
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        e.printStackTrace();
+                        activity.showResult(binding.rly,"修改异常！");
+                        activity.dismiss();
+                    }
+                },true);
     }
 
     private int getLikeTypesSize() {

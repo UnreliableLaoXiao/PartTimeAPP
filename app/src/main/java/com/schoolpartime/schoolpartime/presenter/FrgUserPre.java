@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
@@ -18,11 +19,15 @@ import com.schoolpartime.schoolpartime.activity.SendRecordActivity;
 import com.schoolpartime.schoolpartime.activity.SettingActivity;
 import com.schoolpartime.schoolpartime.activity.UserInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.MySelfListAdapter;
+import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.event.LoginStateController;
 import com.schoolpartime.schoolpartime.event.NumberController;
-import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.FragmentUserBinding;
 import com.schoolpartime.schoolpartime.dialog.DialogUtil;
 import com.schoolpartime.schoolpartime.entity.DataModel;
+import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
+import com.schoolpartime.schoolpartime.net.request.HttpRequest;
+import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
@@ -31,17 +36,15 @@ import java.util.List;
 
 import androidx.databinding.ViewDataBinding;
 
-public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.NotifyMessage, NumberController.NotifyNumber {
+public class FrgUserPre implements Presenter, View.OnClickListener,  NumberController.NotifyNumber ,LoginStateController.NotifyLoginState,
+        AdapterView.OnItemClickListener {
 
     private Activity activity;
     private FragmentUserBinding binding;
-    private boolean isLogin;
-    private boolean isFirst = true;
 
-    WebClient webClient;
-    NumberController controller;
+
     private MySelfListAdapter adapter;
-    private List<DataModel> list;
+    private List<DataModel> list = new ArrayList<>();
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -51,42 +54,12 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
     }
 
     private void init() {
-        isLogin = SpCommonUtils.getIsLogin();
+        NumberController.getInstance().addNotity(this);
+        LoginStateController.getInstance().addNotity(this);
         initBaseData();
-        if (SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().size() > 0)
-            binding.tvLogin.setText(isLogin?SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().get(0).getUsername() : "点击登陆");
         adapter = new MySelfListAdapter(list, activity);
         binding.listUser.setAdapter(adapter);
-        binding.listUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (isLogin || position == 4) {
-                    switch (position) {
-                        case 0: {
-                            (new UserInfoActivity()).inToActivity(activity);
-                        }
-                        break;
-                        case 1: {
-                            (new MyMessagesActivity()).inToActivity(activity);
-                        }
-                        break;
-                        case 2: {
-                            (new MyCollectionActivity()).inToActivity(activity);
-                        }
-                        break;
-                        case 3: {
-                            (new SendRecordActivity()).inToActivity(activity);
-                        }
-                        break;
-                        case 4: {
-                            (new SettingActivity()).inToActivity(activity);
-                        }
-                        break;
-                    }
-                }
-            }
-        });
+        binding.listUser.setOnItemClickListener(this);
         binding.tvLogin.setOnClickListener(this);
         binding.btIntoBoss.setOnClickListener(this);
         binding.bossInfo.setOnClickListener(this);
@@ -95,7 +68,6 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
     }
 
     private void initBaseData() {
-        list = new ArrayList<>();
         DataModel user_selfinfo = new DataModel("个人信息", R.drawable.myinfo, 0);
         DataModel user_mymessage = new DataModel("我的消息", R.drawable.message_1, 0);
         DataModel user_mycollect = new DataModel("我的收藏", R.drawable.collect, 0);
@@ -111,18 +83,10 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
-            case 0: {
-                isLogin = SpCommonUtils.getIsLogin();
 
-                if (isLogin) {
-                    if (SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().size() > 0)
-                        binding.tvLogin.setText(SchoolPartimeApplication.getmDaoSession().getUserInfoDao().loadAll().get(0).getUsername());
-                }
-
-                if (isFirst && isLogin) {
-                    ChangeWeigetEnable(isLogin);
-                    isFirst = false;
-                }
+            case 6:{
+                NumberController.getInstance().removeNotity(this);
+                LoginStateController.getInstance().removeNotity(this);
             }
             break;
             case 8: {
@@ -132,36 +96,8 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
                 }
             }
             break;
-            case 6: {
-                webClient.removeNotity(this);
-                controller.removeNotity(this);
-            }
-            break;
         }
 
-    }
-
-    /**
-     * 登录成功时会被调用
-     *
-     * @param flag
-     */
-    private void ChangeWeigetEnable(boolean flag) {
-        if (flag){
-            webClient = WebClient.getInstance();
-            controller = NumberController.getInstance();
-
-            if (webClient != null)
-                webClient.addNotity(this);
-            controller.addNotity(this);
-        }
-
-        binding.tvLogin.setEnabled(!flag);
-        binding.btIntoBoss.setVisibility(flag ? View.VISIBLE : View.GONE);
-        if (SpCommonUtils.getUserType() == 3 && flag) {
-            binding.boss.setVisibility(View.VISIBLE);
-            binding.btIntoBoss.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -201,12 +137,6 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
     }
 
     @Override
-    public void notify(String mes) {
-        LogUtil.d("Frag 收到消息通知");
-        change(1);
-    }
-
-    @Override
     public void change(int change) {
         LogUtil.d("Frag number is " + change);
         list.get(1).number += change;
@@ -217,5 +147,88 @@ public class FrgUserPre implements Presenter, View.OnClickListener, WebClient.No
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void loginStateChange(boolean state) {
+        if (state)
+            getUserInfo();
+        else
+            binding.tvLogin.setText("点击登陆");
+        binding.tvLogin.setEnabled(!state);
+
+        if (SpCommonUtils.getUserType() == 3) {
+            binding.boss.setVisibility(View.VISIBLE);
+            binding.btIntoBoss.setVisibility(View.GONE);
+        }else{
+            binding.btIntoBoss.setVisibility(state ? View.VISIBLE : View.GONE);
+        }
+
+        if (!state){
+            binding.boss.setVisibility(View.GONE);
+            list.get(1).number = 0;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+    }
+
+    private void getUserInfo() {
+        LogUtil.d("请求登录用户信息");
+        HttpRequest.request(HttpRequest.builder().create(UserInfoServer.class).
+                        getUserInfoServer(SpCommonUtils.getUserId()),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        if (resultModel.code == 200) {
+                            LogUtil.d("请求登录用户信息成功");
+                            UserInfo userInfo = (UserInfo) resultModel.data;
+                            SchoolPartimeApplication.getmDaoSession().getUserInfoDao().insert(userInfo);
+                            binding.tvLogin.setText(userInfo.getUsername());
+                            LogUtil.d("数据库更新用户信息----------成功：" + userInfo.toString());
+                        } else {
+                            LogUtil.d("请求登录用户信息失败");
+                            SpCommonUtils.setIsLogin(false);
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("请求登录用户信息异常",e);
+                        SpCommonUtils.setIsLogin(false);
+                    }
+                }, true);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (SpCommonUtils.getIsLogin() || position == 4) {
+            switch (position) {
+                case 0: {
+                    (new UserInfoActivity()).inToActivity(activity);
+                }
+                break;
+                case 1: {
+                    (new MyMessagesActivity()).inToActivity(activity);
+                }
+                break;
+                case 2: {
+                    (new MyCollectionActivity()).inToActivity(activity);
+                }
+                break;
+                case 3: {
+                    (new SendRecordActivity()).inToActivity(activity);
+                }
+                break;
+                case 4: {
+                    (new SettingActivity()).inToActivity(activity);
+                }
+                break;
+            }
+        }
     }
 }

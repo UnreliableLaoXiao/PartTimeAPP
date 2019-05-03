@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 
 public class ChatMessageService extends Service {
 
+    private MessageBind bind;
+
     @Override
     public void onCreate() {
         LogUtil.d("初始聊天服务....成功");
@@ -28,7 +30,21 @@ public class ChatMessageService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        MessageBind bind = new MessageBind();
+        LogUtil.d("绑定聊天服务....成功");
+        bind = new MessageBind();
         return bind;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        LogUtil.d("解绑聊天服务....成功");
+        return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        LogUtil.d("停止聊天服务....成功");
+        bind.close(888);
+        super.onDestroy();
     }
 }

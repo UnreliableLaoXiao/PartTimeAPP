@@ -37,7 +37,7 @@ public class UserFragment extends Fragment{
                              Bundle savedInstanceState) {
         FragmentUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
         pre.attach(binding, (SuperActivity) getActivity());
-        //注册广播，用于退出程序
+        //注册广播，用于监听商家审核的状态
         IntentFilter filter = new IntentFilter();
         filter.addAction(SYSTEM_EXIT);
         receiver = new MyReceiver();
@@ -53,33 +53,9 @@ public class UserFragment extends Fragment{
     }
 
     @Override
-    public void onResume() {
-        pre.notifyUpdate(0);
-        LogUtil.d("FragUser onResume");
-        super.onResume();
-
-    }
-
-    @Override
-    public void onPause() {
-        pre.notifyUpdate(0);
-        LogUtil.d("FragUser onPause");
-        super.onPause();
-    }
-
-    @Override
     public void onDestroy() {
         pre.notifyUpdate(6);
         getActivity().unregisterReceiver(receiver);
         super.onDestroy();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (hidden) {
-            pre.notifyUpdate(0);
-        } else {
-            pre.notifyUpdate(0);
-        }
     }
 }

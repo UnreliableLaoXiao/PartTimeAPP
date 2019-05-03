@@ -89,12 +89,6 @@ public class MainActivity extends SuperActivity {
     }
 
     @Override
-    protected void onResume() {
-        pre.notifyUpdate(7);
-        super.onResume();
-    }
-
-    @Override
     protected void onDestroy() {
         pre.notifyUpdate(8);
         super.onDestroy();

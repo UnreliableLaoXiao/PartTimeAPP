@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.schoolpartime.schoolpartime.entity.Message;
+import com.schoolpartime.schoolpartime.event.NumberController;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import org.java_websocket.client.WebSocketClient;
@@ -54,6 +55,7 @@ public class WebClient extends WebSocketClient{
                 /**
                  * 此处为聊天message
                  */
+                NumberController.getInstance().NotifyAll(1);
                 for (NotifyMessage notifyMessage:messages){
                     notifyMessage.notify(mes);
                 }
@@ -74,6 +76,10 @@ public class WebClient extends WebSocketClient{
     public void onClose(int code, String reason, boolean remote) {
         isConnected = false;
         showLog("onClose->"+reason);
+        if (code == 888){
+            LogUtil.d("关闭WebClient成功");
+            return;
+        }
         LogUtil.d("重新连接服务器");
         new Thread(){
             @Override

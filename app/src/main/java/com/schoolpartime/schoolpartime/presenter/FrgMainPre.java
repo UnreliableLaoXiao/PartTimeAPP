@@ -25,6 +25,7 @@ import com.schoolpartime.schoolpartime.adapter.WorkListAdapter;
 import com.schoolpartime.schoolpartime.databinding.FragmentMainBinding;
 import com.schoolpartime.schoolpartime.entity.WorkInfo;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.event.LoginStateController;
 import com.schoolpartime.schoolpartime.net.interfacz.LikeWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeListener,  View.OnClickListener, AMapLocationListener ,
-        XrefershListviewListener, AdapterView.OnItemClickListener {
+        XrefershListviewListener, AdapterView.OnItemClickListener ,LoginStateController.NotifyLoginState {
 
     private FragmentMainBinding binding;
     private SuperActivity activity;
@@ -118,47 +119,24 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
 
         binding.rcyShow.setAdapter(adapter);
         binding.rcyShow.setXrefershListviewListener(this);
+
+        LoginStateController.getInstance().addNotity(this);
+
     }
 
-    private void initData(long id) {
-        HttpRequest.request(HttpRequest.builder().create(LikeWorkInfoServer.class).getLikeWorkInfoNormal(id),
-                new RequestResult() {
-                    @Override
-                    public void success(ResultModel resultModel) {
-                        activity.dismiss();
-                        LogUtil.d("得到兼职信息----------ResultModel：" + resultModel.toString());
-                        if (resultModel.code == 200) {
-                            workInfos.clear();
-                            workInfos.addAll((ArrayList<WorkInfo>) resultModel.data);
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
 
-                    @Override
-                    public void fail(Throwable e) {
-                        LogUtil.d("得到兼职信息----------失败");
-                    }
-                }, true);
-    }
 
     @Override
     public void notifyUpdate(int code) {
         switch (code) {
-            case 0: {
-                if (SpCommonUtils.getIsLogin()) {
-                    binding.goLogin.setText("我订阅的职位");
-                    initData(SpCommonUtils.getUserId());
-                } else {
-                    binding.goLogin.setText("立即登录");
-                }
-            }
-            break;
             case 1: {
                 if (isScroll)
                     scroll_Start();
             }
-            default:
-                break;
+            break;
+            case 8: {
+                LoginStateController.getInstance().removeNotity(this);
+            }
         }
     }
 
@@ -195,33 +173,33 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
 
     @Override
     public void onClick(View v) {
+            CityPicker.getInstance()
+                    .setFragmentManager(activity.getSupportFragmentManager())  //此方法必须调用
+                    .enableAnimation(true)  //启用动画效果
+                    .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101"))  //APP自身已定位的城市，默认为null（定位失败）
+                    .setOnPickListener(new OnPickListener() {
+                        @Override
+                        public void onPick(int position, City data) {
+                            if (data != null)
+                                binding.citypicker.setText("当前城市:" + data.getName() + "市");
 
-        CityPicker.getInstance()
-                .setFragmentManager(activity.getSupportFragmentManager())  //此方法必须调用
-                .enableAnimation(true)  //启用动画效果
-                .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101"))  //APP自身已定位的城市，默认为null（定位失败）
-                .setOnPickListener(new OnPickListener() {
-                    @Override
-                    public void onPick(int position, City data) {
-                        if (data != null)
-                            binding.citypicker.setText("当前城市:" + data.getName() + "市");
-                    }
+                        }
 
-                    @Override
-                    public void onLocate() {
-                        //开始定位，这里模拟一下定位
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                //定位完成之后更新数据
-                                CityPicker.getInstance()
-                                        .locateComplete(new LocatedCity("深圳", "广东", "101280601"), LocateState.SUCCESS);
-                            }
-                        }, 2000);
-                    }
-                })
-                .show();
-    }
+                        @Override
+                        public void onLocate() {
+                            //开始定位，这里模拟一下定位
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //定位完成之后更新数据
+                                    CityPicker.getInstance()
+                                            .locateComplete(new LocatedCity("深圳", "广东", "101280601"), LocateState.SUCCESS);
+                                }
+                            }, 2000);
+                        }
+                    })
+                    .show();
+        }
 
     @Override
     public void onRefresh() {
@@ -251,5 +229,40 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
         bundle.putParcelable("workinfo",workInfos.get(position-1));
         (new DetailsInfoActivity()).inToActivity(activity,bundle);
 
+    }
+
+    @Override
+    public void loginStateChange(boolean state) {
+        if (state) {
+            binding.goLogin.setText("我订阅的职位");
+            initData(SpCommonUtils.getUserId());
+        } else {
+            binding.goLogin.setText("立即登录");
+        }
+    }
+
+    /**
+     * 根据爱好推荐兼职
+     * @param id
+     */
+    private void initData(long id) {
+        HttpRequest.request(HttpRequest.builder().create(LikeWorkInfoServer.class).getLikeWorkInfoNormal(id),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d("得到兼职信息----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            workInfos.clear();
+                            workInfos.addAll((ArrayList<WorkInfo>) resultModel.data);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到兼职信息----------失败");
+                    }
+                }, true);
     }
 }

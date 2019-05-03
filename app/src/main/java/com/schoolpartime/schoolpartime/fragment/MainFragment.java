@@ -32,11 +32,10 @@ public class MainFragment extends Fragment{
         return binding.getRoot();
     }
 
-
     @Override
-    public void onResume() {
-        super.onResume();
-        pre.notifyUpdate(0);
+    public void onDestroy() {
+        pre.notifyUpdate(8);
+        super.onDestroy();
     }
 
     public void scroll_Start() {

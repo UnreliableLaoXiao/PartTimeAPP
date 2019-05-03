@@ -31,9 +31,9 @@ public class LoginStateController {
         notifyLoginStates.add(notifyNumber);
     }
 
-    public void NotifyAll(boolean state){
+    public void NotifyAll(boolean loginer){
         for (NotifyLoginState notifyNumber:notifyLoginStates){
-            notifyNumber.loginStateChange(state);
+            notifyNumber.loginStateChange(loginer);
         }
     }
 

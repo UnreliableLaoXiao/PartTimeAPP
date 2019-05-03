@@ -23,8 +23,8 @@ public class SettingActivity extends SuperActivity{
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        pre.notifyUpdate(3);
+    protected void onDestroy() {
+        pre.notifyUpdate(8);
+        super.onDestroy();
     }
 }

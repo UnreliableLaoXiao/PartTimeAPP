@@ -21,6 +21,7 @@ import com.schoolpartime.schoolpartime.net.interfacz.CitysServer;
 import com.schoolpartime.schoolpartime.net.interfacz.WorkTypeServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.util.InfoUtil;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.schoolpartime.weiget.data.Views;
@@ -44,13 +45,7 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        SpCommonUtils.setIsLogin(false);
-        SpCommonUtils.setUserId(0);
-        SpCommonUtils.setUserType(0);
-        SchoolPartimeApplication.getmDaoSession().getUserInfoDao().deleteAll();
-        SchoolPartimeApplication.getmDaoSession().getRequestWorkDao().deleteAll();
-        SchoolPartimeApplication.getmDaoSession().getUserCollectDao().deleteAll();
-        LogUtil.d("数据初始化--------》成功");
+        InfoUtil.clearAllInfo();
         if (!SpCommonUtils.getOnceStart()) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);
             if(FileUtil.verifyStoragePermissions(this)){

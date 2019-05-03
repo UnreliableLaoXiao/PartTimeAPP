@@ -46,13 +46,12 @@ public class HttpRequest {
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtil.d("Request请求失败---------------------------",e);
                         result.fail(e);
                     }
 
                     @Override
                     public void onNext(ResultModel resultModel) {
-                        LogUtil.d("Request请求成功---------------------------" );
+                        LogUtil.d("----------ResultModel：" + resultModel.toString());
                         result.success(resultModel);
                     }
                 });

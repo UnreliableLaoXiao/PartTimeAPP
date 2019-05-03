@@ -19,27 +19,21 @@ import android.widget.RadioGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.schoolpartime.dao.entity.City;
 import com.schoolpartime.dao.entity.RequestWork;
 import com.schoolpartime.dao.entity.UserCollect;
-import com.schoolpartime.dao.entity.UserInfo;
-import com.schoolpartime.dao.entity.WorkType;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.MainActivity;
 import com.schoolpartime.schoolpartime.activity.SearchActivity;
+import com.schoolpartime.schoolpartime.event.LoginStateController;
 import com.schoolpartime.schoolpartime.event.NumberController;
-import com.schoolpartime.schoolpartime.chat.WebClient;
 import com.schoolpartime.schoolpartime.databinding.ActivityMianBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.fragment.MainFragment;
-import com.schoolpartime.schoolpartime.net.interfacz.CitysServer;
 import com.schoolpartime.schoolpartime.net.interfacz.GetCollectWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.NoReadSumServer;
 import com.schoolpartime.schoolpartime.net.interfacz.RequestListServer;
-import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
-import com.schoolpartime.schoolpartime.net.interfacz.WorkTypeServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -47,7 +41,14 @@ import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
 import java.util.ArrayList;
 
-public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCheckedChangeListener, WebClient.NotifyMessage, NumberController.NotifyNumber {
+/**
+ * 进入之后的主界面
+ * 相关说明：
+ * 1、NotifyNumber用于监听消息数量的变化
+ * 2、NotifyLoginState用于监听登录状态的变化
+ */
+public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCheckedChangeListener , NumberController.NotifyNumber ,
+        LoginStateController.NotifyLoginState {
 
     private ActivityMianBinding binding;
     private SuperActivity activity;
@@ -56,11 +57,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     private String[] mFragmentTagList = {"主页", "搜索", "我的"};
     private Fragment mCurrentFragmen = null; // 记录当前显示的Fragment
     private int index = 0;
-    private boolean isFirst = true;
     private int number = 0;
-
-    WebClient webClient;
-    NumberController controller;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -77,8 +74,6 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         binding.badge.setVisibility(View.GONE);
         mCurrentFragmen = mFragmentList.get(0);
         binding.myToolBarTitle.setText(mFragmentTagList[0]);
-        Log.d("TEST", "Click1: " + mCurrentFragmen);
-        // 初始化首次进入时的Fragment
         mFm = activity.getSupportFragmentManager();
         FragmentTransaction transaction = mFm.beginTransaction();
         for (int i = mFragmentList.size()-1;i >= 0;i-- ) {
@@ -87,6 +82,14 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         }
         transaction.show(mCurrentFragmen);
         transaction.commitAllowingStateLoss();
+
+
+        /**
+         * 设置相关观察者
+         */
+        NumberController.getInstance().addNotity(this);
+        LoginStateController.getInstance().addNotity(this);
+
         binding.mainGp.setOnCheckedChangeListener(this);
         binding.netBar.setOnClickListener(this);
         binding.myToolBar.setOnClickListener(this);
@@ -105,23 +108,9 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                 binding.netBar.setVisibility(code);
             }
             break;
-            case 7: {
-                if (SpCommonUtils.getIsLogin() && isFirst) {
-                    webClient = WebClient.getInstance();
-                    controller = NumberController.getInstance();
-                    webClient.addNotity(this);
-                    controller.addNotity(this);
-                    getUserInfo();
-                    getNoreadSum();
-                    getUserCollect();
-                    getRequestList();
-                    isFirst = false;
-                }
-            }
-            break;
             case 8: {
-                webClient.removeNotity(this);
-                controller.removeNotity(this);
+                NumberController.getInstance().removeNotity(this);
+                LoginStateController.getInstance().removeNotity(this);
             }
             break;
         }
@@ -173,6 +162,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     }
 
     private void getNoreadSum() {
+        LogUtil.d("得到所有未读消息");
         HttpRequest.request(HttpRequest.builder().create(NoReadSumServer.class).
                         getAllNoread(SpCommonUtils.getUserId()),
                 new RequestResult() {
@@ -182,7 +172,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                         if (resultModel.code == 200) {
                             double sum = (Double) resultModel.data;
                             int msum = (int) (sum + 0);
-                            controller.NotifyAll(msum);
+                            NumberController.getInstance().NotifyAll(msum);
                             LogUtil.d("得到所有未读消息----------成功：" + sum);
                         }
                     }
@@ -201,35 +191,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
     }
 
 
-    private void getUserInfo() {
-        activity.show("正在加载,请稍后...");
-        HttpRequest.request(HttpRequest.builder().create(UserInfoServer.class).
-                        getUserInfoServer(SpCommonUtils.getUserId()),
-                new RequestResult() {
-                    @Override
-                    public void success(ResultModel resultModel) {
-                        LogUtil.d("得到登录用户信息----------ResultModel：" + resultModel.toString());
-                        if (resultModel.code == 200) {
-                            UserInfo userInfo = (UserInfo) resultModel.data;
-                            SchoolPartimeApplication.getmDaoSession().getUserInfoDao().insert(userInfo);
-                            LogUtil.d("数据库加入userinfo信息----------成功：" + userInfo.toString());
-                            activity.dismiss();
-                        } else {
-                            showResult(resultModel.message);
-                            SpCommonUtils.setIsLogin(false);
-                            activity.dismiss();
-                        }
-                    }
 
-                    @Override
-                    public void fail(Throwable e) {
-                        LogUtil.d("得到登录用户信息失败---》请求失败", e);
-                        SpCommonUtils.setIsLogin(false);
-                        activity.dismiss();
-                        showResult("请求失败");
-                    }
-                }, true);
-    }
 
     private void setDraws() {
         Drawable drawable_home = activity.getResources().getDrawable(R.drawable.main_radio_type_home);
@@ -342,27 +304,9 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         }
     }
 
-
-    @Override
-    public void notify(String mes) {
-
-        LogUtil.d("Main收到消息通知");
-        number += 1;
-        LogUtil.d("Main number is " + number);
-        LogUtil.d("Main 设置显示数量");
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                binding.badge.setVisibility(View.VISIBLE);
-                LogUtil.d("Main number is " + number);
-                binding.badge.setText(number + "");
-            }
-        });
-
-    }
-
     @Override
     public void change(int change) {
+        LogUtil.d("监听到消息数量变化");
         number += change;
         if (number > 0) {
             binding.badge.setVisibility(View.VISIBLE);
@@ -370,4 +314,19 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
         }
     }
 
+    @Override
+    public void loginStateChange(boolean state) {
+        LogUtil.d("监听到登录状态变化");
+        if (state){
+                LogUtil.d("MainPre -- >登录成功 ---> 加载数据");
+                getNoreadSum();
+                getUserCollect();
+                getRequestList();
+            }
+
+        if (!state){
+            binding.badge.setVisibility(View.GONE);
+            number = 0;
+        }
+    }
 }

@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.PrefectInfoActivity;
+import com.schoolpartime.schoolpartime.event.LoginStateController;
 import com.schoolpartime.schoolpartime.service.BossTestService;
 import com.schoolpartime.schoolpartime.service.ChatMessageService;
 import com.schoolpartime.schoolpartime.databinding.ActivityLoginBinding;
@@ -21,12 +22,16 @@ import com.schoolpartime.schoolpartime.listener.TextChangedListener;
 import com.schoolpartime.schoolpartime.net.interfacz.UserLoginServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.service.ServiceController;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 import com.schoolpartime.security.aes.AESUtil;
 
 import java.util.Objects;
 
+/**
+ * 登录时操作的页面
+ */
 public class LoginPre implements Presenter, View.OnClickListener {
     private ActivityLoginBinding binding;
     private SuperActivity activity;
@@ -39,6 +44,9 @@ public class LoginPre implements Presenter, View.OnClickListener {
         init();
     }
 
+    /**
+     * 设置监听
+     */
     private void init() {
         binding.etLgUsername.addTextChangedListener(textChangedListener);
         binding.etLgPsw.addTextChangedListener(textChangedListener);
@@ -68,6 +76,9 @@ public class LoginPre implements Presenter, View.OnClickListener {
         }
     }
 
+    /**
+     * 设置相关的监听事件，用来控制用户的输入完成情况
+     */
     private TextChangedListener textChangedListener =  new TextChangedListener(){
         @Override
         public void afterTextChange() {
@@ -85,11 +96,15 @@ public class LoginPre implements Presenter, View.OnClickListener {
                 .setDuration(Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     *
+     * 登录事件：
+     * 采用的加密方式如 folder 文件中的图示
+     * @param v
+     */
     @Override
     public void onClick(View v) {
-
         String strKeyAES = null;
-
         activity.show("正在登陆...");
         try {
             strKeyAES = AESUtil.getStrKeyAES();
@@ -111,24 +126,31 @@ public class LoginPre implements Presenter, View.OnClickListener {
                             User user = (User) resultModel.data;
                             SpCommonUtils.setUserId(user.getId());
                             SpCommonUtils.setUserType(user.getType());
+
+                            /**
+                             * 此时进行身份判断：
+                             * 0  代表已注册账号  但是未完善信息
+                             * 1  代表已完善信息  但是未注册商家
+                             * 3  代表已注册商家  但是还未通过审核
+                             * 4  代表已经审核通过
+                             */
                             if (user.getType() == 0){
                                 (new PrefectInfoActivity()).inToActivity(activity);
                             }else {
                                 SpCommonUtils.setIsLogin(true);
-                                Intent intent = new Intent();
-                                intent.setClass(activity, ChatMessageService.class);
-                                activity.startService(intent);
-                                LogUtil.d("开启聊天服务");
+                                ServiceController.startWeiChatService();
+                                LoginStateController.getInstance().NotifyAll(true);
                             }
 
+                            /**
+                             * 当用户未审核通过时，开始定时检测，确认通过
+                             */
                             if (user.getType() != 3){
-                                Intent intent = new Intent();
-                                intent.setClass(activity, BossTestService.class);
-                                activity.startService(intent);
+                                ServiceController.startBossCheckService();
                             }
                             activity.finish();
                         } else {
-                            showResult(resultModel.message);
+                            showResult("账号或密码错误");
                         }
                     }
 

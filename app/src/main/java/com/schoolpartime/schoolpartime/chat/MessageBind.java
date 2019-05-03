@@ -22,4 +22,8 @@ public class MessageBind extends Binder implements ChatListener {
         webClient.send(gson.toJson(message));
         LogUtil.d("发送消息："+message.toString());
     }
+
+    public void close(int code){
+        webClient.close(code);
+    }
 }

@@ -28,7 +28,7 @@ public class WebClient extends WebSocketClient{
      *  路径为ws+服务器地址+服务器端设置的子路径+参数（这里对应服务器端机器编号为参数）
      *  如果服务器端为https的，则前缀的ws则变为wss
      */
-    private static final String mAddress = "http://192.168.124.11:8080/websocket/";
+    private static final String mAddress = "http://172.28.131.4:8080/websocket/";
     private void showLog(String msg){
         LogUtil.d("WebClient---->"+msg);
     }

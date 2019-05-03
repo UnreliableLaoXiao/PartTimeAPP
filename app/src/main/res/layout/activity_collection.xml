@@ -50,11 +50,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/netbar_height" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mRecyclerView"
+        <com.schoolpartime.schoolpartime.weiget.myListView.XrefershListview
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="10dp" />
+            android:id="@+id/my_send"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </layout>

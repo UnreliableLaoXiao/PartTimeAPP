@@ -80,6 +80,12 @@ public class MyLoveTypePre implements Presenter, View.OnClickListener {
             }
         });
 
+        /**
+         * 请求得到喜爱的类型，然后显示
+         */
+
+
+
 
     }
 

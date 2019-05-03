@@ -18,7 +18,6 @@ import com.schoolpartime.schoolpartime.entity.WorkInfo;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.interfacz.MainWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.OtherSearchServer;
-import com.schoolpartime.schoolpartime.net.interfacz.TitleSearchServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -205,7 +204,7 @@ public class FrgSearchPre implements Presenter ,XrefershListviewListener, Adapte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("workinfo",workInfos.get(position));
+        bundle.putParcelable("workinfo",workInfos.get(position-1));
         (new DetailsInfoActivity()).inToActivity(activity,bundle);
     }
 }

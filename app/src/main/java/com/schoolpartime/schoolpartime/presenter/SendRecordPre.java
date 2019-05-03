@@ -6,7 +6,9 @@ import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.adapter.FragmentAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivitySendrecordBinding;
-import com.schoolpartime.schoolpartime.fragment.ListFragment;
+import com.schoolpartime.schoolpartime.fragment.FailedFragment;
+import com.schoolpartime.schoolpartime.fragment.RequestFragment;
+import com.schoolpartime.schoolpartime.fragment.SuccessFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,6 @@ public class SendRecordPre implements Presenter, View.OnClickListener {
     private void init() {
         List<String> titles = new ArrayList<>();
         titles.add("投递成功");
-        titles.add("被查看");
-        titles.add("待沟通");
         titles.add("合适");
         titles.add("不合适");
 
@@ -39,9 +39,9 @@ public class SendRecordPre implements Presenter, View.OnClickListener {
         }
 
         List<Fragment> fragments = new ArrayList<>();
-        for ( int i =0 ; i<titles.size() ; i++) {
-            fragments.add(new ListFragment());
-        }
+        fragments.add(new RequestFragment());
+        fragments.add(new SuccessFragment());
+        fragments.add(new FailedFragment());
 
         FragmentAdapter fragmentAdapter = new FragmentAdapter(activity.getSupportFragmentManager(),fragments,titles);
         binding.viewpager.setAdapter(fragmentAdapter);

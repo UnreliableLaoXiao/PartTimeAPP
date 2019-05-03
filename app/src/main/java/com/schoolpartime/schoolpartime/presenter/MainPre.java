@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.schoolpartime.dao.entity.City;
+import com.schoolpartime.dao.entity.RequestWork;
 import com.schoolpartime.dao.entity.UserCollect;
 import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.dao.entity.WorkType;
@@ -36,6 +37,7 @@ import com.schoolpartime.schoolpartime.fragment.MainFragment;
 import com.schoolpartime.schoolpartime.net.interfacz.CitysServer;
 import com.schoolpartime.schoolpartime.net.interfacz.GetCollectWorkInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.NoReadSumServer;
+import com.schoolpartime.schoolpartime.net.interfacz.RequestListServer;
 import com.schoolpartime.schoolpartime.net.interfacz.UserInfoServer;
 import com.schoolpartime.schoolpartime.net.interfacz.WorkTypeServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
@@ -112,6 +114,7 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
                     getUserInfo();
                     getNoreadSum();
                     getUserCollect();
+                    getRequestList();
                     isFirst = false;
                 }
             }
@@ -123,6 +126,28 @@ public class MainPre implements Presenter, View.OnClickListener, RadioGroup.OnCh
             break;
         }
 
+    }
+
+    private void getRequestList() {
+        HttpRequest.request(HttpRequest.builder().create(RequestListServer.class).
+                        requestWorkList(SpCommonUtils.getUserId()),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        LogUtil.d("得到已申请兼职----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            SchoolPartimeApplication.getmDaoSession().getUserCollectDao().deleteAll();
+                            ArrayList<RequestWork> requestWorks = (ArrayList<RequestWork>) resultModel.data;
+                            SchoolPartimeApplication.getmDaoSession().getRequestWorkDao().insertInTx(requestWorks);
+                            LogUtil.d("已申请兼职同步成功");
+                        }
+                    }
+
+                    @Override
+                    public void fail(Throwable e) {
+                        LogUtil.d("得到收藏的兼职----------失败", e);
+                    }
+                }, true);
     }
 
     private void getUserCollect() {

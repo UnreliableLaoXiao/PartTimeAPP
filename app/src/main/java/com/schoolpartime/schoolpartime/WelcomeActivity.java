@@ -48,6 +48,8 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
         SpCommonUtils.setUserId(0);
         SpCommonUtils.setUserType(0);
         SchoolPartimeApplication.getmDaoSession().getUserInfoDao().deleteAll();
+        SchoolPartimeApplication.getmDaoSession().getRequestWorkDao().deleteAll();
+        SchoolPartimeApplication.getmDaoSession().getUserCollectDao().deleteAll();
         LogUtil.d("数据初始化--------》成功");
         if (!SpCommonUtils.getOnceStart()) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);

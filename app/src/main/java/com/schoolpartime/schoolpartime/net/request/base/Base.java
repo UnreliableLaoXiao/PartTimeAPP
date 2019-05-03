@@ -8,7 +8,7 @@ class Base {
      Retrofit.Builder Builder() {
 
         return new Retrofit.Builder()
-                .baseUrl("http://192.168.124.11:8080")
+                .baseUrl("http://172.28.131.4:8080")
                 ;//基础URL 建议以 / 结尾
 
     }

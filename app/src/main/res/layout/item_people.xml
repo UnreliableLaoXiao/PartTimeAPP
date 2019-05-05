@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="申请人名字"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:drawableRight="@drawable/message_0"
+        android:drawablePadding="20dp"
+        android:id="@+id/user_name"
+        android:gravity="center"
+        android:layout_height="40dp" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="100dp"
+        android:layout_height="30dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="18岁"
+            android:id="@+id/user_age"
+            android:layout_marginLeft="5dp"
+            android:textSize="15sp"
+            android:layout_height="match_parent" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:text="男"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:id="@+id/user_sex"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="湖北武汉"
+            android:id="@+id/user_address"
+            android:textSize="17sp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="70dp"
+            android:gravity="center_vertical"
+            android:layout_height="40dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="80dp"
+                android:text="同意"
+                android:id="@+id/bt_yes"
+
+                android:padding="10dp"
+                android:background="@drawable/btn_select"
+                android:layout_height="40dp" />
+
+            <Button
+                android:layout_width="80dp"
+                android:text="拒绝"
+                android:id="@+id/bt_no"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_select_no"
+                android:layout_height="40dp" />
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

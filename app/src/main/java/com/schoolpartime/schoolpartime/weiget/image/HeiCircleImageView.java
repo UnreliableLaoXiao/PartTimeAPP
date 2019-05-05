@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.schoolpartime.schoolpartime.config.Config;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 
 import java.io.BufferedInputStream;
@@ -108,7 +109,7 @@ public class HeiCircleImageView extends ImageView {
                 .readTimeout(8, TimeUnit.SECONDS)
                 .build();
 
-        String url = "http://192.168.124.11:8080/img/" + murl;
+        String url = Config.URL + "/img/" + murl;
 
         LogUtil.d("url = " + url);
         //创建request

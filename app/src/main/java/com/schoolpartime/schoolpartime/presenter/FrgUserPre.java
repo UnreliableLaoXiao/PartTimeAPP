@@ -11,6 +11,7 @@ import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.BeginBossActivity;
 import com.schoolpartime.schoolpartime.activity.BossInfoActivity;
+import com.schoolpartime.schoolpartime.activity.BossRequestActivity;
 import com.schoolpartime.schoolpartime.activity.BossSendActivity;
 import com.schoolpartime.schoolpartime.activity.LoginActivity;
 import com.schoolpartime.schoolpartime.activity.MyCollectionActivity;
@@ -129,7 +130,7 @@ public class FrgUserPre implements Presenter, View.OnClickListener,  NumberContr
             }
             break;
             case R.id.boss_request: {
-
+                (new BossRequestActivity()).inToActivity(activity);
             }
             break;
         }

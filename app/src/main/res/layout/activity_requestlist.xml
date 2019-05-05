@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rly"
+        android:orientation="vertical"
+        android:background="#dfede5e5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/likeblue">
+
+            <TextView
+                android:id="@+id/user_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="返回" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="申请详情" />
+
+        </RelativeLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/peoplelist"
+            android:layout_height="match_parent"/>
+
+
+    </LinearLayout>
+</layout>

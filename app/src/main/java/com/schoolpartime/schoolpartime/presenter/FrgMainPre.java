@@ -18,6 +18,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
 import com.schoolpartime.schoolpartime.activity.DetailsInfoActivity;
 import com.schoolpartime.schoolpartime.adapter.LoopAdapter;
@@ -122,6 +123,8 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
 
         LoginStateController.getInstance().addNotity(this);
 
+        binding.exchange.setOnClickListener(this);
+
     }
 
 
@@ -173,32 +176,43 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
 
     @Override
     public void onClick(View v) {
-            CityPicker.getInstance()
-                    .setFragmentManager(activity.getSupportFragmentManager())  //此方法必须调用
-                    .enableAnimation(true)  //启用动画效果
-                    .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101"))  //APP自身已定位的城市，默认为null（定位失败）
-                    .setOnPickListener(new OnPickListener() {
-                        @Override
-                        public void onPick(int position, City data) {
-                            if (data != null)
-                                binding.citypicker.setText("当前城市:" + data.getName() + "市");
+        switch (v.getId()){
+            case R.id.citypicker:{
+                CityPicker.getInstance()
+                        .setFragmentManager(activity.getSupportFragmentManager())  //此方法必须调用
+                        .enableAnimation(true)  //启用动画效果
+                        .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101"))  //APP自身已定位的城市，默认为null（定位失败）
+                        .setOnPickListener(new OnPickListener() {
+                            @Override
+                            public void onPick(int position, City data) {
+                                if (data != null)
+                                    binding.citypicker.setText("当前城市:" + data.getName() + "市");
 
-                        }
+                            }
 
-                        @Override
-                        public void onLocate() {
-                            //开始定位，这里模拟一下定位
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //定位完成之后更新数据
-                                    CityPicker.getInstance()
-                                            .locateComplete(new LocatedCity("深圳", "广东", "101280601"), LocateState.SUCCESS);
-                                }
-                            }, 2000);
-                        }
-                    })
-                    .show();
+                            @Override
+                            public void onLocate() {
+                                //开始定位，这里模拟一下定位
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //定位完成之后更新数据
+                                        CityPicker.getInstance()
+                                                .locateComplete(new LocatedCity("深圳", "广东", "101280601"), LocateState.SUCCESS);
+                                    }
+                                }, 2000);
+                            }
+                        })
+                        .show();
+            }
+            break;
+            case R.id.exchange:{
+                activity.show("正在加载...");
+                initData(SpCommonUtils.getUserId());
+            }
+            break;
+        }
+
         }
 
     @Override
@@ -261,6 +275,7 @@ public class FrgMainPre implements Presenter, NestedScrollView.OnScrollChangeLis
 
                     @Override
                     public void fail(Throwable e) {
+                        activity.dismiss();
                         LogUtil.d("得到兼职信息----------失败");
                     }
                 }, true);

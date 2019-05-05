@@ -145,7 +145,6 @@ public class DetailsInfoPre implements Presenter, View.OnClickListener {
                     (new LoginActivity()).inToActivity(activity);
                 }else {
                     startChatWithBoss();
-
                 }
             }
             break;

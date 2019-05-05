@@ -21,6 +21,7 @@ public class UserInfoPre implements Presenter, View.OnClickListener {
     ActivityUserinfoBinding binding;
     boolean isChange = false;
     private UserInfo userInfo;
+    private boolean once = true;
 
     @Override
     public void attach(ViewDataBinding binding, SuperActivity activity) {
@@ -110,6 +111,11 @@ public class UserInfoPre implements Presenter, View.OnClickListener {
     }
 
     private void ChangeWeigetEnable(boolean flag) {
+        binding.userChange.setText(flag?"确认":"修改");
+        if (flag && !once){
+            LogUtil.d("修改信息");
+        }
+        once = false;
         binding.userName.setEnabled(flag);
         binding.userAge.setEnabled(flag);
         binding.userAddress.setEnabled(flag);

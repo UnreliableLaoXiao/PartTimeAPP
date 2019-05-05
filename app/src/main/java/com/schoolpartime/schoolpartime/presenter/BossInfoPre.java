@@ -15,6 +15,7 @@ import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
+import com.schoolpartime.schoolpartime.config.Config;
 import com.schoolpartime.schoolpartime.databinding.ActivityBossinfoBinding;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.interfacz.Img2UrlServer;
@@ -143,7 +144,7 @@ public class BossInfoPre implements Presenter, View.OnClickListener {
                     .readTimeout(8, TimeUnit.SECONDS)
                     .build();
 
-            String url = "http://192.168.124.11:8080/img/" + murl;
+            String url = Config.URL+ "/img/" + murl;
 
             LogUtil.d("url = " + url);
             //创建request

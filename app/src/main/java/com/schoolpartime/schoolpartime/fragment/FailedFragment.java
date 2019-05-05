@@ -7,26 +7,24 @@ import android.view.ViewGroup;
 
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SuperActivity;
-import com.schoolpartime.schoolpartime.databinding.FragmentMainBinding;
-import com.schoolpartime.schoolpartime.listener.IntentOnClickListener;
-import com.schoolpartime.schoolpartime.presenter.FrgMainPre;
+import com.schoolpartime.schoolpartime.databinding.FragmentFailedBinding;
+import com.schoolpartime.schoolpartime.presenter.FrgFailedPre;
 import com.schoolpartime.schoolpartime.presenter.Presenter;
+import com.schoolpartime.schoolpartime.presenter.SendRecordPre;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-public class FailedFragment extends Fragment {
+public class FailedFragment extends Fragment implements SendRecordPre.ClearAllListener {
 
-    private Presenter pre = new FrgMainPre();
+    private Presenter pre = new FrgFailedPre();
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentMainBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        FragmentFailedBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_failed, container, false);
         pre.attach(binding, (SuperActivity) getActivity());
-        binding.setHandler(new IntentOnClickListener());
-
         return binding.getRoot();
     }
 
@@ -37,7 +35,8 @@ public class FailedFragment extends Fragment {
         pre.notifyUpdate(0);
     }
 
-    public void scroll_Start() {
-        pre.notifyUpdate(1);
+    @Override
+    public void clearAll() {
+        pre.notifyUpdate(4);
     }
 }

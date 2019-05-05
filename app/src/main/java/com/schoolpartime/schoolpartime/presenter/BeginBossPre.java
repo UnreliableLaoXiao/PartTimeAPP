@@ -12,7 +12,7 @@ import com.schoolpartime.dao.entity.UserInfo;
 import com.schoolpartime.schoolpartime.R;
 import com.schoolpartime.schoolpartime.SchoolPartimeApplication;
 import com.schoolpartime.schoolpartime.SuperActivity;
-import com.schoolpartime.schoolpartime.config.ImgConfig;
+import com.schoolpartime.schoolpartime.config.Config;
 import com.schoolpartime.schoolpartime.databinding.ActivityBeginbooBinding;
 import com.schoolpartime.schoolpartime.dialog.ChoosePictrueDialog;
 import com.schoolpartime.schoolpartime.dialog.DialogUtil;
@@ -130,7 +130,7 @@ public class BeginBossPre implements Presenter, View.OnClickListener {
             if (img_file != null){
                 RequestBody photoBody = RequestBody.create(MediaType.parse("image/png"),img_file);
                 MultipartBody.Part photo = MultipartBody.Part.createFormData("file","base.png",photoBody);
-                HttpRequest.request(HttpRequest.builder().create(UploadFileForPartServer.class).uploadFile(photo,id,ImgConfig.IMG_ID_CARD),
+                HttpRequest.request(HttpRequest.builder().create(UploadFileForPartServer.class).uploadFile(photo,id,Config.IMG_ID_CARD),
                         new RequestResult() {
                             @Override
                             public void success(ResultModel resultModel) {

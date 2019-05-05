@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.schoolpartime.schoolpartime.config.Config;
 import com.schoolpartime.schoolpartime.entity.Message;
 import com.schoolpartime.schoolpartime.event.NumberController;
 import com.schoolpartime.schoolpartime.util.LogUtil;
@@ -29,7 +30,7 @@ public class WebClient extends WebSocketClient{
      *  路径为ws+服务器地址+服务器端设置的子路径+参数（这里对应服务器端机器编号为参数）
      *  如果服务器端为https的，则前缀的ws则变为wss
      */
-    private static final String mAddress = "http://172.28.131.4:8080/websocket/";
+    private static final String mAddress = Config.URL+"/websocket/";
     private void showLog(String msg){
         LogUtil.d("WebClient---->"+msg);
     }
@@ -87,7 +88,7 @@ public class WebClient extends WebSocketClient{
                 int index = 0 ;
                 while (!isConnected && index++ <3){
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(5000);
                         showLog("重新连接->");
                         isConnected = mWebClient.reconnectBlocking();
                         showLog("重新连接->----------------" + isConnected);

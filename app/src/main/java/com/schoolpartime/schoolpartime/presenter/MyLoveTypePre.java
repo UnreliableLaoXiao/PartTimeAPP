@@ -11,6 +11,7 @@ import com.schoolpartime.schoolpartime.adapter.MyLoveTypeAdapter;
 import com.schoolpartime.schoolpartime.databinding.ActivityMyLoveTypeBinding;
 import com.schoolpartime.schoolpartime.dialog.DialogUtil;
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
+import com.schoolpartime.schoolpartime.net.interfacz.GetLikeTypeServer;
 import com.schoolpartime.schoolpartime.net.interfacz.SetLikeTypeServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
@@ -37,8 +38,6 @@ public class MyLoveTypePre implements Presenter, View.OnClickListener {
         workTypes = (ArrayList<WorkType>) SchoolPartimeApplication.getmDaoSession().getWorkTypeDao().loadAll();
         LogUtil.d("得到兼职数量："  + workTypes.size());
         init();
-
-
     }
 
     private void init() {
@@ -79,14 +78,42 @@ public class MyLoveTypePre implements Presenter, View.OnClickListener {
                 }
             }
         });
+        getMyLoveType();
+    }
 
-        /**
-         * 请求得到喜爱的类型，然后显示
-         */
+    private void getMyLoveType() {
+        activity.show("正在加载...");
+        HttpRequest.request(HttpRequest.builder().create(GetLikeTypeServer.class).getLikeType(SpCommonUtils.getUserId()),
+                new RequestResult() {
+                    @Override
+                    public void success(ResultModel resultModel) {
+                        activity.dismiss();
+                        LogUtil.d(" 申请我喜欢的类型----------ResultModel：" + resultModel.toString());
+                        if (resultModel.code == 200) {
+                            LogUtil.d("申请我喜欢的类型成功");
+                            String types = (String) resultModel.data;
+                            String[] split = types.split(",");
+                            likeTypes[0] = Integer.valueOf(split[0]);
+                            likeTypes[1] = Integer.valueOf(split[1]);
+                            likeTypes[2] = Integer.valueOf(split[2]);
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LogUtil.d("更新数据");
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }else {
+                            LogUtil.d("申请我喜欢的类型失败");
+                        }
+                    }
 
-
-
-
+                    @Override
+                    public void fail(Throwable e) {
+                        activity.dismiss();
+                        LogUtil.d("申请我喜欢的类型异常");
+                    }
+                }, true);
     }
 
     private boolean isContains(Integer id) {
@@ -140,13 +167,10 @@ public class MyLoveTypePre implements Presenter, View.OnClickListener {
                         activity.dismiss();
                         LogUtil.d("修改喜好----------ResultModel："+resultModel.toString());
                         if (resultModel.code == 200) {
-                            activity.showResult(binding.rly,"修改成功！");
-                            DialogUtil.select2Dialog(activity, "提示：", "修改成功？", new DialogInterface.OnClickListener() {
+                            DialogUtil.selectDialog(activity, "提示：", "修改成功", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
-
-
+                                    activity.finish();
                                 }
                             });
                         } else {

@@ -1,7 +1,5 @@
 package com.schoolpartime.schoolpartime.net.request;
 
-import android.util.Log;
-
 import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.filter.ResponseBodyFilter;
 import com.schoolpartime.schoolpartime.net.request.base.RequestFactory;
@@ -37,6 +35,7 @@ public class HttpRequest {
 
 
     private static void generalRequest(Observable observable, final RequestResult result){
+
         observable
                 .subscribeOn(Schedulers.io())//IO线程加载数据
                 .observeOn(AndroidSchedulers.mainThread())

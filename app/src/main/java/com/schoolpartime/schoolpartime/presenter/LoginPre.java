@@ -145,7 +145,7 @@ public class LoginPre implements Presenter, View.OnClickListener {
                             /**
                              * 当用户未审核通过时，开始定时检测，确认通过
                              */
-                            if (user.getType() != 3){
+                            if (user.getType() == 4){
                                 ServiceController.startBossCheckService();
                             }
                             activity.finish();

@@ -8,6 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.schoolpartime.dao.DaoMaster;
 import com.schoolpartime.dao.DaoSession;
 
+/**
+ * 自定义Application
+ * 说明：
+ * 1、初始化数据库操作
+ * 2、初始化全局Context
+ */
 public class SchoolPartimeApplication extends Application {
 
     public static final String DB_NAME = "app.db";

@@ -20,6 +20,7 @@ import com.schoolpartime.schoolpartime.entity.baseModel.ResultModel;
 import com.schoolpartime.schoolpartime.net.interfacz.UploadFileForPartServer;
 import com.schoolpartime.schoolpartime.net.request.HttpRequest;
 import com.schoolpartime.schoolpartime.net.request.base.RequestResult;
+import com.schoolpartime.schoolpartime.service.ServiceController;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
 
@@ -142,6 +143,7 @@ public class BeginBossPre implements Presenter, View.OnClickListener {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             SpCommonUtils.setUserType(4);
+                                            ServiceController.startBossCheckService();
                                             activity.finish();
                                         }
                                     });

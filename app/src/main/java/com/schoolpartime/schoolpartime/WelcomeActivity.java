@@ -33,6 +33,9 @@ import java.util.List;
 
 /**
  * 兼职的客户端的欢迎界面
+ * 说明：
+ * 1、分为两种启动页：初次进入和普通进入
+ * 分别加载不同的页面
  */
 
 public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageChangeListener {
@@ -45,11 +48,14 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        /**
+         * 初始化数据
+         */
         InfoUtil.clearAllInfo();
         if (!SpCommonUtils.getOnceStart()) {
             binding_once = DataBindingUtil.setContentView(this, R.layout.activity_welcome_once);
             if(FileUtil.verifyStoragePermissions(this)){
-                initViewsOnce(); //初始化组件
+                initViewsOnce();    //初次进入
             }
         } else {
             binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome);
@@ -57,12 +63,14 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
                 initViews();
             }
         }
-
         getWorkType();
         getCitys();
 
     }
 
+    /**
+     * 得到所有的城市
+     */
     private void getCitys() {
         HttpRequest.request(HttpRequest.builder().create(CitysServer.class).getCitys(),
                 new RequestResult() {
@@ -84,6 +92,9 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
                 }, true);
     }
 
+    /**
+     * 得到所有的兼职类型
+     */
     private void getWorkType() {
         HttpRequest.request(HttpRequest.builder().create(WorkTypeServer.class).
                         getWorkTypes(),
@@ -107,8 +118,6 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
                 }, true);
     }
 
-
-
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         @SuppressLint("SetTextI18n")
@@ -125,7 +134,9 @@ public class WelcomeActivity extends SuperActivity implements ViewPager.OnPageCh
         }
     };
 
-
+    /**
+     * 初始化布局控件
+     */
     private void initViews() {
         binding.setShow("跳过3s");
         handler.sendEmptyMessageDelayed(2, 1000);

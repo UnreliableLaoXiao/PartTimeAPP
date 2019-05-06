@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * 功能：
  * 1、可以控制程序整体退出
  * 2、提供退出方法
+ * 3、提供Activity的跳转方法
  */
 
 @SuppressLint("Registered")

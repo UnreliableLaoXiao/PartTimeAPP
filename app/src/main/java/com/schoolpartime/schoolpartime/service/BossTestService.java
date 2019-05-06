@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.schoolpartime.schoolpartime.config.Config;
 import com.schoolpartime.schoolpartime.fragment.UserFragment;
 import com.schoolpartime.schoolpartime.util.LogUtil;
 import com.schoolpartime.schoolpartime.util.sp.SpCommonUtils;
@@ -44,7 +45,7 @@ public class BossTestService extends Service {
                         FormBody.Builder formBuilder = new FormBody.Builder();
                         formBuilder.add("id",SpCommonUtils.getUserId()+"");
                         final Request request = new Request.Builder()
-                                .url("http://192.168.124.11:8080/getusertype")
+                                .url(Config.URL+"/getusertype")
                                 .post(formBuilder.build())
                                 .build();
                         OkHttpClient okHttpClient = new OkHttpClient();

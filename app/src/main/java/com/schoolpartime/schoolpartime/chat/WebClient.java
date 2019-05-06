@@ -86,15 +86,21 @@ public class WebClient extends WebSocketClient{
             @Override
             public void run() {
                 int index = 0 ;
-                while (!isConnected && index++ <3){
-                    try {
-                        Thread.sleep(5000);
-                        showLog("重新连接->");
-                        isConnected = mWebClient.reconnectBlocking();
-                        showLog("重新连接->----------------" + isConnected);
-                    } catch (InterruptedException e) {
-                        showLog("连接异常-------------->");
+                try {
+                    while (!isConnected && index++ <3) {
+                        try {
+                            Thread.sleep(5000);
+                            showLog("重新连接->");
+                            isConnected = mWebClient.reconnectBlocking();
+                            showLog("重新连接->----------------" + isConnected);
+                        } catch (InterruptedException e) {
+                            showLog("连接异常-------------->");
+                        }
                     }
+                }finally {
+                    LogUtil.d("websocket失败---》");
+                    mWebClient = null;
+                    isConnected = false;
                 }
             }
         }.start();
